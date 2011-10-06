@@ -1,0 +1,10 @@
+This project contains my work for the course Progettazione di Algoritmi e 
+Complessita' Computazione (Algorithm Design and Computational Complexity) given by
+Pierluigi Crescenzi at University of Florence.
+
+The document will contain all my notes, my exercises (the major part of the whole)
+and some experiments with Common Lisp.
+
+I'll try to do all the implementation using Common Lisp.
+
+Bye

@@ -1,0 +1,66 @@
+\documentclass[10pt, a4paper]{report}
+ 
+%\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[T1]{fontenc}
+\usepackage{ae,aecompl}
+\usepackage{graphicx}
+\usepackage[left=2cm, right=2cm, top=2.5cm, bottom=2.5cm]{geometry}
+\usepackage{latexsym}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{rotating}
+\usepackage{boxedminipage}
+\usepackage{multicol}
+
+% Package for including code in the document
+\usepackage{listings}
+
+% If you want to generate a toc for each chapter (use with book)
+% \usepackage{minitoc}
+
+\begin{titlepage}
+\title{PACC} 
+\author{Massimo Nocentini}
+\end{titlepage}
+% My Theorem
+\newtheorem{oss}{Observation}[section]
+\newtheorem{exercise}{Exercise}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{lem}[thm]{Lemma}
+
+\newcommand{\vect}[1]{\boldsymbol{#1}}
+% instead of boldsymbol I can use the arrow above the letter with
+%\newcommand{\vect}[1]{\vec{#1}}
+
+% page settings
+\pagestyle{headings}
+
+\begin{document}
+
+% settings for the lstlisting environment
+\lstset{
+	language = lisp
+	, numbers = left 
+	, basicstyle=\sffamily%\footnotesize
+	, frame=single
+	, tabsize=2
+	, captionpos=b
+	, breaklines=true
+	, showspaces=false
+	, showstringspaces=false
+}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+%\input{introduction.tex}
+\input{licences.tex}
+
+\chapter{Divide et impera}
+\input{divide-et-impera/longest-increasing-subsequence.tex}
+
+\end{document} 
