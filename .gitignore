@@ -4,3 +4,5 @@ Elaborato.log
 Elaborato.out
 Elaborato.ps
 Elaborato.toc
+*.fas
+*.lib
