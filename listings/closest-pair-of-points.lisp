@@ -1,6 +1,8 @@
+;; with the following function we are able to load automatically
+;; the lisp-unit framework in order to test our code
 (eval-when (:compile-toplevel :load-toplevel :execute)
-      (require :lisp-unit "lisp-unit.lisp")
-      (use-package :lisp-unit))
+  (require :lisp-unit "lisp-unit.lisp")
+  (use-package :lisp-unit))
 
 (defun introduce-sorting-info (lst-of-point-definitions)
   (mapcar (function 
@@ -8,8 +10,6 @@
 	    (append point-definition 
 		    (list :x-position -1 :y-position -1)))) 
 	  lst-of-point-definitions))
-
-
 
 (defun sort-by-ascissa (lst)
   "some comment"
