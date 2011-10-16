@@ -6,6 +6,7 @@
 	  lst-of-point-definitions))
 
 (defun sort-by-ascissa (lst)
+  "some comment"
   (sort (copy-list lst) (function <) :key 
 	(function 
 	 (lambda (lst-of-point-info) 
@@ -24,7 +25,7 @@
 	(setf (getf (car lst) :y-position) pos)
 	(assign-ordinate-position (cdr lst) (+ pos 1)))))
 
-(defun sort-by-ordinate (lst)
+(defun sort-by-ordinate (lst)	
   (sort (copy-list lst) (function <) :key 
 	(function 
 	 (lambda (lst-of-point-info) 
