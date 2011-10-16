@@ -1,9 +1,15 @@
+(eval-when (:compile-toplevel :load-toplevel :execute)
+      (require :lisp-unit "lisp-unit.lisp")
+      (use-package :lisp-unit))
+
 (defun introduce-sorting-info (lst-of-point-definitions)
   (mapcar (function 
 	   (lambda (point-definition) 
 	    (append point-definition 
 		    (list :x-position -1 :y-position -1)))) 
 	  lst-of-point-definitions))
+
+
 
 (defun sort-by-ascissa (lst)
   "some comment"
@@ -13,6 +19,7 @@
 	  (getf lst-of-point-info :x)))))
 
 (defun make-set-of-point-definition (lst-of-pairs)
+  "This function build a plist with only information on ascissa and ordinata"
   (mapcar (function
 	   (lambda (pair) 
 	    (list :x (car pair) :y (car (cdr pair))))) 
@@ -54,3 +61,6 @@
 	   (let ((z nil) )
 	     (setq z (format t "x=~d" i))
 	     (print z))))))
+
+(define-test make-set-of-point-definition-test 
+    (assert-equal '() (make-set-of-point-definition ())))
