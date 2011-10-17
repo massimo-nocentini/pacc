@@ -63,4 +63,6 @@
 	     (print z))))))
 
 (define-test make-set-of-point-definition-test 
-    (assert-equal '() (make-set-of-point-definition ())))
+  (assert-equal '() (make-set-of-point-definition ()))
+  (assert-equal '((:X 5 :Y 2) (:X 1 :Y 10) (:X 3 :Y 4)) 
+		(make-set-of-point-definition (list '(5 2) '(1 10) '(3 4)))))
