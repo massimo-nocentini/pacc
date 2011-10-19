@@ -1,3 +1,5 @@
+
+
 ;; with the following function we are able to load automatically
 ;; the lisp-unit framework in order to test our code
 (eval-when (:compile-toplevel :load-toplevel :execute)
@@ -18,12 +20,26 @@
 	 (lambda (lst-of-point-info) 
 	  (getf lst-of-point-info :x)))))
 
+;; ------------------------------------------------------
 (defun make-set-of-point-definition (lst-of-pairs)
-  "This function build a plist with only information on ascissa and ordinata"
+  "This function build a plist with only information on ascissa and
+ordinata"
   (mapcar (function
-	   (lambda (pair) 
+	   (lambda (pair) 		; for each pair we return a
+					; list more structured
 	    (list :x (car pair) :y (car (cdr pair))))) 
 	  lst-of-pairs))
+
+
+(define-test make-set-of-point-definition-test 
+  (assert-equal () (make-set-of-point-definition ()))
+  (assert-equal (list 
+		 '(:X 5 :Y 2) 
+		 '(:X 1 :Y 10) 
+		 '(:X 3 :Y 4)) 
+		(make-set-of-point-definition 
+		 (list '(5 2) '(1 10) '(3 4)))))
+;; ------------------------------------------------------
 
 (defun assign-ordinate-position (lst pos)
   (if (null lst)
@@ -62,7 +78,3 @@
 	     (setq z (format t "x=~d" i))
 	     (print z))))))
 
-(define-test make-set-of-point-definition-test 
-  (assert-equal '() (make-set-of-point-definition ()))
-  (assert-equal '((:X 5 :Y 2) (:X 1 :Y 10) (:X 3 :Y 4)) 
-		(make-set-of-point-definition (list '(5 2) '(1 10) '(3 4)))))
