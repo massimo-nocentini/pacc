@@ -7,11 +7,27 @@
   (use-package :lisp-unit))
 
 (defun introduce-sorting-info (lst-of-point-definitions)
-  (mapcar (function 
+"This function add the sorting information to be used during the algorithm."
+  (mapcar (function 			
+	   ;; for each element, which is a plist	
+	   ;; we append another plist with the new information on x and y
+	   ;; position of the pair in the respective arrays
 	   (lambda (point-definition) 
 	    (append point-definition 
 		    (list :x-position -1 :y-position -1)))) 
 	  lst-of-point-definitions))
+
+(define-test introduce-sorting-info-test 
+  (assert-equal () (introduce-sorting-info ()))
+  (assert-equal (list 
+		 '(:X 5 :Y 2 :X-POSITION -1 :Y-POSITION -1) 
+		 '(:X 1 :Y 10 :X-POSITION -1 :Y-POSITION -1) 
+		 '(:X 3 :Y 4 :X-POSITION -1 :Y-POSITION -1)) 
+		(introduce-sorting-info 
+		 (list 
+		  '(:X 5 :Y 2) 
+		  '(:X 1 :Y 10) 
+		  '(:X 3 :Y 4)))))
 
 (defun sort-by-ascissa (lst)
   "some comment"
