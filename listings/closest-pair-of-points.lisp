@@ -3,8 +3,8 @@
 ;; with the following function we are able to load automatically
 ;; the lisp-unit framework in order to test our code
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  (require :lisp-unit "lisp-unit.lisp")
-  (use-package :lisp-unit))
+;;  (require :lisp-unit "lisp-unit.lisp"))
+   (use-package :lisp-unit))
 
 (defun introduce-sorting-info (lst-of-point-definitions)
 "This function add the sorting information to be used during the algorithm."
@@ -40,16 +40,21 @@
   (ascending-sort (copy-list lst) (make-y-key-retriever )))
 
 (defun make-x-key-retriever ()
+  "this function return a function that return the :x component of a plist"
   (function 
    (lambda (lst-of-point-info) 
     (getf lst-of-point-info :x))))
 
 (defun make-y-key-retriever ()
+  "this function return a function that return the :y component of a plist"
   (function 
    (lambda (lst-of-point-info) 
     (getf lst-of-point-info :y))))
 
 (defun ascending-sort (lst key-retriever-function)
+  "This function makes a copy of the list given as argument and sort it in an
+ascending order, using the function object key-retriever-function to find
+the object to be used from each element to compare for the ordering."
   (sort (copy-list lst) (function <) 
 	:key key-retriever-function))
 
