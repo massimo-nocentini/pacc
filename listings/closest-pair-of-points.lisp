@@ -29,12 +29,51 @@
 		  '(:X 1 :Y 10) 
 		  '(:X 3 :Y 4)))))
 
+;;--------------------------------------------------------------------------
+
 (defun sort-by-ascissa (lst)
-  "some comment"
-  (sort (copy-list lst) (function <) :key 
-	(function 
-	 (lambda (lst-of-point-info) 
-	  (getf lst-of-point-info :x)))))
+  "this method return a new list of plists ordered by the :x component"
+  (ascending-sort (copy-list lst) (make-x-key-retriever ))) 
+
+(defun sort-by-ordinate (lst)	
+  "this method return a new list of plists ordered by the :y component"
+  (ascending-sort (copy-list lst) (make-y-key-retriever )))
+
+(defun make-x-key-retriever ()
+  (function 
+   (lambda (lst-of-point-info) 
+    (getf lst-of-point-info :x))))
+
+(defun make-y-key-retriever ()
+  (function 
+   (lambda (lst-of-point-info) 
+    (getf lst-of-point-info :y))))
+
+(defun ascending-sort (lst key-retriever-function)
+  (sort (copy-list lst) (function <) 
+	:key key-retriever-function))
+
+(define-test sort-by-ascissa-test 
+  (assert-equal () (sort-by-ascissa ()))
+  (assert-equal (list 
+		 '(:X 1 :Y 10 :X-POSITION -1 :Y-POSITION -1) 
+		 '(:X 3 :Y 4 :X-POSITION -1 :Y-POSITION -1)
+		 '(:X 5 :Y 2 :X-POSITION -1 :Y-POSITION -1)) 
+		(sort-by-ascissa 
+		 (list 
+		  '(:X 5 :Y 2 :X-POSITION -1 :Y-POSITION -1)  
+		  '(:X 1 :Y 10 :X-POSITION -1 :Y-POSITION -1)  
+		  '(:X 3 :Y 4 :X-POSITION -1 :Y-POSITION -1))))
+  (assert-false (equal
+		 (list 
+		  '(:X 3 :Y 4 :X-POSITION -1 :Y-POSITION -1)
+		  '(:X 1 :Y 10 :X-POSITION -1 :Y-POSITION -1) 
+		  '(:X 5 :Y 2 :X-POSITION -1 :Y-POSITION -1)) 
+		 (sort-by-ascissa 
+		  (list 
+		   '(:X 5 :Y 2) 
+		   '(:X 1 :Y 10) 
+		   '(:X 3 :Y 4))))))
 
 ;; ------------------------------------------------------
 (defun make-set-of-point-definition (lst-of-pairs)
@@ -64,11 +103,6 @@ ordinata"
 	(setf (getf (car lst) :y-position) pos)
 	(assign-ordinate-position (cdr lst) (+ pos 1)))))
 
-(defun sort-by-ordinate (lst)	
-  (sort (copy-list lst) (function <) :key 
-	(function 
-	 (lambda (lst-of-point-info) 
-	  (getf lst-of-point-info :y)))))
 
 (defun assign-ascissa-position (lst pos)
   (if (null lst) 
@@ -76,21 +110,4 @@ ordinata"
       (progn
 	(setf (getf (car lst) :x-position) pos)
 	(assign-ascissa-position (cdr lst) (+ pos 1)))))
-
-
-(defun dummy-test ()
-  (sort-by-ascissa 
-   (introduce-sorting-info 
-    (make-set-of-point-definition (list '(5 2) '(1 10) '(3 4))))))
-
-(defun e ()
-  "A badly indented function."
-  (let ((x 20))
-    (loop for i from 0 to x 
-       do (loop for j from 0 below 10 
-	     do (print j)) 
-       (if (< i 10)
-	   (let ((z nil) )
-	     (setq z (format t "x=~d" i))
-	     (print z))))))
 
