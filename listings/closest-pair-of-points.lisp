@@ -2,8 +2,11 @@
 
 ;; with the following function we are able to load automatically
 ;; the lisp-unit framework in order to test our code
+;; in order to run the tests perform the following action
+;; 1- open the file "lisp-unit.lisp" compile and load it with C-c C-k
+;; 2- open this file and load and compile it too
 (eval-when (:compile-toplevel :load-toplevel :execute)
-;;  (require :lisp-unit "lisp-unit.lisp"))
+;  (require :lisp-unit "lisp-unit.lisp")
    (use-package :lisp-unit))
 
 (defun introduce-sorting-info (lst-of-point-definitions)
@@ -33,11 +36,11 @@
 
 (defun sort-by-ascissa (lst)
   "this method return a new list of plists ordered by the :x component"
-  (ascending-sort (copy-list lst) (make-x-key-retriever ))) 
+  (ascending-sort lst (make-x-key-retriever ))) 
 
-(defun sort-by-ordinate (lst)	
+(defun sort-by-ordinata (lst)	
   "this method return a new list of plists ordered by the :y component"
-  (ascending-sort (copy-list lst) (make-y-key-retriever )))
+  (ascending-sort lst (make-y-key-retriever )))
 
 (defun make-x-key-retriever ()
   "this function return a function that return the :x component of a plist"
@@ -76,9 +79,33 @@ the object to be used from each element to compare for the ordering."
 		  '(:X 5 :Y 2 :X-POSITION -1 :Y-POSITION -1)) 
 		 (sort-by-ascissa 
 		  (list 
-		   '(:X 5 :Y 2) 
-		   '(:X 1 :Y 10) 
-		   '(:X 3 :Y 4))))))
+		   '(:X 5 :Y 2 :X-POSITION -1 :Y-POSITION -1) 
+		   '(:X 1 :Y 10 :X-POSITION -1 :Y-POSITION -1) 
+		   '(:X 3 :Y 4 :X-POSITION -1 :Y-POSITION -1))))))
+
+(define-test sort-by-ordinata-test 
+    (assert-equal () (sort-by-ordinata ()))
+  (assert-equal (list 
+		 '(:X 5 :Y 2 :X-POSITION -1 :Y-POSITION -1)
+		 '(:X 3 :Y 4 :X-POSITION -1 :Y-POSITION -1)
+		 '(:X 1 :Y 10 :X-POSITION -1 :Y-POSITION -1))
+		(sort-by-ordinata
+		 (list 
+		  '(:X 5 :Y 2 :X-POSITION -1 :Y-POSITION -1)  
+		  '(:X 1 :Y 10 :X-POSITION -1 :Y-POSITION -1)  
+		  '(:X 3 :Y 4 :X-POSITION -1 :Y-POSITION -1))))
+  (assert-false (equal
+		 (list 
+		  '(:X 3 :Y 4 :X-POSITION -1 :Y-POSITION -1)
+		  '(:X 1 :Y 10 :X-POSITION -1 :Y-POSITION -1) 
+		  '(:X 5 :Y 2 :X-POSITION -1 :Y-POSITION -1)) 
+		 (sort-by-ordinata 
+		  (list 
+		   '(:X 5 :Y 2 :X-POSITION -1 :Y-POSITION -1) 
+		   '(:X 1 :Y 10 :X-POSITION -1 :Y-POSITION -1) 
+		   '(:X 3 :Y 4 :X-POSITION -1 :Y-POSITION -1))))))
+
+
 
 ;; ------------------------------------------------------
 (defun make-set-of-point-definition (lst-of-pairs)
