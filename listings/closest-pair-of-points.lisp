@@ -128,18 +128,36 @@ ordinata"
 		 (list '(5 2) '(1 10) '(3 4)))))
 ;; ------------------------------------------------------
 
-(defun assign-ordinate-position (lst pos)
-  (if (null lst)
-      ()
-      (progn
-	(setf (getf (car lst) :y-position) pos)
-	(assign-ordinate-position (cdr lst) (+ pos 1)))))
+(defun assign-ordinate-position (lst)
+  (assign-positions-on (function y-position-component-getter) lst 0))
 
+(defun assign-ascissa-position (lst)
+  (assign-positions-on (function x-position-component-getter) lst 0))
 
-(defun assign-ascissa-position (lst pos)
+(defun assign-positions-on (position-component-getter-function lst pos)
+  "This is the motor that recursively scan the lst, visiting each
+element in the given order, and assign its position by attach an integer."
   (if (null lst) 
-      ()
+      lst
       (progn
-	(setf (getf (car lst) :x-position) pos)
-	(assign-ascissa-position (cdr lst) (+ pos 1)))))
+	(setf (funcall position-component-getter-function lst) pos)
+	(assign-positions-on 
+	 position-component-getter-function (cdr lst) (+ pos 1)))))  
 
+(defun x-position-component-getter (lst)
+  "this method, given a plist, return its :x-position component."
+   (getf (car lst) :x-position))
+
+(defun y-position-component-getter (lst)
+  "this method, given a plist, return its :y-position component."
+   (getf (car lst) :y-position))
+
+(define-test assign-positions-in-ordered-list-test 
+  (assert-equal () (make-set-of-point-definition ()))
+  (assert-equal (list 
+		 '(:X 5 :Y 2) 
+		 '(:X 1 :Y 10) 
+		 '(:X 3 :Y 4)) 
+		(make-set-of-point-definition 
+		 (list '(5 2) '(1 10) '(3 4)))))
+;; ------------------------------------------------------
