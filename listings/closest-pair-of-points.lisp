@@ -6,8 +6,7 @@
 ;; 1- open the file "lisp-unit.lisp" compile and load it with C-c C-k
 ;; 2- open this file and load and compile it too
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  ;(require :lisp-unit "lisp-unit.lisp")
-  (use-package :common-lisp-user))
+  (require :lisp-unit "lisp-unit.lisp"))  ;(use-package :lisp-unit))
 
 (defun introduce-sorting-info (lst-of-point-definitions)
 "This function add the sorting information to be used during the algorithm."
@@ -126,7 +125,7 @@ only"
 		  '(:X 5 :Y 2 :X-POSITION -1 :Y-POSITION -1)  
 		  '(:X 1 :Y 10 :X-POSITION -1 :Y-POSITION -1)  
 		  '(:X 3 :Y 4 :X-POSITION -1 :Y-POSITION -1))))
-  (lisp-unit::assert-false (equal
+  (lisp-unit:assert-false (equal
 		 (list 
 		  '(:X 3 :Y 4 :X-POSITION -1 :Y-POSITION -1)
 		  '(:X 1 :Y 10 :X-POSITION -1 :Y-POSITION -1) 
@@ -148,7 +147,7 @@ only"
 		  '(:X 5 :Y 2 :X-POSITION -1 :Y-POSITION -1)  
 		  '(:X 1 :Y 10 :X-POSITION -1 :Y-POSITION -1)  
 		  '(:X 3 :Y 4 :X-POSITION -1 :Y-POSITION -1))))
-  (lisp-unit::assert-false (equal
+  (lisp-unit:assert-false (equal
 		 (list 
 		  '(:X 3 :Y 4 :X-POSITION -1 :Y-POSITION -1)
 		  '(:X 1 :Y 10 :X-POSITION -1 :Y-POSITION -1) 
