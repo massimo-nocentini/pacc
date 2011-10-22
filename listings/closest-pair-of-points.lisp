@@ -6,8 +6,8 @@
 ;; 1- open the file "lisp-unit.lisp" compile and load it with C-c C-k
 ;; 2- open this file and load and compile it too
 (eval-when (:compile-toplevel :load-toplevel :execute)
-;  (require :lisp-unit "lisp-unit.lisp")
-   (use-package :lisp-unit))
+  ;(require :lisp-unit "lisp-unit.lisp")
+  (use-package :lisp-unit))
 
 (defun introduce-sorting-info (lst-of-point-definitions)
 "This function add the sorting information to be used during the algorithm."
@@ -20,7 +20,7 @@
 		    (list :x-position -1 :y-position -1)))) 
 	  lst-of-point-definitions))
 
-(define-test introduce-sorting-info-test 
+(lisp-unit:define-test introduce-sorting-info-test 
   (assert-equal () (introduce-sorting-info ()))
   (assert-equal (list 
 		 '(:X 5 :Y 2 :X-POSITION -1 :Y-POSITION -1) 
@@ -61,7 +61,7 @@ the object to be used from each element to compare for the ordering."
   (sort (copy-list lst) (function <) 
 	:key key-retriever-function))
 
-(define-test sort-by-ascissa-test 
+(lisp-unit:define-test sort-by-ascissa-test 
   (assert-equal () (sort-by-ascissa ()))
   (assert-equal (list 
 		 '(:X 1 :Y 10 :X-POSITION -1 :Y-POSITION -1) 
@@ -83,7 +83,7 @@ the object to be used from each element to compare for the ordering."
 		   '(:X 1 :Y 10 :X-POSITION -1 :Y-POSITION -1) 
 		   '(:X 3 :Y 4 :X-POSITION -1 :Y-POSITION -1))))))
 
-(define-test sort-by-ordinata-test 
+(lisp-unit:define-test sort-by-ordinata-test 
     (assert-equal () (sort-by-ordinata ()))
   (assert-equal (list 
 		 '(:X 5 :Y 2 :X-POSITION -1 :Y-POSITION -1)
@@ -118,7 +118,7 @@ ordinata"
 	  lst-of-pairs))
 
 
-(define-test make-set-of-point-definition-test 
+(lisp-unit:define-test make-set-of-point-definition-test 
   (assert-equal () (make-set-of-point-definition ()))
   (assert-equal (list 
 		 '(:X 5 :Y 2) 
@@ -138,26 +138,20 @@ ordinata"
   "This is the motor that recursively scan the lst, visiting each
 element in the given order, and assign its position by attach an integer."
   (if (null lst) 
-      lst
+      ;;  base case: we have processed all items, assigning to each one
+      ;; its position by a bijection on integers
+      lst			     
       (progn
-	(setf (funcall position-component-getter-function lst) pos)
+	(funcall position-component-getter-function (car lst) pos)
 	(assign-positions-on 
 	 position-component-getter-function (cdr lst) (+ pos 1)))))  
 
-(defun x-position-component-getter (lst)
+(defun x-position-component-getter (plist)
   "this method, given a plist, return its :x-position component."
-   (getf (car lst) :x-position))
+   (getf plist :x-position))
 
-(defun y-position-component-getter (lst)
+(defun y-position-component-getter (plist)
   "this method, given a plist, return its :y-position component."
-   (getf (car lst) :y-position))
-
-(define-test assign-positions-in-ordered-list-test 
-  (assert-equal () (make-set-of-point-definition ()))
-  (assert-equal (list 
-		 '(:X 5 :Y 2) 
-		 '(:X 1 :Y 10) 
-		 '(:X 3 :Y 4)) 
-		(make-set-of-point-definition 
-		 (list '(5 2) '(1 10) '(3 4)))))
+   (getf plist :y-position))
+			    
 ;; ------------------------------------------------------
