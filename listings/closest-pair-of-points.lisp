@@ -1,12 +1,8 @@
 
-
-;; with the following function we are able to load automatically
-;; the lisp-unit framework in order to test our code
-;; in order to run the tests perform the following action
-;; 1- open the file "lisp-unit.lisp" compile and load it with C-c C-k
-;; 2- open this file and load and compile it too
+;; this 'listener' require the lisp-unit objects in order to compile this
+;; source file.
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  (require :lisp-unit "lisp-unit.lisp"))  ;(use-package :lisp-unit))
+  (require :lisp-unit "lisp-unit.lisp"))
 
 (defun introduce-sorting-info (lst-of-point-definitions)
 "This function add the sorting information to be used during the algorithm."
@@ -87,18 +83,16 @@ set the :y-position component to position"
 
 (lisp-unit:define-test introduce-sorting-info-test 
   ;; this assertion check that on empty list nothing will be added
-  (assert-equal () (introduce-sorting-info ()))
+  (lisp-unit:assert-equal () (introduce-sorting-info ()))
   ;; this assertion assure that the information on x and y ordering
   ;; are introduced (but for now initialized to -1 both)
-  (assert-equal (list 
+  (lisp-unit:assert-equal (list 
 		 '(:X 5 :Y 2 :X-POSITION -1 :Y-POSITION -1) 
 		 '(:X 1 :Y 10 :X-POSITION -1 :Y-POSITION -1) 
 		 '(:X 3 :Y 4 :X-POSITION -1 :Y-POSITION -1)) 
 		(introduce-sorting-info 
-		 (list 
-		  '(:X 5 :Y 2) 
-		  '(:X 1 :Y 10) 
-		  '(:X 3 :Y 4)))))
+		 (make-set-of-point-definition 
+		  (make-simple-test-list )))))
 
 (defun make-simple-test-list ()
   "this function create a simple list with 4 point to be used for test
@@ -106,17 +100,17 @@ only"
   (list '(5 2) '(1 10) '(3 4)))
 
 (lisp-unit:define-test make-set-of-point-definition-test 
-  (assert-equal () (make-set-of-point-definition ()))
-  (assert-equal (list 
+  (lisp-unit:assert-equal () (make-set-of-point-definition ()))
+  (lisp-unit:assert-equal (list 
 		 '(:X 5 :Y 2) 
 		 '(:X 1 :Y 10) 
 		 '(:X 3 :Y 4)) 
 		(make-set-of-point-definition 
-		 make-simple-test-list)))
+		 (make-simple-test-list ))))
 
 (lisp-unit:define-test sort-by-ascissa-test 
-  (assert-equal () (sort-by-ascissa ()))
-  (assert-equal (list 
+  (lisp-unit:assert-equal () (sort-by-ascissa ()))
+  (lisp-unit:assert-equal (list 
 		 '(:X 1 :Y 10 :X-POSITION -1 :Y-POSITION -1) 
 		 '(:X 3 :Y 4 :X-POSITION -1 :Y-POSITION -1)
 		 '(:X 5 :Y 2 :X-POSITION -1 :Y-POSITION -1)) 
@@ -137,8 +131,8 @@ only"
 		   '(:X 3 :Y 4 :X-POSITION -1 :Y-POSITION -1))))))
 
 (lisp-unit:define-test sort-by-ordinata-test 
-    (assert-equal () (sort-by-ordinata ()))
-  (assert-equal (list 
+    (lisp-unit:assert-equal () (sort-by-ordinata ()))
+  (lisp-unit:assert-equal (list 
 		 '(:X 5 :Y 2 :X-POSITION -1 :Y-POSITION -1)
 		 '(:X 3 :Y 4 :X-POSITION -1 :Y-POSITION -1)
 		 '(:X 1 :Y 10 :X-POSITION -1 :Y-POSITION -1))
