@@ -15,6 +15,18 @@
    (equal
     '(D (:ID D :KEY 9 :PARENT NIL :SUCCESSORS NIL))
     (make-map-entry 'pi 10)))
+
+  (lisp-unit:assert-true
+   (equal
+    'L
+    (get-parent-component '(:ID D :KEY 9 :PARENT L :SUCCESSORS NIL))
+    ))
+
+  (lisp-unit:assert-true
+   (equal
+    nil
+    (get-parent-component '(:ID D :KEY 9 :PARENT NIL :SUCCESSORS NIL))
+    ))
   )
 
 (lisp-unit:define-test queue-inserts
@@ -32,6 +44,12 @@
      (setf queue (insert queue 'h 8))
      queue))
 
+  (lisp-unit:assert-equal 
+   '(:ID U :KEY 0 :PARENT NIL :SUCCESSORS (H D))   
+   (find-root '((H (:ID H :KEY 8 :PARENT U :SUCCESSORS NIL))
+		(U (:ID U :KEY 0 :PARENT NIL :SUCCESSORS (H D)))
+		(D (:ID D :KEY 3 :PARENT U :SUCCESSORS NIL)))))
+  
   (lisp-unit:assert-equal 
    '(D (:ID D :KEY 9 :PARENT NIL :SUCCESSORS NIL))
    (make-map-entry 'd 9))
