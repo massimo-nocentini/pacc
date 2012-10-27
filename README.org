@@ -1,0 +1,20 @@
+* Progettazione e Analisi di Algoritmi course notes
+  This document is a container of all the exercises that I did during
+  the course of Design and Analysis of Algorithms at University of
+  Florence.  The professors that give the lectures are Donatella
+  Merlini e Maria Cecilia Verri.
+
+  All the document content is written using the Italian language.
+
+** How to compile the document
+   In order to compile the document is sufficient to run `make pdf` if
+   the pdf output is desired, otherwise `make ps` if the postscript
+   output is desired. Of course the previous commands have to be typed
+   at the root of the project after cloned the git repository.  During
+   my develop time I've used the full installation of the tex-live
+   suite on a debian-powered system. It can be installed by running
+   'apt-get install texlive-full'.
+   
+   However, inside 'compiled-versions' folder, there is an already
+   compiled pdf which is the latest version that is at least
+   presentable.

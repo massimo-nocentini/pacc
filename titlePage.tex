@@ -1,0 +1,44 @@
+%--------------------------------------------------------------
+% titlepage.tex (use thesis.tex as main file)
+%--------------------------------------------------------------
+\begin{titlepage}
+	\begin{center}
+   	\large
+      \hfill
+      \vfill
+      \begingroup
+			\spacedallcaps{\myUni} \\ 
+			\myFaculty \\
+			\myDegree \\ 
+			\vspace{0.5cm}
+         \includegraphics[scale=.065]{logo/unifi}\\
+         \vspace{0.5cm}    
+         %% -------put here the type of document---ie: Tesi di Laurea
+         Elaborato d'Esame
+      \endgroup 
+      \vfill 
+      \begingroup
+      	\color{Maroon}\spacedallcaps{\myTitle} \\ \bigskip
+      \endgroup
+      \spacedlowsmallcaps{\myName}
+      \vfill  
+      % Professoresse:
+      \itshape{\myProf}\\\itshape{\myOtherProf}
+      \vfill  
+      \myTime
+      \vfill                      
+	\end{center}        
+\end{titlepage}   
+%--------------------------------------------------------------
+% back titlepage
+%--------------------------------------------------------------
+   \newpage
+	\thispagestyle{empty}
+	\hfill
+	\vfill
+	\noindent\myName: 
+	\textit{\myTitle,} 
+	\myDegree, \textcopyright\ \myTime
+%--------------------------------------------------------------
+% back titlepage end
+%--------------------------------------------------------------

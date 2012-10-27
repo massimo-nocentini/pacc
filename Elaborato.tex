@@ -1,0 +1,110 @@
+\documentclass[twoside,openright,titlepage,fleqn,
+	headinclude,11pt,a4paper,BCOR5mm,footinclude
+	]{scrbook}
+%--------------------------------------------------------------
+\input{custom-commands-for-title-page.tex}
+%--------------------------------------------------------------
+\usepackage[latin1]{inputenc} 
+\usepackage[T1]{fontenc} 
+\usepackage[square,numbers]{natbib} 
+\usepackage[fleqn]{amsmath}  
+\usepackage[italian]{babel}
+\usepackage{ae,aecompl}
+\usepackage{graphicx}
+\usepackage{latexsym}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{rotating}
+\usepackage{boxedminipage}
+\usepackage{multicol}
+
+%--------------------------------------------------------------
+\usepackage{dia-classicthesis-ldpkg} 
+%--------------------------------------------------------------
+% Options for classicthesis.sty:
+% tocaligned eulerchapternumbers drafting linedheaders 
+% listsseparated subfig nochapters beramono eulermath parts 
+% minionpro pdfspacing
+\usepackage[eulerchapternumbers,subfig,beramono,eulermath,
+	parts]{classicthesis}
+%--------------------------------------------------------------
+\newlength{\abcd} % for ab..z string length calculation
+% how all the floats will be aligned
+\newcommand{\myfloatalign}{\centering} 
+\setlength{\extrarowheight}{3pt} % increase table row height
+\captionsetup{format=hang,font=small}
+%--------------------------------------------------------------
+% Layout setting
+%--------------------------------------------------------------
+\usepackage{geometry}
+\geometry{
+	a4paper,
+	ignoremp,
+	bindingoffset = 1cm, 
+	textwidth     = 13.5cm,
+	textheight    = 21.5cm,
+	lmargin       = 3.5cm, % left margin
+	tmargin       = 4cm    % top margin 
+}
+%--------------------------------------------------------------
+\usepackage{listings}
+\usepackage{hyperref}
+% My Theorem
+\newtheorem{oss}{Observation}[section]
+\newtheorem{exercise}{Exercise}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+
+\newtheorem{lem}[thm]{Lemma}
+
+\newcommand{\vect}[1]{\boldsymbol{#1}}
+
+% questo comando e' relativo alle correzioni che puo
+% apportare il prof se lo desidera.
+\newcommand{\prof}[1]{\boldsymbol{#1}}
+
+% instead of boldsymbol I can use the arrow above the letter with
+%\newcommand{\vect}[1]{\vec{#1}}
+
+% page settings
+% \pagestyle{headings}
+%--------------------------------------------------------------
+\begin{document}
+\frenchspacing
+\raggedbottom
+\pagenumbering{roman}
+\pagestyle{plain}
+%--------------------------------------------------------------
+% Frontmatter
+%--------------------------------------------------------------
+\include{titlePage}
+\pagestyle{scrheadings}
+%--------------------------------------------------------------
+% Mainmatter
+%--------------------------------------------------------------
+\pagenumbering{arabic}
+
+% settings for the lstlisting environment
+\lstset{
+	language = R
+	, numbers = left 
+	, basicstyle=\sffamily%\footnotesize
+%	, frame=single
+	, tabsize=2
+	, captionpos=b
+	, breaklines=true
+	, showspaces=false
+	, showstringspaces=false
+}
+
+\tableofcontents
+
+\newpage
+
+%\input{introduction.tex}
+\input{licences.tex}
+
+\chapter{Stima, verifica d'ipotesi e distribuzioni campionarie}
+
+
+
+\end{document} 
