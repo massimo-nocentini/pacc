@@ -7,7 +7,7 @@
    () 
    (make-priority-queue))
 
-  (lisp-unit:assert-equal 
+  (lisp-unit:assert-equanl 
    '(D (:ID D :KEY 9 :PARENT NIL :SUCCESSORS NIL))
    (make-map-entry 'd 9))
 
@@ -17,7 +17,7 @@
     (make-map-entry 'pi 10)))
 
   (lisp-unit:assert-true
-   (equal
+   (equaln
     'L
     (get-parent-component '(:ID D :KEY 9 :PARENT L :SUCCESSORS NIL))
     ))
