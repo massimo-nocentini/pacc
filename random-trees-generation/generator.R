@@ -10,7 +10,8 @@ generateTree <- function(number_of_nodes){
     w[i] <- ifelse(any(sample == i), 1, -1)
   }
   
-  list(word=w, cumsum=cumsum(w), split=split.word(w), phi=phi(w))
+  phi=phi(w)
+  list(word=w, phi=phi, as_brackets = brackets_of_word(phi))
 }
 
 split.word <- function(w){
@@ -25,9 +26,7 @@ phi <- function(w){
   if(length(w) == 0)
     return(w)
   
-  split <- split.word(w)
-  print(split)
-  
+  split <- split.word(w) 
   
   if(all(cumsum(split$u) > -1)){
     return (c(split$u, phi(split$v)))
@@ -36,4 +35,15 @@ phi <- function(w){
     t = split$u[-c(1, length(split$u))]
     return (c(1, phi(split$v), -1, -t))
   }
+}
+
+brackets_of_word <- function(word){
+  brackets <- ''
+  for (i in 1:length(word)){
+    
+    brackets <- paste(brackets, 
+                      ifelse(word[i] == 1,
+                             '(', ')'), collapse='')
+  }
+  brackets
 }
