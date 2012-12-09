@@ -6,11 +6,14 @@ type node = {
   mutable right: int };;
 
 let random_tree_generator =
-  function number_of_internal_nodes ->
+  fun number_of_internal_nodes initial_creation_time ->
     let array_dimension = (number_of_internal_nodes * 2) + 1 in
     let array_init_function =
       function i ->
-	{ creation_time = 0; parent = -1; left = -1; right = -1 } in
+	{ creation_time = initial_creation_time;
+	  parent = -1;
+	  left = -1;
+	  right = -1 } in
     let tree = Array.init array_dimension array_init_function in
     let root = ref 0 in
     
@@ -31,7 +34,7 @@ let random_tree_generator =
 	else tree.(parent).right <- !i;
       
       tree.(!i).parent <- parent;
-      tree.(!i).creation_time <- !i;
+      tree.(!i).creation_time <- tree.(!i).creation_time + !i;
       
       if direction
       then
@@ -47,7 +50,7 @@ let random_tree_generator =
       
       tree.(hit).parent <- !i;
       tree.(!i + 1).parent <- !i;
-      tree.(!i + 1).creation_time <- !i+1;
+      tree.(!i + 1).creation_time <- tree.(!i + 1).creation_time + !i+1;
       
       i := !i + 2
     done;
@@ -66,10 +69,15 @@ let find_root_node =
 
 (* let generated_tree = random_tree_generator 5 in *)
 (* in find_root_node generated_tree;; *)
-let string_of_tree tree =
+let string_of_tree = fun tree ->
   let root_node = find_root_node tree in
   let strings = ref [] in
-  let rec string_of_node = function node ->    
+  let rec string_of_node = function node ->
+
+    (* if (node.left = -1 & node.right = -1) *)
+    (* then strings := !strings :: "[color=\"black\", style=filled]" *)
+    (* else (); *)
+    
     if node.left <> -1
     then
       let left_node = Array.get tree node.left in
@@ -92,14 +100,28 @@ let string_of_tree tree =
   string_of_node root_node;
   !strings;;
 
-let build_dot_representation tree =
+let build_dot_representation = fun tree ->
   let relation = string_of_tree tree in
   let folding = fun collected current ->
     collected ^ current ^ "; " in  
-  let almost_complete = List.fold_left folding "digraph{ " relation in
-  almost_complete ^ "}";;
+  List.fold_left folding "" relation;;
     
-
+let simulation = fun number_of_trees number_of_nodes ->
+  let number_of_internal_nodes = (number_of_nodes - 1)/2 in
+  let dot_representation = ref
+    "digraph { edge [arrowsize=.5, fontsize=8];\
+ 	node [label=\"\",shape=circle,height=0.12,width=0.12,fontsize=1];" in
+  for i=1 to number_of_trees do
+    let initial_creation_time =
+      (((i-1)*((2*number_of_internal_nodes) + 1)) + 1) in
+    let tree = random_tree_generator
+      number_of_internal_nodes initial_creation_time in
+    let tree_representation =
+      build_dot_representation tree in
+    dot_representation := !dot_representation ^ tree_representation
+  done;
+  dot_representation := !dot_representation ^ " }";
+  !dot_representation;;
     
 
       
