@@ -10,3 +10,4 @@ Elaborato.toc
 *.pdf
 *~
 .Rproj.user
+.RData
