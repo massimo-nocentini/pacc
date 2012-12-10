@@ -1,5 +1,29 @@
 
-generateTree <- function(number_of_nodes){
+simulation <- function(number_of_trees, nodes_in_each_tree){
+  datas <- data.frame()
+  
+  keys <- c()
+  hits <- c()
+  words <- c()
+  for(i in 1:number_of_trees){
+    generated_tree <- generate.tree(nodes_in_each_tree)
+    bracket_sequence <- generated_tree$as_brackets
+    if (any(keys == bracket_sequence)){
+      index = match(bracket_sequence, keys)
+      hits[index] <- hits[index] + 1
+    }
+    else{
+      keys <- c(keys, bracket_sequence)
+      hits <- c(hits, 1)
+      words <- c(words, paste(generated_tree$phi, collapse=''))
+    }
+  }
+  data.frame(keys, words, hits)
+}
+
+generate.tree <- function(number_of_nodes){
+  #number_of_nodes <- number_of_nodes - 1
+  
   # the following is the dimension of the word used in the original article
   word_dimension <- 2 * number_of_nodes
   # making the universe from which we're going to extract the L set
@@ -10,6 +34,7 @@ generateTree <- function(number_of_nodes){
     w[i] <- ifelse(any(sample == i), 1, -1)
   }
   
+  #phi=c(1,phi(w),-1) # this is for adjustment
   phi=phi(w)
   list(word=w, phi=phi, as_brackets = brackets_of_word(phi))
 }
