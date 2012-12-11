@@ -2,6 +2,10 @@ test:
 	ocamlfind ocamlc -o test.exe -package oUnit -linkpkg -g RandomTreesGenerator.ml test.ml
 	./test.exe
 
+utility:
+	ocamlfind ocamlc -o treesUtility.ocaml.bytecode -package unix -linkpkg -g treesUtility.ml
+	cp treesUtility.ocaml.bytecode ../random-trees-generation
+
 clean:
 	rm *.cmi
 	rm *.cmo

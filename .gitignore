@@ -11,3 +11,9 @@ Elaborato.toc
 *~
 .Rproj.user
 .RData
+*.csv
+*.cmi
+*.cmo
+*.bytecode
+*.dot
+*.png

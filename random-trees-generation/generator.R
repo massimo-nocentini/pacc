@@ -1,3 +1,29 @@
+main <- function(){
+  
+  number_of_nodes <- seq(from=3, to=10, by=1) 
+  number_of_trees <- seq(from=100, to=100100, by=5000)
+  
+  matrix <- matrix(nrow = length(number_of_trees), 
+                   ncol = length(number_of_nodes), 
+                   #byrow=TRUE,
+                   dimnames = list(number_of_trees,
+                                   number_of_nodes))
+  
+  for(tree_index in 1:length(number_of_trees)){
+    for(node_index in 1:length(number_of_nodes)){
+      
+      if(node_index > tree_index)
+        next
+      
+      # to fix: now simulation returns a list
+      data <- simulation(number_of_trees[tree_index],
+                         number_of_nodes[node_index])
+      chi_square_test <- chisq.test(data$hits)
+      matrix[tree_index, node_index] <- chi_square_test$p.value
+    }
+  }
+  matrix
+}
 
 simulation <- function(number_of_trees, nodes_in_each_tree){
   datas <- data.frame()
@@ -15,10 +41,22 @@ simulation <- function(number_of_trees, nodes_in_each_tree){
     else{
       keys <- c(keys, bracket_sequence)
       hits <- c(hits, 1)
-      words <- c(words, paste(generated_tree$phi, collapse=''))
+      words <- c(words, paste(generated_tree$phi, collapse=""))
     }
   }
-  data.frame(keys, words, hits)
+  datas <- data.frame(keys, words, hits)
+  datas <- datas[order(datas$keys),]
+  filename <- paste(format(Sys.time(), 
+                           "%a%b%d-%H-%M-%S-%Y"), 
+                    ".csv",
+                    sep="")  
+  
+  command <- paste ("ocamlrun treesUtility.ocaml.bytecode", 
+                     filename)
+  system(command)
+  
+  write.table(datas, file=filename, sep=",")
+  return(list(datas=datas, filename=filename))
 }
 
 generate.tree <- function(number_of_nodes){
@@ -40,8 +78,8 @@ generate.tree <- function(number_of_nodes){
 }
 
 split.word <- function(w){
-   if(length(w) == 0)
-     return(list(u=c(), v=c()))
+  if(length(w) == 0)
+    return(list(u=c(), v=c()))
   
   u_index_set <- 1:match(0, cumsum(w))
   list(u=w[u_index_set], v=w[-u_index_set])
