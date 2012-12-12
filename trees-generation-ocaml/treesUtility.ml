@@ -53,16 +53,17 @@ let rec make_tree_from_brackets creation_time =
     | brackets ->
       match find_rightmost_balance_breakpoint brackets with
       | 0 ->
+	(* if we are here, the path hasn't breakpoint, that is, there
+	   is no brackets to process after we manage this path *)
 	let length_of_brackets = String.length brackets in
 	let inner_brackets =
 	  String.sub brackets 1 (length_of_brackets -2) in
-	(* if we are here, the path hasn't breakpoint, that is, there
-	   is no brackets to process after we manage this path *)
+	let creation_time_for_nested_brackets = succ creation_time in
 	merge_trees_on_leftmost_leaf
 	  (Node (Leaf,
 		 creation_time,	      
 		 (kernel
-  		    (succ creation_time)
+  		    creation_time_for_nested_brackets
   		    Leaf
   		    inner_brackets)))
 	  inductive_tree
@@ -71,22 +72,48 @@ let rec make_tree_from_brackets creation_time =
 	  Str.string_after brackets rightmost_balance_breakpoint in
 	let remaining_brackets = Str.string_before
 	  brackets rightmost_balance_breakpoint in
+	let creation_time_for_remaining_brackets =
+	  ((String.length brackets_on_the_right_of_breakpoint)/2) + 1 in
 	let new_inductive_tree = 
 	  merge_trees_on_leftmost_leaf
 	    (kernel
-	       (succ creation_time)
+	       creation_time
 	       Leaf
 	       brackets_on_the_right_of_breakpoint)
 	    inductive_tree in
 	kernel
-  	  (succ creation_time)
+  	  creation_time_for_remaining_brackets
   	  new_inductive_tree
   	  remaining_brackets
   in
   function brackets -> kernel creation_time Leaf brackets;;
 
+let dot_of_tree =
+  let rec kernel parent_value =
+    function
+    | Leaf -> []
+    | Node (left, value, right) ->
+      let arrow = (string_of_int parent_value) ^
+	" -> " ^ (string_of_int value) in
+      let dot_of_left = kernel value left in
+      let dot_of_right = kernel value right in
+      arrow :: (dot_of_left @ dot_of_right)
+  in
+  function
+  | Leaf -> []
+  | Node (left, v, right) ->
+    let dot_of_left = kernel v left in
+    let dot_of_right = kernel v right in
+    dot_of_left @ dot_of_right;;
 
-
-
-
+let dot_representation_of_tree =
+  function tree ->
+    let dot_representation_as_list = dot_of_tree tree in
+    let dot_preamble = "digraph { edge [arrowsize=.5, fontsize=8];\
+ 	node [shape=circle,height=0.12,width=0.12,fontsize=10]; " in
+    let folding = fun collected current ->
+      collected ^ current ^ "; " in
+    let almost_complete = List.fold_left
+      folding dot_preamble dot_representation_as_list in
+    almost_complete ^ "}";;
 
