@@ -1,9 +1,13 @@
+open BinaryTreeModule;;
 
 type data_line = {
   sample_time: int;
   brackets: string;
   ones: string;
-  hits: int
+  hits: int;
+  mutable leaves: int;
+  mutable height: int;
+  mutable dot_arrows: string list
 }
   
 
@@ -38,14 +42,49 @@ let parse_data_line_in_record =
 	sample_time = int_of_string (remove_quotes sample_time);
 	brackets = adjusted_brackets;
 	ones = (remove_quotes ones);
-	hits = int_of_string (remove_quotes hits)
+	hits = int_of_string (remove_quotes hits);
+	leaves = -1;
+	height = -1;
+	dot_arrows = []
       }
     | _ -> failwith "We don't care about this case here!";;
 
-let reading_test = function () ->
-  let data_lines = read_file "TueDec11-19-30-42-2012.csv" in
+let parse_data_file = fun filename nodes_in_each_tree ->
+  let data_lines = read_file filename in
+  let rec kernel rows =
+    function
+    | [] -> rows
+    | current_line :: other_lines ->
+      let row = parse_data_line_in_record current_line in
+      let creation_time = (List.length rows) * (nodes_in_each_tree + 1) in
+      let binary_tree = make_tree_from_brackets creation_time row.brackets in
+      row.leaves <- count_leaves_of_tree binary_tree;
+      row.height <- count_height_of_tree binary_tree;
+      row.dot_arrows <- dot_of_tree binary_tree;
+      kernel (row :: rows) other_lines
+  in
   match data_lines with
-  | header_line :: first_line :: other_lines ->
-    parse_data_line_in_record first_line
-  | _ -> failwith "We don't care about this case here!";;
+  | [] -> failwith "No line present to parse!"
+  | header_line :: other_lines ->
+    List.rev (kernel [] other_lines);;
 
+let reading_test = function () ->
+  parse_data_file "TueDec11-19-30-42-2012.csv" 4;;
+
+let dot_string_representation =
+  let dot_preamble = "digraph { edge [arrowsize=.5, fontsize=8];\
+ 	node [shape=circle,height=0.12,width=0.12,fontsize=10]; " in
+  let folding = fun collected current ->
+    let joined_arrows =
+      List.fold_left
+	(fun other_arrows current_arrow ->
+	  other_arrows ^ current_arrow ^ "; ")
+	""
+	current.dot_arrows
+    in
+    collected ^ joined_arrows
+  in
+  function datarows ->
+    let almost_complete = List.fold_left
+      folding dot_preamble datarows in
+    almost_complete ^ "}";;

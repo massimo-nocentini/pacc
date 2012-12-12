@@ -2,18 +2,18 @@ type 'a tree =
 | Leaf
 | Node of 'a tree * 'a * 'a tree;;
 
-let rec count_leaves_in_tree = function
+let rec count_leaves_of_tree = function
   | Node (Leaf, _, Leaf) -> 1
   | Node (left, _, right) ->
-    (count_leaves_in_tree left) +
-    (count_leaves_in_tree right)
+    (count_leaves_of_tree left) +
+    (count_leaves_of_tree right)
   | _ -> 0;;
 
-let rec height_of_tree = function
+let rec count_height_of_tree = function
   | Node (Leaf, _, Leaf) -> 1
   | Node (left, _, right) ->
     let max_height =
-      max (height_of_tree left) (height_of_tree right) in
+      max (count_height_of_tree left) (count_height_of_tree right) in
     1 + max_height
   | _ -> 0;;
 
@@ -101,13 +101,4 @@ let dot_of_tree =
     let dot_of_right = kernel v right in
     dot_of_left @ dot_of_right;;
 
-let dot_representation_of_tree =
-  function tree ->
-    let dot_representation_as_list = dot_of_tree tree in
-    let dot_preamble = "digraph { edge [arrowsize=.5, fontsize=8];\
- 	node [shape=circle,height=0.12,width=0.12,fontsize=10]; " in
-    let folding = fun collected current ->
-      collected ^ current ^ "; " in
-    let almost_complete = List.fold_left
-      folding dot_preamble dot_representation_as_list in
-    almost_complete ^ "}";;
+
