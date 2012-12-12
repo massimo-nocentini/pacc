@@ -34,6 +34,7 @@ let rec find_rightmost_balance_breakpoint =
   function brackets -> kernel 0 brackets;;
 
 let rec make_tree_from_brackets creation_time =
+  let mutable_creation_time = ref creation_time in
   let rec merge_trees_on_leftmost_leaf to_merge_tree =
     function
     | Leaf -> to_merge_tree
@@ -42,7 +43,7 @@ let rec make_tree_from_brackets creation_time =
       Node (merge_trees_on_leftmost_leaf to_merge_tree left,
 	    v,
 	    right) in    
-  let rec kernel creation_time inductive_tree =
+  let rec kernel inductive_tree =
     function
     | "" -> inductive_tree
     | brackets ->
@@ -53,12 +54,12 @@ let rec make_tree_from_brackets creation_time =
 	let length_of_brackets = String.length brackets in
 	let inner_brackets =
 	  String.sub brackets 1 (length_of_brackets -2) in
-	let creation_time_for_nested_brackets = succ creation_time in
+	let time = !mutable_creation_time in
+	mutable_creation_time := !mutable_creation_time + 1;
 	merge_trees_on_leftmost_leaf
 	  (Node (Leaf,
-		 creation_time,	      
+		 time,
 		 (kernel
-  		    creation_time_for_nested_brackets
   		    Leaf
   		    inner_brackets)))
 	  inductive_tree
@@ -67,21 +68,17 @@ let rec make_tree_from_brackets creation_time =
 	  Str.string_after brackets rightmost_balance_breakpoint in
 	let remaining_brackets = Str.string_before
 	  brackets rightmost_balance_breakpoint in
-	let creation_time_for_remaining_brackets =
-	  ((String.length brackets_on_the_right_of_breakpoint)/2) + 1 in
 	let new_inductive_tree = 
 	  merge_trees_on_leftmost_leaf
 	    (kernel
-	       creation_time
 	       Leaf
 	       brackets_on_the_right_of_breakpoint)
 	    inductive_tree in
 	kernel
-  	  creation_time_for_remaining_brackets
   	  new_inductive_tree
   	  remaining_brackets
   in
-  function brackets -> kernel creation_time Leaf brackets;;
+  function brackets -> kernel Leaf brackets;;
 
 let dot_of_tree =
   let rec kernel parent_value =
