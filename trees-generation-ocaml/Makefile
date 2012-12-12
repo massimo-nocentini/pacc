@@ -3,7 +3,7 @@ test:
 	./test.exe
 
 utility:
-	ocamlfind ocamlc -o treesUtility.ocaml.bytecode -package unix -linkpkg -g str.cma treesUtility.ml
+	ocamlfind ocamlc -o treesUtility.ocaml.bytecode -package unix -linkpkg -g str.cma binaryTreeModule.ml treesUtility.ml main.ml
 	cp treesUtility.ocaml.bytecode ../random-trees-generation
 
 clean:
