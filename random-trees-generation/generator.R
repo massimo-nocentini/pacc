@@ -46,17 +46,37 @@ simulation <- function(number_of_trees, nodes_in_each_tree){
   }
   datas <- data.frame(keys, words, hits)
   datas <- datas[order(datas$keys),]
-  filename <- paste(format(Sys.time(), 
-                           "%a%b%d-%H-%M-%S-%Y"), 
+  
+  filename_without_extension <- format(Sys.time(), 
+                                       "%a%b%d-%H-%M-%S-%Y")
+  
+  filename <- paste(filename_without_extension, 
                     ".csv",
                     sep="")  
+  write.table(datas, file=filename, sep=",")
   
-  command <- paste ("ocamlrun treesUtility.ocaml.bytecode", 
-                     filename)
+  command <- paste ("./treesUtility.ocaml.bytecode", 
+                     filename, nodes_in_each_tree)
   system(command)
   
-  write.table(datas, file=filename, sep=",")
-  return(list(datas=datas, filename=filename))
+  system(paste ("dot -Tpng ",
+                filename_without_extension, 
+                ".dot > ",
+                filename_without_extension,
+                ".png",
+                sep=""))
+  system("echo Rendered trees...   [OK]")
+         
+  datas <- read.csv(file=paste(filename_without_extension, 
+                               "-augmented.csv",
+                               sep="")
+                    ,head=TRUE,
+                    sep=",")
+  
+  
+  
+  return(list(datas=datas, 
+              filename=filename))
 }
 
 generate.tree <- function(number_of_nodes){

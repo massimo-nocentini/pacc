@@ -81,10 +81,10 @@ let _ =
   let updated_data_rows = parse_phase () in
   let dot_representation = dot_generation_phase updated_data_rows in
   let augmented_content = augment_data_phase updated_data_rows in
-  write_augmented_data_phase augmented_content;
-  print_string augmented_content;
-  (* test_single_dot_repr updated_data_rows; *)
-  print_string (datas_filename ^ " with nodes " ^ nodes_in_each_tree);
-  print_newline ();
-  print_string dot_representation;
-  print_newline ();;
+  write_augmented_data_phase augmented_content;;
+  (* print_string augmented_content; *)
+  (* (\* test_single_dot_repr updated_data_rows; *\) *)
+  (* print_string (datas_filename ^ " with nodes " ^ nodes_in_each_tree); *)
+  (* print_newline (); *)
+  (* print_string dot_representation; *)
+  (* print_newline ();; *)
