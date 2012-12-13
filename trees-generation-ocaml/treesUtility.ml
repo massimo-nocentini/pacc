@@ -34,7 +34,8 @@ let parse_data_line_in_record =
   in
   function data_line_as_string ->
     let separator_regexpr = Str.regexp_string "," in
-    let columns = Str.split separator_regexpr data_line_as_string in
+    let columns = Str.split
+      separator_regexpr data_line_as_string in
     match columns with
     | sample_time :: brackets :: ones :: hits :: empty ->
       let adjusted_brackets = adjust_brackets brackets in
@@ -58,10 +59,12 @@ let parse_data_file = fun filename nodes_in_each_tree ->
       let row = parse_data_line_in_record current_line in
       let initial_node_label = (List.length rows) *
 	((2*nodes_in_each_tree) + 1) in
-      let binary_tree = make_tree_from_brackets initial_node_label row.brackets in
+      let binary_tree = make_tree_from_brackets
+	initial_node_label row.brackets in
       row.leaves <- count_leaves_of_tree binary_tree;
       row.height <- count_height_of_tree binary_tree;
-      row.dot_arrows <- dot_of_tree initial_node_label binary_tree;
+      row.dot_arrows <- dot_of_tree initial_node_label
+	binary_tree;
       kernel (row :: rows) other_lines
   in
   match data_lines with
@@ -98,6 +101,11 @@ let write_string_to_file =
     output channel content 0 (String.length content);
     close_out channel;;
 
+let wrap_string_with_double_quotes =
+  function string ->
+    let double_quotes = "\"" in
+    double_quotes ^ string ^ double_quotes;;
+
 let string_of_data_record =
   let folding = fun collected current ->
     collected ^ "," ^ current
@@ -115,15 +123,12 @@ let string_of_data_record =
       } ->
     let line_as_list = 
       (string_of_int sample_time) ::
-	brackets ::
-	ones ::
+	(wrap_string_with_double_quotes brackets) ::
+	(wrap_string_with_double_quotes ones) ::
 	(string_of_int hits) ::
 	(string_of_int leaves) ::
 	(string_of_int height) :: [] in
-    let line = (List.fold_left folding "" line_as_list) ^ "\n" in
+    let line = (List.fold_left
+		  folding "" line_as_list) ^ "\n" in
     Str.string_after line 1;;
 
-let wrap_string_with_double_quotes =
-  function string ->
-    let double_quotes = "\"" in
-    double_quotes ^ string ^ double_quotes;;
