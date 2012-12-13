@@ -33,6 +33,8 @@ repeated_simulation <- function(number_of_trees,
 #         y = "")
   leaves_mean = rep(repeated_sampling_dimension)
   height_mean = rep(repeated_sampling_dimension)
+  leaves_var = rep(repeated_sampling_dimension)
+  height_var = rep(repeated_sampling_dimension)
   chi.sq.statistics = rep(repeated_sampling_dimension)
   
   for (i in 1:repeated_sampling_dimension) {
@@ -41,9 +43,12 @@ repeated_simulation <- function(number_of_trees,
     sim <- simulation(number_of_trees, nodes_in_each_tree)
     leaves_mean[i] = sim$theoretical_mean_of_leaves
     height_mean[i] = sim$theoretical_mean_of_height
+    leaves_var[i] = sim$theoretical_var_of_leaves
+    height_var[i] = sim$theoretical_var_of_height
     chi.sq.statistics[i] = sim$chi.square.obs.statistic
   }
   
+  print(leaves_mean)
   postscript("repeated-sampling-leaves-mean.ps", horizontal = FALSE)
   plot(density(leaves_mean), 
        ylab="leaves mean density distribution", 
@@ -61,6 +66,18 @@ repeated_simulation <- function(number_of_trees,
        ylab="chi-squared density distribution", 
        col="green")  
   dev.off()     
+  
+  postscript("repeated-sampling-leaves-var.ps", horizontal = FALSE)
+  plot(density(leaves_var), 
+       ylab="leaves var density distribution", 
+       col="grey")  
+  dev.off()    
+  
+  postscript("repeated-sampling-height-var.ps", horizontal = FALSE)
+  plot(density(height_var), 
+       ylab="height var density distribution", 
+       col="brown")  
+  dev.off()    
 }
 
 timed_simulation <- function(number_of_trees, nodes_in_each_tree){
