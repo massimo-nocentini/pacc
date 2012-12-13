@@ -25,12 +25,59 @@ main <- function(){
   matrix
 }
 
-simulation <- function(number_of_trees, nodes_in_each_tree){
+repeated_simulation <- function(number_of_trees, 
+                                nodes_in_each_tree, 
+                                repeated_sampling_dimension){
+  
+#   curve(dnorm(x, mean = 500, sd = 1.118), 495, 505, xlab = expression(bar(Y)), 
+#         y = "")
+  leaves_mean = rep(repeated_sampling_dimension)
+  height_mean = rep(repeated_sampling_dimension)
+  chi.sq.statistics = rep(repeated_sampling_dimension)
+  
+  for (i in 1:repeated_sampling_dimension) {
+    system("echo")
+    system(paste("echo Starting", i, "-th generation", sep=""))
+    sim <- simulation(number_of_trees, nodes_in_each_tree)
+    leaves_mean[i] = sim$theoretical_mean_of_leaves
+    height_mean[i] = sim$theoretical_mean_of_height
+    chi.sq.statistics[i] = sim$chi.square.obs.statistic
+  }
+  
+  postscript("repeated-sampling-leaves-mean.ps", horizontal = FALSE)
+  plot(density(leaves_mean), 
+       ylab="leaves mean density distribution", 
+       col="blue")  
+  dev.off()     
+  
+  postscript("repeated-sampling-height-mean.ps", horizontal = FALSE)
+  plot(density(height_mean), 
+       ylab="height mean density distribution", 
+       col="red")  
+  dev.off()     
+  
+  postscript("repeated-sampling-chi-squared-quar-mean.ps", horizontal = FALSE)
+  plot(density(chi.sq.statistics), 
+       ylab="chi-squared density distribution", 
+       col="green")  
+  dev.off()     
+}
+
+timed_simulation <- function(number_of_trees, nodes_in_each_tree){
+  system.time(simulation(number_of_trees, nodes_in_each_tree))
+}
+  
+simulation <- function(number_of_trees, nodes_in_each_tree, render_svg=FALSE){
   datas <- data.frame()
   
   keys <- c()
   hits <- c()
   words <- c()
+  system(paste ("echo Generating ",
+                number_of_trees,
+                " trees at random, each with ",
+                nodes_in_each_tree,
+                " nodes..."))
   for(i in 1:number_of_trees){
     generated_tree <- generate.tree(nodes_in_each_tree)
     bracket_sequence <- generated_tree$as_brackets
@@ -44,6 +91,7 @@ simulation <- function(number_of_trees, nodes_in_each_tree){
       words <- c(words, paste(generated_tree$phi, collapse=""))
     }
   }
+  system("echo done")
   datas <- data.frame(keys, words, hits)
   datas <- datas[order(datas$keys),]
   
@@ -59,24 +107,63 @@ simulation <- function(number_of_trees, nodes_in_each_tree){
                      filename, nodes_in_each_tree)
   system(command)
   
-  system(paste ("dot -Tpng ",
-                filename_without_extension, 
-                ".dot > ",
-                filename_without_extension,
-                ".png",
-                sep=""))
-  system("echo Rendered trees...   [OK]")
-         
+  if(render_svg){
+    system("echo Rendering trees...")
+    system(paste ("dot -Tsvg ",
+                  filename_without_extension, 
+                  ".dot > ",
+                  filename_without_extension,
+                  ".svg",
+                  sep=""))
+    
+    system("echo done")
+  }
+  
   datas <- read.csv(file=paste(filename_without_extension, 
                                "-augmented.csv",
                                sep="")
                     ,head=TRUE,
                     sep=",")
   
+  datas$sampling_leaves <- datas$leaves * datas$hits  
+  datas$sampling_height <- datas$height * datas$hits
   
+  system("echo Cleaning mess files...")
+  system("rm *.dot")
+  system("rm *.csv")
+  system("echo done")
   
-  return(list(datas=datas, 
-              filename=filename))
+  return(make_interesting_report(datas, 
+                                 number_of_trees, 
+                                 nodes_in_each_tree))
+}
+
+make_interesting_report <- function(datas,
+                                    number_of_trees, 
+                                    nodes_in_each_tree){
+  chi_square_test <- chisq.test(datas$hits)
+  
+  theoretical_mean_of_leaves <- mean(datas$leaves)
+  theoretical_mean_of_height <- mean(datas$height)
+  theoretical_var_of_leaves <- var(datas$leaves)
+  theoretical_var_of_height <- var(datas$height)
+  theoretical_median_of_leaves <- median(datas$leaves)
+  theoretical_median_of_height <- median(datas$height)
+  
+#   sampling_mean_of_leaves <- mean(datas$leaves)
+#   sampling_mean_of_height <- mean(datas$height)
+#   sampling_var_of_leaves <- var(datas$leaves)
+#   sampling_var_of_height <- var(datas$height)
+  
+  list(chi.square.obs.statistic = sqrt(chi_square_test$statistic),
+       p.value = chi_square_test$statistic,
+       freedom.degree = chi_square_test$parameter,
+       theoretical_mean_of_leaves=theoretical_mean_of_leaves,
+       theoretical_mean_of_height=theoretical_mean_of_height,
+       theoretical_var_of_leaves=theoretical_var_of_leaves,
+       theoretical_var_of_height=theoretical_var_of_height,
+       theoretical_median_of_leaves=theoretical_median_of_leaves,
+       theoretical_median_of_height=theoretical_median_of_height)
 }
 
 generate.tree <- function(number_of_nodes){

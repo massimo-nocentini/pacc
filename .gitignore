@@ -17,3 +17,5 @@ Elaborato.toc
 *.bytecode
 *.dot
 *.png
+*.svg
+*.ps

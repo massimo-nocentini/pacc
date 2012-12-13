@@ -5,6 +5,9 @@ open BinaryTreeModule;;
 let _ =
   let datas_filename = Sys.argv.(1) in
   let nodes_in_each_tree = Sys.argv.(2) in  
+  let print_done_line = function () ->
+    print_newline ();
+    print_string "done" in
   let test_single_dot_repr =
     function
     | [] -> failwith "Now I don't want no data!"
@@ -22,7 +25,7 @@ let _ =
     function () ->
       print_string "Parsing .csv file...";
       let result = parse_data_file datas_filename (int_of_string nodes_in_each_tree) in
-      print_string "\t\t[OK]";
+      print_done_line ();
       print_newline ();
       result
   in
@@ -34,7 +37,7 @@ let _ =
 	Str.global_replace csv_regexpr ".dot" datas_filename in
       print_string "Generating .dot file...";
       write_string_to_file dot_representation dot_filename;
-      print_string "\t\t[OK]";
+      print_done_line ();
       print_newline ();
       dot_representation
   in
@@ -64,7 +67,7 @@ let _ =
       print_string "Augmenting data...";      
       let result = List.fold_left
 	folding header_line updated_data_rows in
-      print_string "\t\t[OK]";
+      print_done_line ();
       print_newline ();
       result
   in
@@ -75,7 +78,7 @@ let _ =
 	Str.global_replace csv_regexpr "-augmented.csv" datas_filename in
       print_string "Generating new .csv file...";
       write_string_to_file augmented_content augmented_filename;
-      print_string "\t[OK]";
+      print_done_line ();
       print_newline ();
   in
   let updated_data_rows = parse_phase () in
