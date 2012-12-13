@@ -80,7 +80,8 @@ let rec make_tree_from_brackets creation_time =
   in
   function brackets -> kernel Leaf brackets;;
 
-let dot_of_tree =
+
+let dot_of_tree_using_creation_time_as_node_label =
   let rec kernel parent_value =
     function
     | Leaf -> []
@@ -98,4 +99,35 @@ let dot_of_tree =
     let dot_of_right = kernel v right in
     dot_of_left @ dot_of_right;;
 
-
+let dot_of_tree initial_label =
+  let mutable_label = ref initial_label in
+  let make_arrow_string =
+    fun source destination ->
+      (string_of_int source) ^
+	" -> " ^ (string_of_int destination) in
+  let rec kernel =
+    fun parent_label tree ->
+    mutable_label := !mutable_label + 1;
+    let current_label = !mutable_label in
+    match tree with    
+    | Leaf ->
+      let arrow = make_arrow_string parent_label current_label in
+      let make_invisible =
+	function node_or_edge ->	  
+	  let invisible_style_attribute = "[style=invis]" in
+	  node_or_edge ^ " " ^ invisible_style_attribute
+      in	  
+      (make_invisible arrow) ::
+	(make_invisible (string_of_int current_label)) :: []      
+    | Node (left, _, right) ->
+      let arrow = make_arrow_string parent_label current_label in
+      let dot_of_left = kernel current_label left in
+      let dot_of_right = kernel current_label right in
+      arrow :: (dot_of_left @ dot_of_right)
+  in
+  function
+  | Leaf -> []
+  | Node (left, _, right) ->
+    let dot_of_left = kernel initial_label left in
+    let dot_of_right = kernel initial_label right in
+    dot_of_left @ dot_of_right;;

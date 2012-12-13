@@ -56,11 +56,12 @@ let parse_data_file = fun filename nodes_in_each_tree ->
     | [] -> rows
     | current_line :: other_lines ->
       let row = parse_data_line_in_record current_line in
-      let creation_time = (List.length rows) * (nodes_in_each_tree + 1) in
-      let binary_tree = make_tree_from_brackets creation_time row.brackets in
+      let initial_node_label = (List.length rows) *
+	((2*nodes_in_each_tree) + 1) in
+      let binary_tree = make_tree_from_brackets initial_node_label row.brackets in
       row.leaves <- count_leaves_of_tree binary_tree;
       row.height <- count_height_of_tree binary_tree;
-      row.dot_arrows <- dot_of_tree binary_tree;
+      row.dot_arrows <- dot_of_tree initial_node_label binary_tree;
       kernel (row :: rows) other_lines
   in
   match data_lines with
@@ -72,8 +73,10 @@ let reading_test = function () ->
   parse_data_file "TueDec11-19-30-42-2012.csv" 4;;
 
 let dot_string_representation =
+  let empty_label = "\"" in
   let dot_preamble = "digraph { edge [arrowsize=.5, fontsize=8];\
- 	node [shape=circle,height=0.12,width=0.12,fontsize=10]; " in
+ 	node [label=" ^ empty_label ^ empty_label ^
+    ", shape=circle,height=0.12,width=0.12,fontsize=10]; " in
   let folding = fun collected current ->
     let joined_arrows =
       List.fold_left
@@ -88,3 +91,9 @@ let dot_string_representation =
     let almost_complete = List.fold_left
       folding dot_preamble datarows in
     almost_complete ^ "}";;
+
+let write_string_to_file =
+  fun content filename ->
+    let channel = open_out filename in
+    output channel content 0 (String.length content);
+    close_out channel;;
