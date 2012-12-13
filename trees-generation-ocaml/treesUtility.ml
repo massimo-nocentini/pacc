@@ -8,7 +8,7 @@ type data_line = {
   mutable leaves: int;
   mutable height: int;
   mutable dot_arrows: string list
-}
+};;
   
 
 let read_file filename = 
@@ -97,3 +97,33 @@ let write_string_to_file =
     let channel = open_out filename in
     output channel content 0 (String.length content);
     close_out channel;;
+
+let string_of_data_record =
+  let folding = fun collected current ->
+    collected ^ "," ^ current
+  in
+  function
+  |
+      {
+	sample_time = sample_time;
+	brackets = brackets;
+	ones = ones;
+	hits = hits;
+	leaves = leaves;
+	height = height;
+	dot_arrows = dot_arrows
+      } ->
+    let line_as_list = 
+      (string_of_int sample_time) ::
+	brackets ::
+	ones ::
+	(string_of_int hits) ::
+	(string_of_int leaves) ::
+	(string_of_int height) :: [] in
+    let line = (List.fold_left folding "" line_as_list) ^ "\n" in
+    Str.string_after line 1;;
+
+let wrap_string_with_double_quotes =
+  function string ->
+    let double_quotes = "\"" in
+    double_quotes ^ string ^ double_quotes;;
