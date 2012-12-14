@@ -56,17 +56,15 @@ repeated_simulation <- function(number_of_trees,
     chi.sq.statistics[i] = sim$chi.square.obs.statistic
   }
   
-  #print(theoretical_mean_of_leaves)
   postscript("repeated-sampling-leaves-mean.ps", horizontal = FALSE)
 
   plot(density(leaves_mean), 
-       ylab="leaves mean density distribution", 
-       col="blue")  
+        ylab="leaves mean density distribution", 
+        col="blue")  
 
-#   lines(dt(x,df=sim$freedom.degree),
-#         theoretical_mean_of_leaves[1]-5,
-#         theoretical_mean_of_leaves[1]+5,
-#         y = "")
+#   lines(density(theoretical_mean_of_leaves, ylim=10),
+#         col="gray",
+#         lty=2)
   dev.off()     
   
   postscript("repeated-sampling-height-mean.ps", horizontal = FALSE)
@@ -98,7 +96,10 @@ timed_simulation <- function(number_of_trees, nodes_in_each_tree){
   system.time(simulation(number_of_trees, nodes_in_each_tree))
 }
   
-simulation <- function(number_of_trees, nodes_in_each_tree, render_svg=FALSE){
+simulation <- function(number_of_trees, 
+                       nodes_in_each_tree, 
+                       render_svg=FALSE,
+                       remove_cvs_files=TRUE){
   datas <- data.frame()
   
   keys <- c()
@@ -159,11 +160,13 @@ simulation <- function(number_of_trees, nodes_in_each_tree, render_svg=FALSE){
   datas$sampling_leaves <- datas$leaves * datas$hits  
   datas$sampling_height <- datas$height * datas$hits
   
-  system("echo Cleaning mess files...")
-  system("rm *.dot")
-  system("rm *.csv")
-  system("echo done")
-  
+  if (remove_cvs_files){
+    system("echo Cleaning mess files...")
+    system("rm *.dot")
+    system("rm *.csv")
+    system("echo done")
+  }
+
   return(make_interesting_report(datas, 
                                  number_of_trees, 
                                  nodes_in_each_tree))
