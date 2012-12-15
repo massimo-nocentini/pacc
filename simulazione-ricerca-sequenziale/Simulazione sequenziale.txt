@@ -1,0 +1,139 @@
+#numdimensioni:= 1; # dimensioni da esaminare
+#intervallo:= 10; # intervallo di simulazione
+#prove:= 1000; # n°di prove da eseguire per ciascuna dimensione di vettore
+
+vettore:=array(1..numdimensioni*intervallo); # vettore per i risultati della simulazione
+dimensioni:=array(1..numdimensioni); # vettore delle dimensioni
+medie:=array(1..numdimensioni); # vettore delle medie simulate
+varianze:=array(1..numdimensioni); # vettore delle varianze simulate
+testmedie:=array(1..numdimensioni); # vettore per la verifica dei valori simulati
+testvarianze:=array(1..numdimensioni);
+
+randomize();
+
+
+ # La seguente funzione e' il cuore della simulazione: calcola le medie simulate
+ # corrispondenti ai parametri fissati.
+
+ simula:=proc() 
+ local n,n1,p1,i,tot,tot2, tot4,media, mediaTeorica, varianza, varianzaTeorica,varianzavarianza, varianzavarianzaTeorica, comp,ripetizioni;
+ global vettore, dimensioni, medie,varianze,testmedie,testvarianze;
+
+ for n1 from 1 to numdimensioni do	
+ n:= n1 * intervallo; #dimensione corrente del vettore
+ tot:= 0; # contiene il parametro da valutare (confronti nel caso della ricerca sequenziale)
+ tot2:= 0; # contiene la somma dei quadrati del parametro da valutare
+ tot4:=0;
+ mediaTeorica:=valoreTeoricoMedia(n); # calcolo della media teorica
+ varianzaTeorica:=valoreTeoricoVarianza(n); # calcolo della varianza teorica
+ varianzavarianzaTeorica:=valoreTeoricoVarianzaVarianza(n); # calcolo della varianzavarianza teorica
+ 	for p1 from 1 to prove do # p1 conta il numero di prove fatte
+ 		shuffle(n); # si genera una permutazione casuale di lunghezza n
+ 		ripetizioni:=2*n; # si decide di fare su tale permutazione un n° di ricerche proporzionale ad n
+ 		for i from 1 to ripetizioni do			
+                comp:=sequenziale(n); # si memorizza in "comp" il risultato dell'esecuzione dell'algoritmo
+ 		tot:=tot+ comp;
+ 		tot2:=tot2+comp^2;
+		tot4:=tot4+(comp-mediaTeorica)^4;
+ 		od;	
+     od;	
+ media:= tot/(ripetizioni*prove);
+ varianza:= tot2/(ripetizioni*prove)-media^2;
+ varianzavarianza:=tot4/(ripetizioni*prove)-varianzaTeorica^2;
+ printf("%d -- \nMedia teorica = %f \nMedia empirica = %f \n", n,mediaTeorica,media);
+ printf("%d -- \nVarianza teorica = %f \nVarianza empirica = %f \n", n,varianzaTeorica,varianza);
+ printf("%d -- \nVarianzavarianza teorica = %f \nVarianzavarianza empirica = %f \n", n,varianzavarianzaTeorica,varianzavarianza);
+ dimensioni[n1]:= n; # si memorizza la dimensione del vettore corrente
+ medie[n1]:= media; # si memorizza la media simulata
+ varianze[n1]:= varianza; # si memorizza la varianza simulata
+ testmedie[n1]:=evalf((media-mediaTeorica)/sqrt(varianzaTeorica)*sqrt(prove*ripetizioni));
+ testvarianze[n1]:=evalf((varianza-varianzaTeorica)/sqrt(varianzavarianzaTeorica)*sqrt(prove*ripetizioni));
+ od; 
+ [sort([seq(testmedie[i],i=1..numdimensioni)]),sort([seq(testvarianze[i],i=1..numdimensioni)])];
+ #[seq(medie[i],i=1..numdimensioni)];
+ end;
+
+ # Algoritmo di Shuffling
+
+ shuffle:=proc(Ndim)
+ local i,a,j,casuale;
+ global vettore;
+ # si inizializza il vettore
+ for i from 1 to Ndim do
+ 	vettore[i]:= i;
+ od;
+# si mescolano gli elementi del vettore
+for i from Ndim by -1 to 1 do
+    casuale:=rand(1..i);
+ 	j:= casuale();
+ 	a:= vettore[j];
+ 	vettore[j]:= vettore[i];
+ 	vettore[i]:= a;
+od;
+end;
+
+
+
+
+ valoreTeoricoMedia:=proc(n)
+# Ricerca sequenziale: numero medio confronti
+ evalf((n+1)/2);
+ end;
+
+
+ valoreTeoricoVarianza:=proc(n)
+# Ricerca sequenziale: varianza numero confronti
+ evalf((n^2-1)/12);
+ end;
+
+
+ valoreTeoricoVarianzaVarianza:=proc(n)
+# Ricerca sequenziale: "varianzavarianza" numero confronti
+ evalf((n-2)*(n-1)*(n+1)*(n+2)/180);
+ end;
+
+#
+# La seguente funzione restituisce il numero di confronti
+# fatti durante una ricerca sequenziale.
+#
+
+sequenziale:=proc(nelem)
+# Ricerca sequenziale
+local k,comp,j, casuale;
+#option trace;
+global vettore;
+casuale:=rand(1..nelem);
+k:=casuale();
+comp:= 1;
+for j from 1 to nelem while (k<>vettore[j]) do
+ 	comp:=comp+1;
+od;
+return(comp);
+end;
+
+ 	
+
+ 	
+#
+# La seguente funzione calcola i coefficienti della retta
+# di regressione relativi ai valori simulati
+# ed il corrispondente coefficiente di correlazione.
+#
+regressioneMedie:=proc()
+local A,B,X,X2,Z,Z2,XZ,correlazione,i;
+global vettore, dimensioni, medie;
+ X:=0;X2:=0;Z:=0; XZ:=0;Z2:=0;
+ for i from 1 to numdimensioni do
+ 	X:=X+dimensioni[i];
+ 	X2:=X2+evalf(dimensioni[i]^2);
+ 	Z:=Z+medie[i];
+ 	Z2:=Z2+evalf(medie[i]^2);
+ 	XZ:=XZ+dimensioni[i]*medie[i];
+ od;
+ A:=(numdimensioni*XZ-X*Z)/(numdimensioni*X2-evalf(X^2));
+ B:=(X2*Z-X*XZ)/(numdimensioni*X2-evalf(X^2));
+ correlazione:=(numdimensioni*XZ-X*Z)/(evalf(sqrt((numdimensioni*X2-X*X)*(numdimensioni*Z2-Z*Z))));
+ printf("\nA= %f B= %f \n",A,B);
+ printf("\nCoefficiente di correlazione^2= %f ",correlazione^2);
+end;
+
