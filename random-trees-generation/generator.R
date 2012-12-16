@@ -1,3 +1,5 @@
+# formula to compute the number of trees:(length(combn(12,6))/6)/7
+
 main <- function(){
   
   number_of_nodes <- seq(from=3, to=10, by=1) 
@@ -5,7 +7,6 @@ main <- function(){
   
   matrix <- matrix(nrow = length(number_of_trees), 
                    ncol = length(number_of_nodes), 
-                   #byrow=TRUE,
                    dimnames = list(number_of_trees,
                                    number_of_nodes))
   
@@ -29,8 +30,6 @@ repeated_simulation <- function(number_of_trees,
                                 nodes_in_each_tree, 
                                 repeated_sampling_dimension){
   
-#   curve(dnorm(x, mean = 500, sd = 1.118), 495, 505, xlab = expression(bar(Y)), 
-#         y = "")
   leaves_mean = rep(repeated_sampling_dimension)
   height_mean = rep(repeated_sampling_dimension)
   leaves_var = rep(repeated_sampling_dimension)
@@ -40,37 +39,59 @@ repeated_simulation <- function(number_of_trees,
   theoretical_var_of_leaves=rep(repeated_sampling_dimension)
   theoretical_var_of_height=rep(repeated_sampling_dimension)
   chi.sq.statistics = rep(repeated_sampling_dimension)
+  test.mean.leaves = rep(repeated_sampling_dimension)
+  test.mean.height = rep(repeated_sampling_dimension)
+  test.var.leaves = rep(repeated_sampling_dimension)
+  test.var.height = rep(repeated_sampling_dimension)
+
+  ## the freedom degrees vector should contains all the same value
+  freedom.degrees = rep(repeated_sampling_dimension)
   
   for (i in 1:repeated_sampling_dimension) {
     system("echo")
     system(paste("echo Starting ", i, "-th generation", sep=""))
     sim <- simulation(number_of_trees, nodes_in_each_tree)
-    leaves_mean[i] = sim$sampling_mean_of_leaves
-    height_mean[i] = sim$sampling_mean_of_height
-    leaves_var[i] = sim$sampling_var_of_leaves
-    height_var[i] = sim$sampling_var_of_height
-    theoretical_mean_of_leaves[i] = sim$theoretical_mean_of_leaves
-    theoretical_mean_of_height[i] = sim$theoretical_mean_of_height
-    theoretical_var_of_leaves[i] = sim$theoretical_var_of_leaves
-    theoretical_var_of_height[i] = sim$theoretical_var_of_height
+    freedom.degrees[i] <- sim$freedom.degree
+    leaves_mean[i] = sim$sampling.mean.leaves
+    height_mean[i] = sim$sampling.mean.height
+    leaves_var[i] = sim$sampling.var.leaves
+    height_var[i] = sim$sampling.var.height
+    theoretical_mean_of_leaves[i] = sim$theoretical.mean.leaves
+    theoretical_mean_of_height[i] = sim$theoretical.mean.height
+    theoretical_var_of_leaves[i] = sim$theoretical.var.leaves
+    theoretical_var_of_height[i] = sim$theoretical.var.height
     chi.sq.statistics[i] = sim$chi.square.obs.statistic
+    test.mean.leaves[i] = sim$test.mean.leaves 
+    test.mean.height[i] = sim$test.mean.height
+    test.var.leaves[i] = sim$test.var.leaves
+    test.var.height[i] = sim$test.var.height
   }
+ 
+  test.var.leaves <- test.var.leaves/sqrt(var(leaves_var))
+  test.var.height <- test.var.height/sqrt(var(height_var))
   
-  postscript("repeated-sampling-leaves-mean.ps", horizontal = FALSE)
-
-  plot(density(leaves_mean), 
-        ylab="leaves mean density distribution", 
+  postscript("repeated-sampling-leaves-mean.ps", horizontal = FALSE)  
+  curve(dnorm(x),
+        from=-3,
+        to=3,
+        lty=2,
+        col="red",
+        ylab="standardized leaves mean distribution")
+  
+  lines(density(test.mean.leaves, from=-3, to=3), 
         col="blue")  
-
-#   lines(density(theoretical_mean_of_leaves, ylim=10),
-#         col="gray",
-#         lty=2)
   dev.off()     
   
   postscript("repeated-sampling-height-mean.ps", horizontal = FALSE)
-  plot(density(height_mean), 
-       ylab="height mean density distribution", 
-       col="red")  
+  curve(dnorm(x),
+        from=-3,
+        to=3,
+        lty=2,
+        col="red",
+        ylab="standardized heights mean distribution")
+  
+  lines(density(test.mean.height, from=-3, to=3), 
+        col="blue")  
   dev.off()     
   
   postscript("repeated-sampling-chi-squared-quar-mean.ps", horizontal = FALSE)
@@ -80,15 +101,21 @@ repeated_simulation <- function(number_of_trees,
   dev.off()     
   
   postscript("repeated-sampling-leaves-var.ps", horizontal = FALSE)
-  plot(density(leaves_var), 
-       ylab="leaves var density distribution", 
+  ## curve(dcauchy(x, mean(theoretical_var_of_leaves)),
+  ##       lty=2,
+  ##       col="red",
+  ##       ylab="standardized leaves var distribution")
+  
+  plot(density(test.var.leaves),
+       ylab="standardized leaves var distribution",
        col="grey")  
   dev.off()    
   
   postscript("repeated-sampling-height-var.ps", horizontal = FALSE)
-  plot(density(height_var), 
-       ylab="height var density distribution", 
+  plot(density(test.var.height),
+       ylab="standardized height var distribution",
        col="brown")  
+  
   dev.off()    
 }
 
@@ -177,30 +204,49 @@ make_interesting_report <- function(datas,
                                     nodes_in_each_tree){
   chi_square_test <- chisq.test(datas$hits)
   
-  theoretical_mean_of_leaves <- mean(datas$leaves)
-  theoretical_mean_of_height <- mean(datas$height)
-  theoretical_var_of_leaves <- var(datas$leaves)
-  theoretical_var_of_height <- var(datas$height)  
+  theoretical.mean.leaves <- mean(datas$leaves)
+  theoretical.mean.height <- mean(datas$height)
+  theoretical.var.leaves <- var(datas$leaves)
+  theoretical.var.height <- var(datas$height)  
   
   
-  sampling_mean_of_leaves <- sum(datas$sampling_leaves)/sum(datas$hits)
-  sampling_mean_of_height <- sum(datas$sampling_height)/sum(datas$hits)
-  sampling_var_of_leaves <- sum((datas$leaves - 
-                                   sampling_mean_of_leaves)^2)/(length(datas$hits)-1)
-  sampling_var_of_height <- sum((datas$height - 
-                                   sampling_mean_of_height)^2)/(length(datas$hits)-1)
+  sampling.mean.leaves <- sum(datas$sampling_leaves)/sum(datas$hits)
+  sampling.mean.height <- sum(datas$sampling_height)/sum(datas$hits)
+  sampling.var.leaves <- sum((datas$leaves - 
+                                   sampling.mean.leaves)^2)/(length(datas$hits)-1)
+  sampling.var.height <- sum((datas$height - 
+                                   sampling.mean.height)^2)/(length(datas$hits)-1)
+
+  test.mean.leaves <- (sampling.mean.leaves - theoretical.mean.leaves)/
+    sqrt (theoretical.var.leaves) * sqrt (sum (datas$hits))
+
+  test.mean.height <- (sampling.mean.height - theoretical.mean.height)/
+    sqrt (theoretical.var.height) * sqrt (sum (datas$hits))
+
+  ## for the following computation misses a factor, namely the square
+  ## root of the variance of the variances, to divide all the
+  ## expression
+  test.var.leaves <- (sampling.var.leaves - theoretical.var.leaves)*
+    sqrt (sum (datas$hits))
+
+  test.var.height <- (sampling.var.height - theoretical.var.height)*
+    sqrt (sum (datas$hits))
   
   list(chi.square.obs.statistic = sqrt(chi_square_test$statistic),
        p.value = chi_square_test$p.value,
        freedom.degree = chi_square_test$parameter,
-       theoretical_mean_of_leaves=theoretical_mean_of_leaves,
-       theoretical_mean_of_height=theoretical_mean_of_height,
-       theoretical_var_of_leaves=theoretical_var_of_leaves,
-       theoretical_var_of_height=theoretical_var_of_height,
-       sampling_mean_of_leaves=sampling_mean_of_leaves,
-       sampling_mean_of_height=sampling_mean_of_height,
-       sampling_var_of_leaves=sampling_var_of_leaves,
-       sampling_var_of_height=sampling_var_of_height)
+       theoretical.mean.leaves=theoretical.mean.leaves,
+       theoretical.mean.height=theoretical.mean.height,
+       theoretical.var.leaves=theoretical.var.leaves,
+       theoretical.var.height=theoretical.var.height,
+       sampling.mean.leaves=sampling.mean.leaves,
+       sampling.mean.height=sampling.mean.height,
+       sampling.var.leaves=sampling.var.leaves,
+       sampling.var.height=sampling.var.height,
+       test.mean.leaves=test.mean.leaves,
+       test.mean.height=test.mean.height,
+       test.var.leaves=test.var.leaves,
+       test.var.height=test.var.height)
 }
 
 generate.tree <- function(number_of_nodes){

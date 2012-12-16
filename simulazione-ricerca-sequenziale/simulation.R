@@ -45,26 +45,33 @@ simula <- function(numdimensioni, intervallo, prove){
  # si decide di fare su tale permutazione un numero di ricerche
       # proporzionale ad n
     ripetizioni <- 2*n
-    checks <- rep(0, ripetizioni*prove)
-    index <- 1
+    checks <- c()
+    sampling.means <- c()
      # p1 conta il numero di prove fatte
     for (p1 in 1:prove){
 
       # si genera una permutazione casuale di lunghezza n
       vettore <- sample(x=1:n, size=n)     
-      
+
+      local.checks <- c()
       for (i in 1:ripetizioni){
 	# si memorizza in "comp" il risultato dell'esecuzione
 	# dell'algoritmo
         comp <- sequenziale(n, vettore)
-        checks[index] <- comp
-        index <- index + 1
+        checks <- c(checks, comp)
+
+        local.checks <- c(local.checks, comp)
         
         tot <- tot+ comp;
         tot2 <- tot2+comp^2;
         tot4 <- tot4+(comp-mediaTeorica)^4;
       }
+      sampling.means <- c(sampling.means, mean(local.checks))
     }
+
+    plot(density((sampling.means-mediaTeorica)/sqrt(varianzaTeorica)*
+      sqrt(length(prove*ripetizioni))))
+    
     print(paste("Mean: ",
                 mean(checks),
                 " Var: ",
