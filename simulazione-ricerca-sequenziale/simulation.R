@@ -1,62 +1,62 @@
 
 simula <- function(numdimensioni, intervallo, prove){
 
-  # vettore per i risultati della simulazione
+  ## vettore per i risultati della simulazione
   vettore <- rep(0, numdimensioni*intervallo)
-  # vettore delle dimensioni
+  ## vettore delle dimensioni
   dimensioni <- rep(0, numdimensioni)
-  # vettore delle medie simulate
+  ## vettore delle medie simulate
   medie <- rep(0, numdimensioni)
-  # vettore delle varianze simulate
+  ## vettore delle varianze simulate
   varianze <- rep(0, numdimensioni)
-   # vettore delle varianze delle varianze simulate
+  ## vettore delle varianze delle varianze simulate
   varianzevarianze <- rep(0, numdimensioni)
- # vettore delle medie simulate
+  ## vettore delle medie simulate
   medie.theo <- rep(0, numdimensioni)
-  # vettore delle varianze simulate
+  ## vettore delle varianze simulate
   varianze.theo <- rep(0, numdimensioni)
-   # vettore delle varianze delle varianze simulate
+  ## vettore delle varianze delle varianze simulate
   varianzevarianze.theo <- rep(0, numdimensioni)  
-  # vettore per la verifica dei valori simulati
+  ## vettore per la verifica dei valori simulati
   testmedie <- rep(0, numdimensioni)  
   testvarianze <- rep(0, numdimensioni)
   
   for (n1 in 1:numdimensioni){
-    n <- n1*intervallo #dimensione corrente del vettore
+    n <- n1*intervallo ##dimensione corrente del vettore
 
-    # contiene il parametro da valutare (confronti nel caso della
-    # ricerca sequenziale)
+    ## contiene il parametro da valutare (confronti nel caso della
+    ## ricerca sequenziale)
     tot <- 0
 
-    # contiene la somma dei quadrati del parametro da valutare
+    ## contiene la somma dei quadrati del parametro da valutare
     tot2 <- 0 
 
     tot4 <- 0;
 
-    # calcolo della media teorica
+    ## calcolo della media teorica
     mediaTeorica <- valoreTeoricoMedia(n)
 
-    # calcolo della varianza teorica
+    ## calcolo della varianza teorica
     varianzaTeorica <- valoreTeoricoVarianza(n)
 
-    # calcolo della varianzavarianza teorica
+    ## calcolo della varianzavarianza teorica
     varianzavarianzaTeorica <- valoreTeoricoVarianzaVarianza(n);
 
- # si decide di fare su tale permutazione un numero di ricerche
-      # proporzionale ad n
+    ## si decide di fare su tale permutazione un numero di ricerche
+    ## proporzionale ad n
     ripetizioni <- 2*n
     checks <- c()
     sampling.means <- c()
-     # p1 conta il numero di prove fatte
+    ## p1 conta il numero di prove fatte
     for (p1 in 1:prove){
 
-      # si genera una permutazione casuale di lunghezza n
+      ## si genera una permutazione casuale di lunghezza n
       vettore <- sample(x=1:n, size=n)     
 
       local.checks <- c()
       for (i in 1:ripetizioni){
-	# si memorizza in "comp" il risultato dell'esecuzione
-	# dell'algoritmo
+	## si memorizza in "comp" il risultato dell'esecuzione
+	## dell'algoritmo
         comp <- sequenziale(n, vettore)
         checks <- c(checks, comp)
 
@@ -69,8 +69,8 @@ simula <- function(numdimensioni, intervallo, prove){
       sampling.means <- c(sampling.means, mean(local.checks))
     }
 
-    plot(density((sampling.means-mediaTeorica)/sqrt(varianzaTeorica)*
-      sqrt(length(prove*ripetizioni))))
+    ## plot(density((sampling.means-mediaTeorica)/sqrt(varianzaTeorica)*
+    ##   sqrt(length(prove*ripetizioni))))
     
     print(paste("Mean: ",
                 mean(checks),
@@ -94,7 +94,7 @@ simula <- function(numdimensioni, intervallo, prove){
     ##             " \nVarianza empirica = ",
     ##             varianza,
     ##             sep=""))
-          
+    
     ## print(paste(n,
     ##             " -- \nVarianzavarianza teorica = ",
     ##             varianzavarianzaTeorica,
@@ -102,21 +102,21 @@ simula <- function(numdimensioni, intervallo, prove){
     ##             varianzavarianza,
     ##             sep=""))
 
-    # si memorizza la dimensione del vettore corrente
+    ## si memorizza la dimensione del vettore corrente
     dimensioni[n1] <- n
-      
-    # si memorizza la media simulata
+    
+    ## si memorizza la media simulata
     medie[n1] <- media
 
-    # si memorizza la varianza simulata
+    ## si memorizza la varianza simulata
     varianze[n1] <- varianza;
 
     varianzevarianze[n1] <- varianzavarianza
 
-    # si memorizza la media simulata
+    ## si memorizza la media simulata
     medie.theo[n1] <- mediaTeorica
 
-    # si memorizza la varianza simulata
+    ## si memorizza la varianza simulata
     varianze.theo[n1] <- varianzaTeorica
 
     varianzevarianze.theo[n1] <- varianzavarianzaTeorica
@@ -125,12 +125,30 @@ simula <- function(numdimensioni, intervallo, prove){
       sqrt(prove*ripetizioni)
     
     testvarianze[n1] <- (varianza-varianzaTeorica)/sqrt(varianzavarianzaTeorica)*
-        sqrt(prove*ripetizioni);
+      sqrt(prove*ripetizioni);
+
+
   }
   
   ## [sort([seq(testmedie[i],i=1..numdimensioni)]),sort([seq(testvarianze[i],i=1..numdimensioni)])];
- #[seq(medie[i],i=1..numdimensioni)];
+  ##[seq(medie[i],i=1..numdimensioni)];
+
+  regressioneMedie(dimensioni, medie)
   
+  postscript("asymtotic-behaviour-of-standardized-means.ps", horizontal = FALSE)  
+  curve(dnorm(x),
+        from=-3,
+        to=3,
+        lty=2,
+        col="red",
+        ylab="asymptotic distribution of standardized mean")
+
+  lines(density(testmedie, from=-3, to=3),
+        col="blue")  
+  dev.off()     
+
+  ## this is the final output: a data frame with some interisting
+  ## datas about standardized means and variances.
   data.frame(dimensioni,
              medie.theo,
              medie,
@@ -143,30 +161,27 @@ simula <- function(numdimensioni, intervallo, prove){
 }
 
 valoreTeoricoMedia <- function(n){
- # Ricerca sequenziale: numero medio confronti
+  ## Ricerca sequenziale: numero medio confronti
   (n+1)/2
 }
 
 
 valoreTeoricoVarianza <- function(n){
-# Ricerca sequenziale: varianza numero confronti
+  ## Ricerca sequenziale: varianza numero confronti
   ((n^2)-1)/12
 }
 
 
 valoreTeoricoVarianzaVarianza <- function(n){
-# Ricerca sequenziale: "varianzavarianza" numero confronti
+  ## Ricerca sequenziale: "varianzavarianza" numero confronti
   (n-2)*(n-1)*(n+1)*(n+2)/180;
 }
 
-#
-# La seguente funzione restituisce il numero di confronti
-# fatti durante una ricerca sequenziale.
-#
-
-sequenziale <- function(nelem, vettore){
-
-                                        # Ricerca sequenziale
+##
+## La seguente funzione restituisce il numero di confronti
+## fatti durante una ricerca sequenziale.
+##
+sequenziale <- function(nelem, vettore){                                        
   k <- sample(x=1:nelem, 1)  
   comp <- 1;
   j <- 1
@@ -175,4 +190,33 @@ sequenziale <- function(nelem, vettore){
     j <- j+1
   }
   comp
+}
+
+regressioneMedie <- function(dimensioni, medie){
+  X<-0
+  X2<-0
+  Z<-0
+  XZ<-0
+  Z2<-0;
+  numdimensioni <- length(dimensioni)
+  for (i in 1:numdimensioni){
+    X<-X+dimensioni[i]
+    X2<-X2+(dimensioni[i]^2)
+    Z<-Z+medie[i]
+    Z2<-Z2+(medie[i]^2)
+    XZ<-XZ+dimensioni[i]*medie[i]
+  }
+  A<-(numdimensioni*XZ-X*Z)/(numdimensioni*X2-(X^2))
+  B<-(X2*Z-X*XZ)/(numdimensioni*X2-(X^2))
+  correlazione<-(numdimensioni*XZ-X*Z)/(
+                  (sqrt((numdimensioni*X2-X*X)*(numdimensioni*Z2-Z*Z))));
+  print(paste("coefficient = ", A,
+              ", intercept = ", B,
+              sep=""))
+  print(paste("\nsquare of correlation index = ",correlazione^2, sep=""))
+  
+  postscript("mean-regression-of-sequential-search.ps", horizontal = FALSE)
+  plot(dimensioni, medie, col="blue")
+  lines(dimensioni, B+ A*dimensioni, col="red")
+  dev.off()     
 }
