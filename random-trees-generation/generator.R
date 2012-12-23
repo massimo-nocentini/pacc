@@ -1,29 +1,49 @@
-# formula to compute the number of trees:(length(combn(12,6))/6)/7
 
 main <- function(){
   
-  number_of_nodes <- seq(from=3, to=10, by=1) 
-  number_of_trees <- seq(from=100, to=100100, by=5000)
+  number_of_nodes <- c(4, 5, 6, 8, 10) 
+  number_of_trees <- c(1000, 2000, 5000, 10000, 20000, 50000)
+
+  dimension.matrix=rbind(number_of_nodes,
+    count.trees.with.vector.of.nodes(number_of_nodes))
   
-  matrix <- matrix(nrow = length(number_of_trees), 
+  p.value.matrix <- matrix(nrow = length(number_of_trees), 
                    ncol = length(number_of_nodes), 
                    dimnames = list(number_of_trees,
-                                   number_of_nodes))
+                     number_of_nodes))
+
+  v.observed.matrix <- matrix(nrow = length(number_of_trees), 
+                           ncol = length(number_of_nodes), 
+                           dimnames = list(number_of_trees,
+                             number_of_nodes))
   
   for(tree_index in 1:length(number_of_trees)){
     for(node_index in 1:length(number_of_nodes)){
       
-      if(node_index > tree_index)
-        next
-      
-      # to fix: now simulation returns a list
-      data <- simulation(number_of_trees[tree_index],
-                         number_of_nodes[node_index])
-      chi_square_test <- chisq.test(data$hits)
-      matrix[tree_index, node_index] <- chi_square_test$p.value
+      simulation.data <- simulation(number_of_trees[tree_index],
+                                    number_of_nodes[node_index],
+                                    enable.computation.on.trees=FALSE)
+
+      p.value.matrix[tree_index, node_index] <- simulation.data$p.value
+      v.observed.matrix[tree_index, node_index] <- simulation.data$v.observed
     }
   }
-  matrix
+
+  print.latex.table(dimension.matrix)
+  print.latex.table(p.value.matrix)
+  print.latex.table(v.observed.matrix)  
+  
+  list(
+    dimension.matrix=dimension.matrix,
+    p.value.matrix=p.value.matrix,
+    v.observed.matrix=v.observed.matrix)
+}
+
+print.latex.table <- function(matrix){
+  library(xtable)
+  tex.code <- xtable(matrix)
+  print(tex.code)
+  tex.code  
 }
 
 repeated_simulation <- function(number_of_trees, 
@@ -66,7 +86,7 @@ repeated_simulation <- function(number_of_trees,
     test.var.leaves[i] = sim$test.var.leaves
     test.var.height[i] = sim$test.var.height
   }
- 
+  
   test.var.leaves <- test.var.leaves/sqrt(var(leaves_var))
   test.var.height <- test.var.height/sqrt(var(height_var))
   
@@ -122,11 +142,12 @@ repeated_simulation <- function(number_of_trees,
 timed_simulation <- function(number_of_trees, nodes_in_each_tree){
   system.time(simulation(number_of_trees, nodes_in_each_tree))
 }
-  
+
 simulation <- function(number_of_trees, 
                        nodes_in_each_tree, 
                        render_svg=FALSE,
-                       remove_cvs_files=TRUE){
+                       remove_cvs_files=TRUE,
+                       enable.computation.on.trees=TRUE){
   datas <- data.frame()
   
   keys <- c()
@@ -161,31 +182,38 @@ simulation <- function(number_of_trees,
                     ".csv",
                     sep="")  
   write.table(datas, file=filename, sep=",")
-  
-  command <- paste ("./treesUtility.ocaml.bytecode", 
-                     filename, nodes_in_each_tree)
-  system(command)
-  
-  if(render_svg){
-    system("echo Rendering trees...")
-    system(paste ("dot -Tsvg ",
-                  filename_without_extension, 
-                  ".dot > ",
-                  filename_without_extension,
-                  ".svg",
-                  sep=""))
+
+  datas$sampling_leaves <- 0
+  datas$sampling_height <- 0
+  datas$leaves <- 0
+  datas$height <- 0
+  if(enable.computation.on.trees){
     
-    system("echo done")
+    command <- paste ("./treesUtility.ocaml.bytecode", 
+                      filename, nodes_in_each_tree)
+    system(command)
+    
+    datas <- read.csv(file=paste(filename_without_extension, 
+                        "-augmented.csv",
+                        sep="")
+                      ,head=TRUE,
+                      sep=",")
+    
+    datas$sampling_leaves <- datas$leaves * datas$hits  
+    datas$sampling_height <- datas$height * datas$hits
+    
+    if(render_svg){
+      system("echo Rendering trees...")
+      system(paste ("dot -Tsvg ",
+                    filename_without_extension, 
+                    ".dot > ",
+                    filename_without_extension,
+                    ".svg",
+                    sep=""))
+      
+      system("echo done")
+    }  
   }
-  
-  datas <- read.csv(file=paste(filename_without_extension, 
-                               "-augmented.csv",
-                               sep="")
-                    ,head=TRUE,
-                    sep=",")
-  
-  datas$sampling_leaves <- datas$leaves * datas$hits  
-  datas$sampling_height <- datas$height * datas$hits
   
   if (remove_cvs_files){
     system("echo Cleaning mess files...")
@@ -199,23 +227,43 @@ simulation <- function(number_of_trees,
                                  nodes_in_each_tree))
 }
 
+count.trees.with.vector.of.nodes <- function(vector.of.nodes.dimension){
+  result <- rep(0, length(vector.of.nodes.dimension))
+  for(i in 1:length(vector.of.nodes.dimension)){
+    result[i] <- count.of.trees.with.specified.nodes(
+                   vector.of.nodes.dimension[i])
+  }
+  result
+}
+
+count.of.trees.with.specified.nodes <- function(nodes.in.each.tree){
+  (length(combn(2*nodes.in.each.tree,
+                nodes.in.each.tree))/nodes.in.each.tree)/
+                  (nodes.in.each.tree+1)
+}
+
 make_interesting_report <- function(datas,
-                                    number_of_trees, 
-                                    nodes_in_each_tree){
+                                    number.of.trees, 
+                                    nodes.in.each.tree){
   chi_square_test <- chisq.test(datas$hits)
+  
+  number.of.possible.trees <- count.of.trees.with.specified.nodes(
+                                nodes.in.each.tree)
+
+  v.observed <- ((number.of.possible.trees / number.of.trees) *
+                 sum(datas$hits^2))-number.of.trees
   
   theoretical.mean.leaves <- mean(datas$leaves)
   theoretical.mean.height <- mean(datas$height)
   theoretical.var.leaves <- var(datas$leaves)
   theoretical.var.height <- var(datas$height)  
   
-  
   sampling.mean.leaves <- sum(datas$sampling_leaves)/sum(datas$hits)
   sampling.mean.height <- sum(datas$sampling_height)/sum(datas$hits)
   sampling.var.leaves <- sum((datas$leaves - 
-                                   sampling.mean.leaves)^2)/(length(datas$hits)-1)
+                              sampling.mean.leaves)^2)/(length(datas$hits)-1)
   sampling.var.height <- sum((datas$height - 
-                                   sampling.mean.height)^2)/(length(datas$hits)-1)
+                              sampling.mean.height)^2)/(length(datas$hits)-1)
 
   test.mean.leaves <- (sampling.mean.leaves - theoretical.mean.leaves)/
     sqrt (theoretical.var.leaves) * sqrt (sum (datas$hits))
@@ -232,29 +280,31 @@ make_interesting_report <- function(datas,
   test.var.height <- (sampling.var.height - theoretical.var.height)*
     sqrt (sum (datas$hits))
   
-  list(chi.square.obs.statistic = sqrt(chi_square_test$statistic),
-       p.value = chi_square_test$p.value,
-       freedom.degree = chi_square_test$parameter,
-       theoretical.mean.leaves=theoretical.mean.leaves,
-       theoretical.mean.height=theoretical.mean.height,
-       theoretical.var.leaves=theoretical.var.leaves,
-       theoretical.var.height=theoretical.var.height,
-       sampling.mean.leaves=sampling.mean.leaves,
-       sampling.mean.height=sampling.mean.height,
-       sampling.var.leaves=sampling.var.leaves,
-       sampling.var.height=sampling.var.height,
-       test.mean.leaves=test.mean.leaves,
-       test.mean.height=test.mean.height,
-       test.var.leaves=test.var.leaves,
-       test.var.height=test.var.height)
+  list(
+    v.observed=v.observed,
+    chi.square.obs.statistic = sqrt(chi_square_test$statistic),
+    p.value = chi_square_test$p.value,
+    freedom.degree = chi_square_test$parameter,
+    theoretical.mean.leaves=theoretical.mean.leaves,
+    theoretical.mean.height=theoretical.mean.height,
+    theoretical.var.leaves=theoretical.var.leaves,
+    theoretical.var.height=theoretical.var.height,
+    sampling.mean.leaves=sampling.mean.leaves,
+    sampling.mean.height=sampling.mean.height,
+    sampling.var.leaves=sampling.var.leaves,
+    sampling.var.height=sampling.var.height,
+    test.mean.leaves=test.mean.leaves,
+    test.mean.height=test.mean.height,
+    test.var.leaves=test.var.leaves,
+    test.var.height=test.var.height)
 }
 
 generate.tree <- function(number_of_nodes){
-  #number_of_nodes <- number_of_nodes - 1
+                                        #number_of_nodes <- number_of_nodes - 1
   
-  # the following is the dimension of the word used in the original article
+                                        # the following is the dimension of the word used in the original article
   word_dimension <- 2 * number_of_nodes
-  # making the universe from which we're going to extract the L set
+                                        # making the universe from which we're going to extract the L set
   universe <- 1:word_dimension
   sample <- sample(universe, size=number_of_nodes)
   w = rep(0, word_dimension)
@@ -262,7 +312,7 @@ generate.tree <- function(number_of_nodes){
     w[i] <- ifelse(any(sample == i), 1, -1)
   }
   
-  #phi=c(1,phi(w),-1) # this is for adjustment
+                                        #phi=c(1,phi(w),-1) # this is for adjustment
   phi=phi(w)
   list(word=w, phi=phi, as_brackets = brackets_of_word(phi))
 }
