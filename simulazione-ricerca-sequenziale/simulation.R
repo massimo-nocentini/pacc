@@ -1,28 +1,20 @@
 
 simula <- function(numdimensioni, intervallo, prove){
 
-  ## vettore per i risultati della simulazione
   vettore <- rep(0, numdimensioni*intervallo)
-  ## vettore delle dimensioni
   dimensioni <- rep(0, numdimensioni)
-  ## vettore delle medie simulate
   medie <- rep(0, numdimensioni)
-  ## vettore delle varianze simulate
   varianze <- rep(0, numdimensioni)
-  ## vettore delle varianze delle varianze simulate
   varianzevarianze <- rep(0, numdimensioni)
-  ## vettore delle medie simulate
   medie.theo <- rep(0, numdimensioni)
-  ## vettore delle varianze simulate
   varianze.theo <- rep(0, numdimensioni)
-  ## vettore delle varianze delle varianze simulate
   varianzevarianze.theo <- rep(0, numdimensioni)  
-  ## vettore per la verifica dei valori simulati
   testmedie <- rep(0, numdimensioni)  
   testvarianze <- rep(0, numdimensioni)
   
   for (n1 in 1:numdimensioni){
-    n <- n1*intervallo ##dimensione corrente del vettore
+    ##dimensione corrente del vettore
+    n <- n1*intervallo 
 
     ## contiene il parametro da valutare (confronti nel caso della
     ## ricerca sequenziale)
@@ -33,13 +25,8 @@ simula <- function(numdimensioni, intervallo, prove){
 
     tot4 <- 0;
 
-    ## calcolo della media teorica
     mediaTeorica <- valoreTeoricoMedia(n)
-
-    ## calcolo della varianza teorica
     varianzaTeorica <- valoreTeoricoVarianza(n)
-
-    ## calcolo della varianzavarianza teorica
     varianzavarianzaTeorica <- valoreTeoricoVarianzaVarianza(n);
 
     ## si decide di fare su tale permutazione un numero di ricerche
@@ -47,7 +34,6 @@ simula <- function(numdimensioni, intervallo, prove){
     ripetizioni <- 2*n
     checks <- c()
     sampling.means <- c()
-    ## p1 conta il numero di prove fatte
     for (p1 in 1:prove){
 
       ## si genera una permutazione casuale di lunghezza n
