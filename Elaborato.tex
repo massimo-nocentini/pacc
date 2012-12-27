@@ -200,7 +200,7 @@ interval=20, attempts=50$.
   \end{center}
 \end{table}
 
-We've used the standardized means to plot them againts the normal
+We've used the standardized means to plot them against the normal
 distribution in order to verify the Central Limit Theorem in
 \autoref{fig:sequential-search-standardized-means}. The dotted curve
 represent the normal distribution, the blue one represent the sampling
@@ -229,17 +229,14 @@ to the second degree, as follow:
     coefficient &= \frac{n * dim\_mean - dims * means} {n*dim\_squares-dims^2}
   \end{split}
 \end{displaymath}
-hence the red line is defined $means = coefficient*dimensions + intercept$.
+where $n$ is our $numdimensions$ cited above, hence the red line is
+defined as $means = coefficient*dimensions + intercept$.
 \begin{figure}[htb]
 \centering
 \includegraphics[height=13cm,width=13cm]{pictures/sequential-search-mean-regression-of-sequential-search.pdf}
 \caption{Plot of means regression}
 \label{fig:sequential-search-means-regression}
 \end{figure}
-
-
-
-
 
 \chapter{Generating binary trees at random}
 Explain the project and what we want to accomplish.
