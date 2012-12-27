@@ -8,14 +8,14 @@ main <- function(){
     count.trees.with.vector.of.nodes(number_of_nodes))
   
   p.value.matrix <- matrix(nrow = length(number_of_trees), 
-                   ncol = length(number_of_nodes), 
-                   dimnames = list(number_of_trees,
-                     number_of_nodes))
-
-  v.observed.matrix <- matrix(nrow = length(number_of_trees), 
                            ncol = length(number_of_nodes), 
                            dimnames = list(number_of_trees,
                              number_of_nodes))
+
+  v.observed.matrix <- matrix(nrow = length(number_of_trees), 
+                              ncol = length(number_of_nodes), 
+                              dimnames = list(number_of_trees,
+                                number_of_nodes))
   
   for(tree_index in 1:length(number_of_trees)){
     for(node_index in 1:length(number_of_nodes)){
@@ -300,11 +300,10 @@ make_interesting_report <- function(datas,
 }
 
 generate.tree <- function(number_of_nodes){
-                                        #number_of_nodes <- number_of_nodes - 1
-  
-                                        # the following is the dimension of the word used in the original article
+
   word_dimension <- 2 * number_of_nodes
-                                        # making the universe from which we're going to extract the L set
+
+  ## making the universe from which we're going to extract the L set
   universe <- 1:word_dimension
   sample <- sample(universe, size=number_of_nodes)
   w = rep(0, word_dimension)
@@ -312,7 +311,6 @@ generate.tree <- function(number_of_nodes){
     w[i] <- ifelse(any(sample == i), 1, -1)
   }
   
-                                        #phi=c(1,phi(w),-1) # this is for adjustment
   phi=phi(w)
   list(word=w, phi=phi, as_brackets = brackets_of_word(phi))
 }

@@ -10,7 +10,7 @@
 \usepackage[fleqn]{amsmath}  
 \usepackage[italian]{babel}
 \usepackage{ae,aecompl}
-\usepackage{graphicx}
+\usepackage[pdftex]{graphicx}
 \usepackage{latexsym}
 \usepackage{amsmath, amsthm, amssymb}
 \usepackage{rotating}
@@ -48,6 +48,7 @@
 %--------------------------------------------------------------
 \usepackage{listings}
 \usepackage{hyperref}
+\usepackage{pdfpages}
 % My Theorem
 \newtheorem{oss}{Observation}[section]
 \newtheorem{exercise}{Exercise}[section]
@@ -100,10 +101,75 @@
 
 \newpage
 
-%\input{introduction.tex}
 \input{licences.tex}
 
-\chapter{Stima, verifica d'ipotesi e distribuzioni campionarie}
+\part{Analysis part}
+
+\chapter{Lectures notes}
+Rewrite here the content of the lectures during the classes.
+
+\chapter{Generating binary trees at random}
+Explain the project and what we want to accomplish.
+
+\section{Atkinson and Sack algorithm}
+Describe briefly the algorithm here.
+
+\section{Implementation using R}
+
+\begin{lstlisting}
+
+  generate.tree <- function(number_of_nodes){
+
+    word_dimension <- 2 * number_of_nodes
+    
+    universe <- 1:word_dimension
+    sample <- sample(universe, size=number_of_nodes)
+    w = rep(0, word_dimension)
+    for (i in 1:word_dimension) {
+      w[i] <- ifelse(any(sample == i), 1, -1)
+    }
+    
+    phi=phi(w)
+    list(word=w, phi=phi, as_brackets = brackets_of_word(phi))
+  }
+
+  split.word <- function(w){
+    if(length(w) == 0)
+    return(list(u=c(), v=c()))
+    
+    u_index_set <- 1:match(0, cumsum(w))
+    list(u=w[u_index_set], v=w[-u_index_set])
+  }
+
+  phi <- function(w){
+    if(length(w) == 0)
+    return(w)
+    
+    split <- split.word(w) 
+    
+    if(all(cumsum(split$u) > -1)){
+      return (c(split$u, phi(split$v)))
+    }
+    else{
+      t = split$u[-c(1, length(split$u))]
+      return (c(1, phi(split$v), -1, -t))
+    }
+  }
+\end{lstlisting}
+
+\part{Algorithms part}
+
+\chapter{Divide et impera}
+Put here some exercises on some topics of interest.
+
+\chapter{Appendix}
+
+\section{Full code for random binary trees generation}
+\lstinputlisting{random-trees-generation/generator.R}
+
+\section{Original article about random bynary trees generation}
+
+\includepdf[pages={-}]{atkinson-sack-original-article.pdf}
 
 
 
