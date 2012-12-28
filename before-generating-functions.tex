@@ -1,0 +1,174 @@
+\section{Before generating functions}
+
+We study two algorithms that are based on checks between keys, those
+are MERGESORT and QUICKSORT.
+
+\subsection{MERGESORT algorithm}
+
+The MERGESORT algorithm is independent from the keys present in the
+input vector and its methodology behaves always the same. Let $n =
+2^m$ be the length of the vector to be ordered, we can define a
+function $C$ which count the number of checks needed to order the
+input vector. We define the function $C$ using the method used by the
+algorithm at each step:
+\begin{displaymath}
+  C(2^m) = 2C(2^{m-1}) + 2^m
+\end{displaymath}
+Solving the recurrence\footnote{put here the proof} we obtain $C(n)
+\in O(n logn)$. We can observe that if we use a method (like the ones
+we're studying in this section) based on checks between keys, isn't
+possible to do better than build a ``checks tree'', this allow use to
+have a lower bound for the complexity of those algorithms.\footnote{in
+  the slides of the first lecture maybe there's more material about
+  this topic}
+
+\subsection{QUICKSORT algorithm}
+The QUICKSORT algorithm depends on the distribution of the keys in the
+input vector. For what follow we assume to have a probability space
+$\Omega = D_n$, where $D_n$ is the set of permutation of length $n$
+without repetition over $\{1,\ldots,n\}$. We focus on the simpler
+variant where the pivot is chosen as the right-most
+key\footnote{report here the code}.  We study the behavior of an
+application to the vector $\left ( 20, 25, 7, 3, 30, 8, 41,
+  18\right)$, reporting in \autoref{tab:quicksort-example} the steps
+performed.
+\begin{table}[ht]
+  \caption{Quicksort example}
+  \label{tab:quicksort-example}
+  \begin{center}
+    \begin{tabular}{cccccccccc}
+      20 & 25 & 7 & 3 & 30 & 8 & 41 & 18 &  &  \\ 
+      $\uparrow i$ & & & & & $\uparrow j$ & & $\uparrow pivot$ &
+      $\rightarrow$ & $\{20, 41, 8\}$ \\
+      8 & 25 & 7 & 3 & 30 & 20 & 41 & 18 &  &  \\ 
+       & $\uparrow i$ & & $\uparrow j$ & &  & & $\uparrow pivot$ &
+       $\rightarrow$ & $\{25, 30, 3\}$ \\
+       8 & 3 & 7 & 25 & 30 & 20 & 41 & 18 &  &  \\ 
+       &  & $\uparrow j$ & $\uparrow i$ & &  & & $\uparrow pivot$ &
+       $\rightarrow$ & $\{7, 25, 7\}$ \\
+       8 & 3 & 7 & 18 & 30 & 20 & 41 & 25 &  &  \\ 
+       &  &  & $\uparrow pivot$ & &  & &  &
+       $\rightarrow$ & recursion \\
+    \end{tabular}
+  \end{center}
+\end{table}
+We can observe that in order to move the $pivot$ element in its final
+position, it is necessary for two keys ($7, 25$) to be checked
+twice. Hence, given a vector of length $n$, the number of checks
+performed is $(n-1) + 2$ ($n-1$ because the $pivot$ isn't indexed
+neither with $i$ nor with $j$).
+
+We can analyze the number of checks performed, partitioning it in the
+following cases:
+\begin{description}
+\item[worst case] when the vector is already ordered (in one of the
+  two directions). In this case we got:
+  \begin{displaymath}
+    C(n) = (n-1)+2 + C(n-1)
+  \end{displaymath}
+  recurring only on one partition because the other have to be
+  empty. We can expand the recurrence, fixing $C(0) = 0$:
+  \begin{displaymath}
+    \begin{split}
+      C(n) &= (n+1) + C(n-1) = (n+1) + n + C(n-2) = \\
+      &= (n+1) + n + (n-1) + \ldots + 2 + C(0) = \\
+      &= \sum_{k=2}^{n+1}{k} + C(0) = \sum_{k=1}^{n+1}{k} -1 + C(0) =
+      \frac{(n+1)(n+2)}{2} - 1
+    \end{split}
+  \end{displaymath}
+  so $C(n) \in O(n^2)$.
+\item[best case] when the partition phase puts the $pivot$ in the
+  middle, hence the QUICKSORT recurs on balanced partitions. In this
+  case we have the same complexity of MERGESORT, hence $C(n) \in O(n
+  logn)$
+\item[average case] to study this case we have to consider all
+  elements of $\Omega$ (recall that $w \in \Omega \rightarrow (w[i]\in
+  \{1,\ldots,n\}) \wedge (\forall i\not =j: w[i]\not=w[j])$). First of
+  all we can suppose that $j$ is the $pivot$, hence a generic $w$ will
+  have this structure:
+  \begin{displaymath}
+    w = (C_{j-1} \quad C_{n-j} \quad j)
+  \end{displaymath}
+  where $C_k$ is a vector of length $k$. We can consider the
+  probability to have $j$ as $pivot$ considering the uniform
+  distribution on $\Omega$:
+  \begin{displaymath}
+    \mathbb{P}\left(w\in\Omega: w[n]=j \right) =
+    \frac{(n-1)!}{n!} =  \frac{1}{n} 
+  \end{displaymath}
+  But every keys $j \in \{1,\ldots,n\}$ can be the $pivot$, so we can
+  compose:
+  \begin{displaymath}
+    C(n) = (n+1) +  \frac{1}{n}\sum_{j=1}^{n}{C(j-1) + C(n-j)} 
+  \end{displaymath}
+  Observing the sum when $j$ runs:
+  \begin{displaymath}
+    \begin{split}
+      j=1 &\rightarrow C(0) + C(n-1) \\
+      j=2 &\rightarrow C(1) + C(n-2) \\
+      \ldots& \\
+      j=n-1 &\rightarrow C(n-2) + C(1) \\
+      j=n &\rightarrow C(n-1) + C(0) \\
+    \end{split}
+  \end{displaymath}
+  Hence we can rewrite:
+  \begin{displaymath}
+    C(n) = (n+1) +  \frac{2}{n}\sum_{j=0}^{n-1}{C(j)} 
+  \end{displaymath}
+  Now we do some manipulation:
+  \begin{displaymath}
+    \begin{split}
+      C(n) &= (n+1) + \frac{2}{n}\sum_{j=0}^{n-1}{C(j)}\\
+      nC(n) &= n(n+1) + 2\sum_{j=0}^{n-1}{C(j)}
+    \end{split}
+  \end{displaymath}
+  Subtract the previous $(n-1)$ term to both members:
+  \begin{displaymath}
+    \begin{split}
+      nC(n) -(n-1)C(n-1) &= n(n+1) + 2\sum_{j=0}^{n-1}{C(j)} \\
+      &-\left((n-1)((n-1)+1) + 2\sum_{j=0}^{(n-1)-1}{C(j)}\right) \\
+      % nC(n) -(n-1)C(n-1)
+      &= n(n+1) + 2\sum_{j=0}^{n-1}{C(j)} \\
+      &-n(n-1) - 2\sum_{j=0}^{n-2}{C(j)} \\
+      &= n(n+1-(n-1)) + 2C(n-1) \\
+      &= 2(n + C(n-1)) \\      
+    \end{split}
+  \end{displaymath}
+  Getting $nC(n) = 2n + (n+1)C(n-1)$, divide both member by $n(n+1)$:
+  \begin{displaymath}
+    \begin{split}
+      \frac{C(n)}{n+1}  = \frac{2}{n+1} +
+      \frac{C(n-1)}{n}
+    \end{split}
+  \end{displaymath}
+  We arrived at a recurrence $A(n) = b(n) + A(n-1)$, where $A(n) =
+  \frac{C(n)}{n+1} $ and $b(n) = \frac{2}{n+1} $. So we expand, fixing
+  $C(0) = 0$:
+  \begin{displaymath}
+    \begin{split}
+      \frac{C(n)}{n+1} &= \frac{2}{n+1} + \frac{C(n-1)}{n} =
+      \frac{2}{n+1} +
+      \frac{2}{n} + \frac{C(n-2)}{n-1}\\
+      &= \frac{2}{n+1} + \frac{2}{n} + \ldots +
+      \frac{2}{3} + \frac{2}{2} + \frac{C(0)}{1}\\
+      &= \frac{2}{n+1} + \frac{2}{n} + \ldots +
+      \frac{2}{3} + 1\\
+      &= 2\left(\frac{1}{n+1} + \frac{1}{n} + \ldots +
+        \frac{1}{3}\right) + 1\\
+      &= 2\left(\frac{1}{n+1} + \frac{1}{n} + \ldots +
+        \frac{1}{3}\right) +2\frac{1}{2} + 2
+      + 1 -2\frac{1}{2} - 2\\
+      &= 2\left(\frac{1}{n+1} + \frac{1}{n} + \ldots +
+        \frac{1}{3}+
+        \frac{1}{2}+
+        1\right) -2 \\
+      &= 2(H_{n+1}-1) 
+    \end{split}
+  \end{displaymath}
+  Having recognized the harmonic numbers $H_{n+1}=\left(\frac{1}{n+1}
+    + \frac{1}{n} + \ldots + \frac{1}{3}+ \frac{1}{2}+ 1\right)$, the
+  final result is $$C(n) = 2(n+1)(H_{n+1}-1)$$.
+
+\end{description}
+
+ 

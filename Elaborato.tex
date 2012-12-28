@@ -107,7 +107,8 @@
 \part{Analysis part}
 
 \chapter{Lectures notes}
-Rewrite here the content of the lectures during the classes.
+\input{before-generating-functions.tex}
+
 
 \input{sequential-search-simulation.tex}
 
@@ -137,16 +138,18 @@ Describe briefly the algorithm here.
   }
 
   split.word <- function(w){
-    if(length(w) == 0)
-    return(list(u=c(), v=c()))
+    if(length(w) == 0){
+      return(list(u=c(), v=c()))
+    }
     
     u_index_set <- 1:match(0, cumsum(w))
     list(u=w[u_index_set], v=w[-u_index_set])
   }
 
   phi <- function(w){
-    if(length(w) == 0)
-    return(w)
+    if(length(w) == 0){
+      return(w)
+    }
     
     split <- split.word(w) 
     
