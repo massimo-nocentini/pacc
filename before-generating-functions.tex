@@ -81,94 +81,249 @@ following cases:
   middle, hence the QUICKSORT recurs on balanced partitions. In this
   case we have the same complexity of MERGESORT, hence $C(n) \in O(n
   logn)$
-\item[average case] to study this case we have to consider all
-  elements of $\Omega$ (recall that $w \in \Omega \rightarrow (w[i]\in
-  \{1,\ldots,n\}) \wedge (\forall i\not =j: w[i]\not=w[j])$). First of
-  all we can suppose that $j$ is the $pivot$, hence a generic $w$ will
-  have this structure:
-  \begin{displaymath}
-    w = (C_{j-1} \quad C_{n-j} \quad j)
-  \end{displaymath}
-  where $C_k$ is a vector of length $k$. We can consider the
-  probability to have $j$ as $pivot$ considering the uniform
-  distribution on $\Omega$:
-  \begin{displaymath}
-    \mathbb{P}\left(w\in\Omega: w[n]=j \right) =
-    \frac{(n-1)!}{n!} =  \frac{1}{n} 
-  \end{displaymath}
-  But every keys $j \in \{1,\ldots,n\}$ can be the $pivot$, so we can
-  compose:
-  \begin{displaymath}
-    C(n) = (n+1) +  \frac{1}{n}\sum_{j=1}^{n}{C(j-1) + C(n-j)} 
-  \end{displaymath}
-  Observing the sum when $j$ runs:
-  \begin{displaymath}
-    \begin{split}
-      j=1 &\rightarrow C(0) + C(n-1) \\
-      j=2 &\rightarrow C(1) + C(n-2) \\
-      \ldots& \\
-      j=n-1 &\rightarrow C(n-2) + C(1) \\
-      j=n &\rightarrow C(n-1) + C(0) \\
-    \end{split}
-  \end{displaymath}
-  Hence we can rewrite:
-  \begin{displaymath}
-    C(n) = (n+1) +  \frac{2}{n}\sum_{j=0}^{n-1}{C(j)} 
-  \end{displaymath}
-  Now we do some manipulation:
-  \begin{displaymath}
-    \begin{split}
-      C(n) &= (n+1) + \frac{2}{n}\sum_{j=0}^{n-1}{C(j)}\\
-      nC(n) &= n(n+1) + 2\sum_{j=0}^{n-1}{C(j)}
-    \end{split}
-  \end{displaymath}
-  Subtract the previous $(n-1)$ term to both members:
-  \begin{displaymath}
-    \begin{split}
-      nC(n) -(n-1)C(n-1) &= n(n+1) + 2\sum_{j=0}^{n-1}{C(j)} \\
-      &-\left((n-1)((n-1)+1) + 2\sum_{j=0}^{(n-1)-1}{C(j)}\right) \\
-      % nC(n) -(n-1)C(n-1)
-      &= n(n+1) + 2\sum_{j=0}^{n-1}{C(j)} \\
-      &-n(n-1) - 2\sum_{j=0}^{n-2}{C(j)} \\
-      &= n(n+1-(n-1)) + 2C(n-1) \\
-      &= 2(n + C(n-1)) \\      
-    \end{split}
-  \end{displaymath}
-  Getting $nC(n) = 2n + (n+1)C(n-1)$, divide both member by $n(n+1)$:
-  \begin{displaymath}
-    \begin{split}
-      \frac{C(n)}{n+1}  = \frac{2}{n+1} +
-      \frac{C(n-1)}{n}
-    \end{split}
-  \end{displaymath}
-  We arrived at a recurrence $A(n) = b(n) + A(n-1)$, where $A(n) =
-  \frac{C(n)}{n+1} $ and $b(n) = \frac{2}{n+1} $. So we expand, fixing
-  $C(0) = 0$:
-  \begin{displaymath}
-    \begin{split}
-      \frac{C(n)}{n+1} &= \frac{2}{n+1} + \frac{C(n-1)}{n} =
-      \frac{2}{n+1} +
-      \frac{2}{n} + \frac{C(n-2)}{n-1}\\
-      &= \frac{2}{n+1} + \frac{2}{n} + \ldots +
-      \frac{2}{3} + \frac{2}{2} + \frac{C(0)}{1}\\
-      &= \frac{2}{n+1} + \frac{2}{n} + \ldots +
-      \frac{2}{3} + 1\\
-      &= 2\left(\frac{1}{n+1} + \frac{1}{n} + \ldots +
-        \frac{1}{3}\right) + 1\\
-      &= 2\left(\frac{1}{n+1} + \frac{1}{n} + \ldots +
-        \frac{1}{3}\right) +2\frac{1}{2} + 2
-      + 1 -2\frac{1}{2} - 2\\
-      &= 2\left(\frac{1}{n+1} + \frac{1}{n} + \ldots +
-        \frac{1}{3}+
-        \frac{1}{2}+
-        1\right) -2 \\
-      &= 2(H_{n+1}-1) 
-    \end{split}
-  \end{displaymath}
-  Having recognized the harmonic numbers $H_{n+1}=\left(\frac{1}{n+1}
-    + \frac{1}{n} + \ldots + \frac{1}{3}+ \frac{1}{2}+ 1\right)$, the
-  final result is $$C(n) = 2(n+1)(H_{n+1}-1)$$.
-
 \end{description}
+We explain the average case in a dedicated section.
 
- 
+\subsection{QUICKSORT: On the average number of checks}
+
+To study this case we have to consider all
+elements of $\Omega$ (recall that $w \in \Omega \rightarrow (w[i]\in
+\{1,\ldots,n\}) \wedge (\forall i\not =j: w[i]\not=w[j])$). First of
+all we can suppose that $j$ is the $pivot$, hence a generic $w$ will
+have this structure:
+\begin{displaymath}
+  w = (C_{j-1} \quad C_{n-j} \quad j)
+\end{displaymath}
+where $C_k$ is a vector of length $k$. We can consider the
+probability to have $j$ as $pivot$ considering the uniform
+distribution on $\Omega$:
+\begin{displaymath}
+  \mathbb{P}\left(w\in\Omega: w[n]=j \right) =
+  \frac{(n-1)!}{n!} =  \frac{1}{n} 
+\end{displaymath}
+But every keys $j \in \{1,\ldots,n\}$ can be the $pivot$, so we can
+compose:
+\begin{displaymath}
+  C(n) = (n+1) +  \frac{1}{n}\sum_{j=1}^{n}{C(j-1) + C(n-j)} 
+\end{displaymath}
+Observing the sum when $j$ runs:
+\begin{displaymath}
+  \begin{split}
+    j=1 &\rightarrow C(0) + C(n-1) \\
+    j=2 &\rightarrow C(1) + C(n-2) \\
+    \ldots& \\
+    j=n-1 &\rightarrow C(n-2) + C(1) \\
+    j=n &\rightarrow C(n-1) + C(0) \\
+  \end{split}
+\end{displaymath}
+Hence we can rewrite:
+\begin{displaymath}
+  C(n) = (n+1) +  \frac{2}{n}\sum_{j=0}^{n-1}{C(j)} 
+\end{displaymath}
+Now we do some manipulation:
+\begin{displaymath}
+  \begin{split}
+    C(n) &= (n+1) + \frac{2}{n}\sum_{j=0}^{n-1}{C(j)}\\
+    nC(n) &= n(n+1) + 2\sum_{j=0}^{n-1}{C(j)}
+  \end{split}
+\end{displaymath}
+Subtract the previous $(n-1)$ term to both members:
+\begin{displaymath}
+  \begin{split}
+    nC(n) -(n-1)C(n-1) &= n(n+1) + 2\sum_{j=0}^{n-1}{C(j)} \\
+    &-\left((n-1)((n-1)+1) + 2\sum_{j=0}^{(n-1)-1}{C(j)}\right) \\
+    % nC(n) -(n-1)C(n-1)
+    &= n(n+1) + 2\sum_{j=0}^{n-1}{C(j)} \\
+    &-n(n-1) - 2\sum_{j=0}^{n-2}{C(j)} \\
+    &= n(n+1-(n-1)) + 2C(n-1) \\
+    &= 2(n + C(n-1)) \\      
+  \end{split}
+\end{displaymath}
+Getting $nC(n) = 2n + (n+1)C(n-1)$, divide both member by $n(n+1)$:
+\begin{displaymath}
+  \begin{split}
+    \frac{C(n)}{n+1}  = \frac{2}{n+1} +
+    \frac{C(n-1)}{n}
+  \end{split}
+\end{displaymath}
+We arrived at a recurrence $A(n) = b(n) + A(n-1)$, where $A(n) =
+\frac{C(n)}{n+1} $ and $b(n) = \frac{2}{n+1} $. So we expand, fixing
+$C(0) = 0$:
+\begin{displaymath}
+  \begin{split}
+    \frac{C(n)}{n+1} &= \frac{2}{n+1} + \frac{C(n-1)}{n} =
+    \frac{2}{n+1} +
+    \frac{2}{n} + \frac{C(n-2)}{n-1}\\
+    &= \frac{2}{n+1} + \frac{2}{n} + \ldots +
+    \frac{2}{3} + \frac{2}{2} + \frac{C(0)}{1}\\
+    &= \frac{2}{n+1} + \frac{2}{n} + \ldots +
+    \frac{2}{3} + 1\\
+    &= 2\left(\frac{1}{n+1} + \frac{1}{n} + \ldots +
+      \frac{1}{3}\right) + 1\\
+    &= 2\left(\frac{1}{n+1} + \frac{1}{n} + \ldots +
+      \frac{1}{3}\right) +2\frac{1}{2} + 2
+    + 1 -2\frac{1}{2} - 2\\
+    &= 2\left(\frac{1}{n+1} + \frac{1}{n} + \ldots +
+      \frac{1}{3}+
+      \frac{1}{2}+
+      1\right) -2 \\
+    &= 2(H_{n+1}-1) 
+  \end{split}
+\end{displaymath}
+Having recognized the harmonic numbers $H_{n+1}=\left(\frac{1}{n+1} +
+  \frac{1}{n} + \ldots + \frac{1}{3}+ \frac{1}{2}+ 1\right)$, the
+final result is $$C(n) = 2(n+1)(H_{n+1}-1)$$
+
+In order to bound $C(n)$ we have to recall that $H_n \sim ln(n) +
+\gamma$, hence $C(n) \in O(nlogn)$.
+
+From a practical point of view, to avoid the worst case, when a
+sorting problem is approached with the QUICKSORT algorithm we can
+choose to do one of the following actions before starting the sorting
+process:
+\begin{itemize}
+\item shuffling the input vector and proceed with the algorithm
+  described above;
+\item choose the $pivot$ element at random, move it in the right-most
+  position and proceed with the algorithm described above.
+\end{itemize}
+Each of the two tricks require linear time in the dimension of the
+input vector and allow us to use the result of the average case and
+working with $O(nlogn)$ number of checks.
+
+\subsection{QUICKSORT: On the average number of swaps}
+The recurrence for the average number of swaps is as follow:
+\begin{displaymath}
+  S(n) =  \frac{n-2}{6} +  \frac{1}{n} \sum_{j=1}^{n}{S(j-1) + S(n-j)} 
+\end{displaymath}
+We proceed the proof in two stages, first studying
+\begin{displaymath}
+  one: \mathbb{E} \left[K_j \right]  = \frac{(j-1)(n-j)}{n-1} 
+\end{displaymath}
+where $K_j$ is a random variable that depends on $j$, after
+\begin{displaymath}
+  two: \frac{n-2}{6} = \frac{1}{n}\sum_{j=1}^{n}{
+    \mathbb{E} \left[K_j \right] }
+\end{displaymath}
+In what follow, suppose to have a probability space $\Omega$ as
+defined in the previous sections and an uniform distribution above it.
+\begin{proof}[Proof of $one$]
+  Again, suppose the $pivot$ is $j \in \left \lbrace
+    1,\ldots,n \right\rbrace $. We define the random variable $K_j:
+  \Omega \rightarrow \mathbb{R}$ such that:
+  \begin{displaymath}
+    \begin{split}
+      w[n] = j &\rightarrow K_j(w) = s \\
+      w[n] \not= j &\rightarrow K_j(w) = 0 \\
+    \end{split}
+  \end{displaymath}
+  where $s$ is the number of swaps performed by the partitioning phase
+  of QUICKSORT given an input vector $w$ of length $n$ (hence the
+  variable $K_j$ counts the number of swaps). Now we can compute the
+  probability to have $k$ swaps when $j$ is the $pivot$:
+  \begin{displaymath}
+    \mathbb{P}\left(K_j = k \right) =  \frac{{{n-j}\choose{k}}
+      {{j-1}\choose{k}} (n-j)! (j-1)! }{(n-1)!} 
+  \end{displaymath}
+  We can justify the above formula in the following steps:
+  \begin{itemize}
+  \item we have $k$ swaps when $\left| \left \lbrace
+        w_i : w_i < j \right\rbrace \right| = k$ and
+    $\left| \left \lbrace
+        w_i : w_i > j \right\rbrace \right| = k$
+  \item we can choose $k$ keys from $\left \lbrace w_i : w_i < j
+    \right\rbrace$ in ${{j-1}\choose{k}}$ ways and, for each choice,
+    there are $(j-1)!$ ways to sort them;
+  \item we can choose $k$ keys from $\left \lbrace w_i : w_i > j
+    \right\rbrace$ in ${{n-j}\choose{k}}$ ways and, for each choice,
+    there are $(n-j)!$ ways to sort them;
+  \item the total number of possible permutation of $n$ keys excluding
+    the $pivot$ (which is fixed in the right-most position) is
+    $(n-1)!$
+  \end{itemize}
+  Now we study the mean of the variable $K_j$:
+  \begin{displaymath}
+    \mathbb{E} \left[ K_j \right] = \sum_{k \geq 0}{k \mathbb{P}\left(
+        K_j = k      \right) } 
+  \end{displaymath}
+  Using ${{n}\choose{m}} =  \frac{n!}{m!(n-m)!} $, we can rewrite:
+  \begin{displaymath}
+    \mathbb{P}\left(K_j = k \right) =  {{n-j}\choose{k}}
+    {{j-1}\choose{k}} \frac{(n-j)! (j-1)! }{(n-1)!} =  {{n-j}\choose{k}}
+    {{j-1}\choose{k}} {{n-1}\choose{j-1}}^{-1}
+  \end{displaymath}
+  We put the previous rewrite of $\mathbb{P}\left(K_j = k \right)$ into
+  the definition of $\mathbb{E} \left[ K_j \right]$:
+  \begin{displaymath}
+    \mathbb{E} \left[ K_j \right] = \sum_{k \geq 0}{k \mathbb{P}\left(
+        K_j = k      \right) }  = \sum_{k \geq 0}{k \frac{{{n-j}\choose{k}}
+        {{j-1}\choose{k}}}{{{n-1}\choose{j-1}}}}
+  \end{displaymath}
+  Using the following rewrite for ${{j-1}\choose{k}}$:
+  \begin{displaymath}
+    {{j-1}\choose{k}} =  \frac{(j-1)!}{k!(j-1-k)!} =
+    \frac{(j-1)}{k} \frac{(j-2)!}{(k-1)!(j-1-k)!} =
+    \frac{(j-1)}{k}{{j-2}\choose{k-1}} 
+  \end{displaymath}
+  And ${{n}\choose{m}} = {{n}\choose{n-m}}$ implies ${{j-2}\choose{k-1}}
+  = {{j-2}\choose{j-2 -(k-1)}} = {{j-2}\choose{j -k-1}}$, then:
+  \begin{displaymath}
+    \begin{split}
+      \mathbb{E} \left[ K_j \right] &= \sum_{k \geq 0}{k
+        \mathbb{P}\left( K_j = k \right) } =
+      \frac{1}{{{n-1}\choose{j-1}}} \sum_{k \geq 0}{k
+        {{n-j}\choose{k}} {{j-1}\choose{k}}} \\
+      &= \frac{1}{{{n-1}\choose{j-1}}} \sum_{k \geq 0}{k
+        {{n-j}\choose{k}}  \frac{j-1}{k}{{j-2}\choose{j-k-1}}}
+      = \frac{j-1}{{{n-1}\choose{j-1}}} \sum_{k \geq 0}{
+        {{n-j}\choose{k}} {{j-2}\choose{j-k-1}}}
+    \end{split}
+  \end{displaymath}
+  Now we recognize the Vandermonde result:
+  \begin{displaymath}
+    \sum_{k \geq 0}{{{r}\choose{k}} {{s}\choose{n-k}}  } =
+    {{r + s}\choose{n}} 
+  \end{displaymath}
+  which can be proved directly because the ipergeometric distribution
+  has exactly the same structure, and being a distribution, it sum up
+  to 1. So we use this result applying it to $\sum_{k \geq 0}{
+    {{n-j}\choose{k}} {{j-2}\choose{j-k-1}}} = {{n-2}\choose{j-1}} $,
+  obtaining:
+  \begin{displaymath}
+    \begin{split}
+      \mathbb{E} \left[ K_j \right] &= \frac{j-1}{{{n-1}\choose{j-1}}}
+      {{n-2}\choose{j-1}} =
+      \frac{(j-1)(n-2)!(j-1)!(n-j)!}{(n-1)!(j-1)!(n-j-1)!}=\\
+      &=\frac{(j-1)(n-2)!(j-1)!(n-j)(n-j-1)!}
+      {(n-1)(n-2)!(j-1)!(n-j-1)!}= \frac{(j-1)(n-j)}{n-1} 
+    \end{split}
+  \end{displaymath}
+\end{proof}
+Now we proceed with the second proof:
+\begin{proof}[Proof of $two$]
+  Let us start with:
+  \begin{displaymath}
+    \begin{split}
+      \frac{1}{n}\sum_{j=1}^{n}{\mathbb{E} \left[K_j \right] } &=
+      \frac{1}{n} \sum_{j=1}^{n}{\frac{(j-1)(n-j)}{n-1}} =
+      \frac{1}{n(n-1)} \sum_{j=1}^{n}{(j-1)(n-j)}=\\
+      &=\frac{1}{n(n-1)} \sum_{j=1}^{n}{(j(1+n)-j^2-n)} \\
+      &=\frac{1}{n(n-1)} \left( (n+1)\sum_{j=1}^{n}{j} -
+        \sum_{j=1}^{n}{j^2} -n \sum_{j=1}^{n}{1}  \right)\\
+      &=\frac{1}{n(n-1)}\left( \frac{n(n+1)^2}{2} -
+        \frac{n(n+1)(2n+1)}{6} - n^2 \right) = \ldots =  \frac{n-2}{6} 
+    \end{split}
+  \end{displaymath} 
+\end{proof}
+
+We are now ready to solve the main recurrence using the same strategy
+for the average number of checks, fixing $S(0) = S(1) = S(2) = 0$:
+\begin{displaymath}
+  \begin{split}
+    nS(n) - (n-1)S(n-1) &=  \frac{2n-3}{6} + 2S(n-1)\\
+    \frac{S(n)}{n+1} &=  \frac{S(n-1)}{n} +  \frac{2n -3}{6n(n+1)} =
+      % \frac{S(2)}{3} +
+      \sum_{k=3}^{n}{ \frac{2k-3}{6k(k+1)} }  
+  \end{split}
+\end{displaymath}
+
