@@ -1,0 +1,101 @@
+
+\section{Elements of combinatorics calculus}
+
+\subsection{Permutations $P_n$}
+
+Given a vector $\left ( a_1, \ldots, a_n \right) $ the number of
+permutations (or the possible ways to order the elements $a_i$) is
+$n!$. A simple proof of that is as follow: for the position 1 are
+available $n$ elements, for the second position (after fixing the
+first) are available $n-1$ elements arriving to the position $n$ where
+only one element is left, hence $n!$.
+
+It is interesting to show how to add a new element $a_{n+1}$ to
+existing permutations from the set $\left \lbrace a_1, \ldots,
+  a_n\right\rbrace $, this is indeed another proof (by induction) to
+the number $n!$ justified above. Having the permutations of length $n$
+by hypothesis, we study how is it possible to add $a_{n+1}$ into a
+given permutation $w = \left ( a_1, a_2, \ldots, a_n\right) $:
+\begin{displaymath}
+  \begin{split}
+    &\left ( a_{n+1}, a_1, a_2, \ldots, a_n\right)\\
+    &\left ( a_1, a_{n+1}, a_2, \ldots, a_n\right)\\
+    &\ldots\\
+    &\left ( a_1, a_2, \ldots, a_{n+1}, a_n\right)\\
+    &\left ( a_1, a_2, \ldots, a_n, a_{n+1}\right)\\    
+  \end{split}
+\end{displaymath}
+Those new vectors are $n+1$ because in the original permutation $w =
+\left ( a_1, a_2, \ldots, a_n\right) $ there are $n-1$ ``internal
+holes'' between the consecutive elements $a_i$ and $a_{i+1}$, plus the
+left-most and right-most ``external holes'' $(\Box, a_1,...)$ and
+$(..., a_n, \Box)$. So far we've considered only one permutation $w$
+of $n$ elements, repeating the same reasoning for the others $w_i$
+(which are $n!-1$), it must exists $n+1$ new vectors for each of
+them. So the number of permutation of $n+1$ elements is $(n+1)n! =
+(n+1)!$ (what we would have expected).
+
+\subsection{Dispositions $D_{n,k}$}
+
+A special case of permutations are dispositions, that is the number of
+different ways in which $k$ elements can be choosen from a set of
+length $n$, with $n \geq k$. We have $n$ elements available for the
+first choice, $n-1$ for the second choice arriving to $n-k+1$ elements
+for the $k$-th choice, hence $D_{n,k} = n(n-1)\cdots(n-k+1)$.  We can
+write an example to show how to build dispositions. Let $\Omega =
+\left \lbrace a,b,c, d\right\rbrace $ and we want to build $D_{4,2}$,
+that is the set of ordered pairs, paying attention that $ \forall i:
+(i,i)\not \in D_{n,2}$. The following pairs are the candidates (the
+pairs of the form $(i,i)$ aren't listed because after we choose $i$
+for the first position it isn't possible to choose it again for the
+second):
+\begin{displaymath}
+  \begin{split}
+    \left ( a, b \right)\quad
+    \left ( a, c \right)\quad
+    \left ( a, d \right)\\
+    \left ( b, a \right)\quad
+    \left ( b, c \right)\quad
+    \left ( b, d \right)\\
+    \left ( c, a \right)\quad
+    \left ( c, b \right)\quad
+    \left ( c, d \right)\\
+    \left ( d, a \right)\quad
+    \left ( d, b \right)\quad
+    \left ( d, c \right)\\
+  \end{split}
+\end{displaymath}
+We've build the previous matrix because we take care about
+the order in which the pairs are built. In the next section we'll see
+that there exists another set that doesn't take care of the order.
+
+\subsection{Combinations $C_{n,k}$}
+
+A special case of dispositions are combinations. With combinations,
+notation $C_{n,k}$, we mean a set of sets $\left \lbrace \left \lbrace
+    a_{i_1}, \ldots, a_{i_k} \right\rbrace \right\rbrace$ without
+regard to the order in which $a_{i_1}, \ldots, a_{i_k}$ appear. We can
+see combinations like dispositions modulo the symmetric relation:
+$(j,i) \in C_{n,2} \rightarrow (i, j) \not \in C_{n,2}$ and $(i,i)\not
+\in C_{n,2}, \forall i$). The following submatrix is to combinations
+as the previous one is to dispositions:
+\begin{displaymath}
+  \begin{split}
+    \left ( a, b \right)\quad
+    \left ( a, c \right)\quad
+    \left ( a, d \right)\\
+    \quad
+    \left ( b, c \right)\quad
+    \left ( b, d \right)\\
+    \quad
+    \quad
+    \left ( c, d \right)\\
+    \quad
+    \quad
+    \\
+  \end{split}
+\end{displaymath}
+The combinations matrix is obtained by the disposition matrix, broking
+the symmetry, only half of them belongs to the dispositions
+$C_{4,2}$. Hence $C_{n,k} = {{n}\choose{k}} = \frac{D_{n,k}}{k!} =
+\frac{n!}{k!(n-k)!)} $.
