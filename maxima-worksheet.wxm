@@ -1,0 +1,65 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 12.04.0 ] */
+
+/* [wxMaxima: input   start ] */
+sum(1/x, x, 1, inf);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+integrate(1/x, x);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+pf:partfrac((2*k-3)/(6*k*(k-1)),k);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+integrate(pf , k);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+wxplot2d([(%o9) ], [k,-1,10])$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+wxplot2d([(%o7) ], [k,-3,3])$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+f(z):=1/sqrt(1+z);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+powerseries(%o19, z, 0);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+taylor(f(z), z, 0, 6),numer;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+mapBinomial(x):=binomial (-1/2, x);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+map (mapBinomial, [0, 1, 2, 3, 4, 5, 6]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+byDef(k):=(((-1)^k)/(4^k))*binomial(2*k,k);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+map (byDef, [0, 1, 2, 3, 4, 5, 6]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+tex((%o54)/T/)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+tex(1-z/2+(3*z^2)/8-(5*z^3)/16+(35*z^4)/128-(63*z^5)/256+(231*z^6)/1024+...)$
+/* [wxMaxima: input   end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$

@@ -280,4 +280,26 @@ We finish this section on combinatorics with some exercises.
       {{2k}\choose{k}}
     \end{split}
   \end{displaymath}
+  Using Maxima we expand with Taylor:
+  \\\texttt{f(z):=1/sqrt(1+z);\\
+    taylor(f(z), z, 0, 6),numer;}\\
+  Getting:
+  \begin{displaymath}
+    f(z)=1-z/2+(3*z^2)/8-(5*z^3)/16+(35*z^4)/128-(63*z^5)/256+(231*z^6)/1024+...
+  \end{displaymath}
+  Now we do a simple check:
+  \\\texttt{mapBinomial(x):=binomial (-1/2, x);\\
+    map (mapBinomial, [0, 1, 2, 3, 4, 5, 6]);}\\
+  Getting:
+  \begin{displaymath}
+    [1,-1/2,3/8,-5/16,35/128,-63/256,231/1024]
+  \end{displaymath}
+  Using the definition:
+  \\\texttt{byDef(k):=$(((-1)^k)/(4^k))$*binomial(2*k,k);\\
+    map (byDef, [0, 1, 2, 3, 4, 5, 6]);}\\
+  Getting:
+  \begin{displaymath}
+    [1,-1/2,3/8,-5/16,35/128,-63/256,231/1024]
+  \end{displaymath}
+
 \end{proof}
