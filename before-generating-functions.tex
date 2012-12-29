@@ -325,8 +325,7 @@ Now we proceed with the second proof:
 
 We are now ready to solve the main recurrence using the same strategy
 for the average number of checks, fixing $S(0) = S(1) = S(2) =
-0$\footnote{put after the displaymath environment the proof that the
-  specified quantity is actually n logn}:
+0$:
 \begin{displaymath}
   \begin{split}
     nS(n) - (n-1)S(n-1) &=  \frac{2n-3}{6} + 2S(n-1)\\
@@ -335,6 +334,17 @@ for the average number of checks, fixing $S(0) = S(1) = S(2) =
       \sum_{k=3}^{n}{ \frac{2k-3}{6k(k+1)} }  
   \end{split}
 \end{displaymath}
+Study the general term of the summation $ \frac{2k-3}{6k(k+1)}$ and
+decompose it in partial fractions using the Maxima expression:
+\\\texttt{pf:partfrac((2*k-3)/(6*k*(k-1)),k);}\\
+results in:
+\begin{displaymath}
+   \frac{2k-3}{6k(k+1)} = \frac{1}{2\,k}-\frac{1}{6\,\left( k-1\right) }
+\end{displaymath}
+In order to find the complexity we use Maxima again:
+\\\texttt{integrate(pf , k);}\\
+results in $ log(k)/2-log(k-1)/6$. Hence $S(n) \in O(n logn)$.
+
 
 \subsection{Final consideration}
 

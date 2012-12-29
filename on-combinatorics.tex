@@ -155,6 +155,20 @@ Now we can substitute the previous into $f(z)$:
   In this case $r= \frac{1}{2} $, so $f(z) = \sqrt{1+z} =
   {{\frac{1}{2}}\choose{0}}z^0 + {{\frac{1}{2}}\choose{1}}z^1 +
   {{\frac{1}{2}}\choose{2}}z^2 + {{\frac{1}{2}}\choose{3}}z^3 + \ldots$
+
+  Using Maxima we expand with Taylor:
+  \\\texttt{f(z):=sqrt(1+z);\\taylor(f(z), z, 0, 6),numer;}\\
+  Getting:
+  \begin{displaymath}
+    f(z) = 1+z/2-z^2/8+z^3/16-(5*z^4)/128+(7*z^5)/256-(21*z^6)/1024+...
+  \end{displaymath}
+  Now we do a simple check:
+  \\\texttt{mapBinomial(x):=binomial (1/2, x);\\
+    map (mapBinomial, [0, 1, 2, 3, 4, 5, 6]);}\\
+  Getting:
+  \begin{displaymath}
+    [1,1/2,-1/8,1/16,-5/128,7/256,-21/1024]
+  \end{displaymath}
 \end{proof}
 
 Now suppose to have ${{-n}\choose{k}}, n\in \mathbb{N}  $:
