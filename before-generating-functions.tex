@@ -55,8 +55,9 @@ performed.
 We can observe that in order to move the $pivot$ element in its final
 position, it is necessary for two keys ($7, 25$) to be checked
 twice. Hence, given a vector of length $n$, the number of checks
-performed is $(n-1) + 2$ ($n-1$ because the $pivot$ isn't indexed
-neither with $i$ nor with $j$).
+performed before recurring on left and right partitions is $(n-1) + 2$
+(where $n-1$ is explained by the $pivot$ isn't indexed neither with
+$i$ nor with $j$).
 
 We can analyze the number of checks performed, partitioning it in the
 following cases:
@@ -101,8 +102,10 @@ distribution on $\Omega$:
   \mathbb{P}\left(w\in\Omega: w[n]=j \right) =
   \frac{(n-1)!}{n!} =  \frac{1}{n} 
 \end{displaymath}
-But every keys $j \in \{1,\ldots,n\}$ can be the $pivot$, so we can
-compose:
+Our goal here is to build a function $C(n)$ which counts the average
+number of checks during an execution of the algorithm given an input
+vector of length $n$. In order to do that observe that every keys $j
+\in \{1,\ldots,n\}$ can be the $pivot$, we can write:
 \begin{displaymath}
   C(n) = (n+1) +  \frac{1}{n}\sum_{j=1}^{n}{C(j-1) + C(n-j)} 
 \end{displaymath}
@@ -192,6 +195,10 @@ input vector and allow us to use the result of the average case and
 working with $O(nlogn)$ number of checks.
 
 \subsection{QUICKSORT: On the average number of swaps}
+Our goal here is to build a function $S(n)$ which counts the average
+number of swaps during an execution of the algorithm given an input
+vector of length $n$.
+
 The recurrence for the average number of swaps is as follow:
 \begin{displaymath}
   S(n) =  \frac{n-2}{6} +  \frac{1}{n} \sum_{j=1}^{n}{S(j-1) + S(n-j)} 
@@ -317,7 +324,9 @@ Now we proceed with the second proof:
 \end{proof}
 
 We are now ready to solve the main recurrence using the same strategy
-for the average number of checks, fixing $S(0) = S(1) = S(2) = 0$:
+for the average number of checks, fixing $S(0) = S(1) = S(2) =
+0$\footnote{put after the displaymath environment the proof that the
+  specified quantity is actually n logn}:
 \begin{displaymath}
   \begin{split}
     nS(n) - (n-1)S(n-1) &=  \frac{2n-3}{6} + 2S(n-1)\\
@@ -327,3 +336,12 @@ for the average number of checks, fixing $S(0) = S(1) = S(2) = 0$:
   \end{split}
 \end{displaymath}
 
+\subsection{Final consideration}
+
+We've finished our treatment of sorting algorithms based on checks
+between keys. We've seen theoretical results under a probability space
+$\Omega$ composed by permutations of $n$ objects. This allow us to
+remark that if we setup a simulation where we apply one algorithm seen
+above to the entire space $\Omega$ with vectors of a given dimension
+$n$, then the average number of checks and swaps must be equal to the
+theoretical results obtained in the previous formulas.
