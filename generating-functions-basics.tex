@@ -202,6 +202,94 @@ taylor(sum((sum(a[k]*b[n-k],k,0,n))*t^n,n,0,inf), t, 0, 3);
 So $\mathcal{G}(a_n)\mathcal{G}(b_n) =\mathcal{G}\left(
   \sum_{k=0}^{n}{a}_{k}\,{b}_{n-k}\right)$.
 
+\subsection{Translation of $\mathcal{G} $}
+
+Let $\{a_n\}_{n\in\mathbb{N} }$ and $\{a_{n+1}\}_{n\in\mathbb{N} } $
+be two sequences, $a(t)$ and $b(t)$ their formal power series
+respectively. We study how we can obtain $\mathcal{G}(a_{n+1} $ from
+$\mathcal{G} (a_n)$ with Maxima:\\
+\noindent
+%%%%%%%%%%%%%%%
+%%% INPUT:
+\begin{minipage}[t]{8ex}{\color{red}\bf
+\begin{verbatim}
+(%i237) 
+\end{verbatim}}
+\end{minipage}
+\begin{minipage}[t]{\textwidth}{\color{blue}
+\begin{verbatim}
+makeSequence(t,j,offset):=sum (j[i+offset]*t^i, i, 0, inf);
+as:taylor(makeSequence(t,a,0), t, 0, 4);
+bs:taylor(makeSequence(t,a,1), t, 0, 3);
+(as-a[0])/t;
+\end{verbatim}}
+\end{minipage}
+%%% OUTPUT:
+\definecolor{labelcolor}{RGB}{100,0,0}
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o237) }
+\mathrm{makeSequence}\left( t,j,offset\right) :=\sum_{i=0}^{\infty }{j}_{i+offset}\,{t}^{i}
+\end{math}\\
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o238) }
+{a}_{0}+{a}_{1}\,t+{a}_{2}\,{t}^{2}+{a}_{3}\,{t}^{3}+{a}_{4}\,{t}^{4}+...
+\end{math}\\
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o239) }
+{a}_{1}+{a}_{2}\,t+{a}_{3}\,{t}^{2}+{a}_{4}\,{t}^{3}+...
+\end{math}\\
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o240) }
+{a}_{1}+{a}_{2}\,t+{a}_{3}\,{t}^{2}+{a}_{4}\,{t}^{3}+...
+\end{math}\\
+%%%%%%%%%%%%%%%
+So $\mathcal{G}(a_{n+1}) =  \frac{\mathcal{G} (a_n) - a_0}{t}$. We can
+generalize:\\
+\noindent
+%%%%%%%%%%%%%%%
+%%% INPUT:
+\begin{minipage}[t]{8ex}{\color{red}\bf
+\begin{verbatim}
+(%i249) 
+\end{verbatim}}
+\end{minipage}
+\begin{minipage}[t]{\textwidth}{\color{blue}
+\begin{verbatim}
+load("simplify_sum");
+sequence:makeSequence(t,a,0);
+translated:makeSequence(t,a,s);
+(sequence - sum(a[i]*t^i,i,0,s-1))/t^s;
+(taylor(sequence, t, 0, 55) - sum(a[i]*t^i,i,0,49))/t^50;
+\end{verbatim}}
+\end{minipage}
+%%% OUTPUT:
+\definecolor{labelcolor}{RGB}{100,0,0}
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o250) }
+\sum_{i=0}^{\infty }{a}_{i}\,{t}^{i}
+\end{math}\\
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o251) }
+\sum_{i=0}^{\infty }{a}_{s+i}\,{t}^{i}
+\end{math}\\
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o252) }
+\frac{\left( \sum_{i=0}^{\infty }{a}_{i}\,{t}^{i}\right) -\sum_{i=0}^{s-1}{a}_{i}\,{t}^{i}}{{t}^{s}}
+\end{math}\\
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o253) }
+{a}_{50}+{a}_{51}\,t+{a}_{52}\,{t}^{2}+{a}_{53}\,{t}^{3}+{a}_{54}\,{t}^{4}+{a}_{55}\,{t}^{5}+...
+\end{math}\\
+%%%%%%%%%%%%%%%
+where in the last line we've fixed $s = 50$. In general holds
+$\mathcal{G}(a_{n+s}) = \frac{\mathcal{G} (a_n)
+  -\sum_{i=0}^{s-1}{a}_{i}\,{t}^{i}}{{t}^{s}}$.
+
+
+
+
+
+
 
 
 
