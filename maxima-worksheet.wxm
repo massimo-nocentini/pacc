@@ -1,64 +1,74 @@
 /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
 /* [ Created with wxMaxima version 12.04.0 ] */
 
-/* [wxMaxima: input   start ] */
-sum(1/x, x, 1, inf);
-/* [wxMaxima: input   end   ] */
+/* [wxMaxima: title   start ]
+Design and Analysis of Algorithms
+   [wxMaxima: title   end   ] */
+
+/* [wxMaxima: section start ]
+On quicksort average number of swaps
+   [wxMaxima: section end   ] */
 
 /* [wxMaxima: input   start ] */
-integrate(1/x, x);
-/* [wxMaxima: input   end   ] */
-
-/* [wxMaxima: input   start ] */
-pf:partfrac((2*k-3)/(6*k*(k-1)),k);
-/* [wxMaxima: input   end   ] */
-
-/* [wxMaxima: input   start ] */
+generalTerm:(2*k-3)/(6*k*(k-1));
+pf:partfrac(generalTerm,k);
 integrate(pf , k);
 /* [wxMaxima: input   end   ] */
 
-/* [wxMaxima: input   start ] */
-wxplot2d([(%o9) ], [k,-1,10])$
-/* [wxMaxima: input   end   ] */
-
-/* [wxMaxima: input   start ] */
-wxplot2d([(%o7) ], [k,-3,3])$
-/* [wxMaxima: input   end   ] */
+/* [wxMaxima: section start ]
+On combinatorics
+   [wxMaxima: section end   ] */
 
 /* [wxMaxima: input   start ] */
 f(z):=1/sqrt(1+z);
-/* [wxMaxima: input   end   ] */
-
-/* [wxMaxima: input   start ] */
-powerseries(%o19, z, 0);
-/* [wxMaxima: input   end   ] */
-
-/* [wxMaxima: input   start ] */
-taylor(f(z), z, 0, 6),numer;
-/* [wxMaxima: input   end   ] */
-
-/* [wxMaxima: input   start ] */
-mapBinomial(x):=binomial (-1/2, x);
-/* [wxMaxima: input   end   ] */
-
-/* [wxMaxima: input   start ] */
+taylor(f(z), z, 0, 6);
+mapBinomial(x):=binomial (-(1/2), x);
 map (mapBinomial, [0, 1, 2, 3, 4, 5, 6]);
-/* [wxMaxima: input   end   ] */
-
-/* [wxMaxima: input   start ] */
 byDef(k):=(((-1)^k)/(4^k))*binomial(2*k,k);
-/* [wxMaxima: input   end   ] */
-
-/* [wxMaxima: input   start ] */
 map (byDef, [0, 1, 2, 3, 4, 5, 6]);
 /* [wxMaxima: input   end   ] */
 
+/* [wxMaxima: section start ]
+Generating Function Basics
+   [wxMaxima: section end   ] */
+
+/* [wxMaxima: subsect start ]
+First examples before properties
+   [wxMaxima: subsect end   ] */
+
 /* [wxMaxima: input   start ] */
-tex((%o54)/T/)$
+makelist(naturals(n),n,0, 6);
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
-tex(1-z/2+(3*z^2)/8-(5*z^3)/16+(35*z^4)/128-(63*z^5)/256+(231*z^6)/1024+...)$
+load("ggf");
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+ggf(makelist(n,n,0, 6));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+niceindicespref;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+sequence:makelist(n,n,0, 6);
+taylor(ggf(sequence), x, 0, 8);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+onlyEvenTerms(n):=if is(mod (n,2)=0) then 1 else 0$
+sequence:makelist(onlyEvenTerms(n),n,0, 6);
+ggfOnlyEvenTerms:ggf(sequence);
+taylor(ggfOnlyEvenTerms, x, 0, 12);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+onlyFirstThreeTerms(n):=if is(n <= 2) then 1 else 0$
+sequence:makelist(onlyFirstThreeTerms(n),n,0, 6);
+ggfOnlyFirstThreeTerms:ggf(sequence);
+taylor(ggfOnlyFirstThreeTerms, x, 0, 100);
 /* [wxMaxima: input   end   ] */
 
 /* Maxima can't load/batch files which end with a comment! */

@@ -335,15 +335,39 @@ for the average number of checks, fixing $S(0) = S(1) = S(2) =
   \end{split}
 \end{displaymath}
 Study the general term of the summation $ \frac{2k-3}{6k(k+1)}$ and
-decompose it in partial fractions using the Maxima expression:
-\\\texttt{pf:partfrac((2*k-3)/(6*k*(k-1)),k);}\\
-results in:
-\begin{displaymath}
-   \frac{2k-3}{6k(k+1)} = \frac{1}{2\,k}-\frac{1}{6\,\left( k-1\right) }
-\end{displaymath}
-In order to find the complexity we use Maxima again:
-\\\texttt{integrate(pf , k);}\\
-results in $ log(k)/2-log(k-1)/6$. Hence $S(n) \in O(n logn)$.
+decompose it in partial fractions using Maxima:\\
+\noindent
+%%%%%%%%%%%%%%%
+%%% INPUT:
+\begin{minipage}[t]{8ex}{\color{red}\bf
+\begin{verbatim}
+(%i131) 
+\end{verbatim}}
+\end{minipage}
+\begin{minipage}[t]{\textwidth}{\color{blue}
+\begin{verbatim}
+generalTerm:(2*k-3)/(6*k*(k-1));
+pf:partfrac(generalTerm,k);
+integrate(pf , k);
+\end{verbatim}}
+\end{minipage}
+%%% OUTPUT:
+\definecolor{labelcolor}{RGB}{100,0,0}
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o131) }
+\frac{2\,k-3}{6\,\left( k-1\right) \,k}
+\end{math}\\
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o132) }
+\frac{1}{2\,k}-\frac{1}{6\,\left( k-1\right) }
+\end{math}\\
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o133) }
+\frac{\mathrm{log}\left( k\right) }{2}-\frac{\mathrm{log}\left( k-1\right) }{6}
+\end{math}
+%%%%%%%%%%%%%%%
+
+Hence $S(n) \in O(n logn)$.
 
 
 \subsection{Final consideration}
