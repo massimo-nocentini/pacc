@@ -3,7 +3,23 @@
 In this section we approach the basics for the generating functions
 topic.
 
+\subsection{Approaching}
 
+The main goal of this section is to manipulate a sequence $\{a_n\}_{n\in
+  \mathbb{N} }$ with a function $a(t)$ such that:
+\begin{displaymath}
+  a(t) = \sum_{n \geq 0}{a_n t^n} 
+\end{displaymath}
+Using $a(t)$ allow us to let $t$ be unbounded and we wont assign any
+value to it (it is just a ``placeholder'').
+
+We introduce an operator $\mathcal{G}$ which consume a sequence
+$\{a_n\}_{n\in \mathbb{N} }$ and produce a function $a(t)$ as defined
+above. In the following examples we experiment a little with Maxima,
+which implement $\mathcal{G}$ with the function 
+\texttt{\color{blue} ggf(s)}, for some sequence $s$.\\
+
+Let $\{a_n = n\}$:\\
 \noindent
 %%%%%%%%%%%%%%%
 %%% INPUT:
@@ -27,9 +43,12 @@ taylor(ggf(sequence), x, 0, 8);
 \begin{math}\displaystyle
 \parbox{8ex}{\color{labelcolor}(\%o110) }
 x+2\,{x}^{2}+3\,{x}^{3}+4\,{x}^{4}+5\,{x}^{5}+6\,{x}^{6}+...
-\end{math}
+\end{math}\\
 %%%%%%%%%%%%%%%
+So $\mathcal{G}(a_n) = a(x)=
+x+2\,{x}^{2}+3\,{x}^{3}+4\,{x}^{4}+5\,{x}^{5}+6\,{x}^{6}+...$\\
 
+Let $\{a_n = 1 \text{ if } n \text{ is even }, 0 \text{ otherwise}\}$:\\
 \noindent
 %%%%%%%%%%%%%%%
 %%% INPUT:
@@ -59,9 +78,12 @@ taylor(ggfOnlyEvenTerms, x, 0, 12);
 \begin{math}\displaystyle
 \parbox{8ex}{\color{labelcolor}(\%o108) }
 1+{x}^{2}+{x}^{4}+{x}^{6}+{x}^{8}+{x}^{10}+{x}^{12}+...
-\end{math}
+\end{math}\\
 %%%%%%%%%%%%%%%
+So $\mathcal{G}(a_n) =
+a(x)=1+{x}^{2}+{x}^{4}+{x}^{6}+{x}^{8}+{x}^{10}+{x}^{12}+...$.\\
 
+Let $\{a_n = 1 \text{ if } n \leq 2,  0 \text{ otherwise}\}$:\\
 \noindent
 %%%%%%%%%%%%%%%
 %%% INPUT:
@@ -91,5 +113,97 @@ taylor(ggfOnlyFirstThreeTerms, x, 0, 100);
 \begin{math}\displaystyle
 \parbox{8ex}{\color{labelcolor}(\%o100) }
 1+x+{x}^{2}+...
-\end{math}
+\end{math}\\
 %%%%%%%%%%%%%%%
+So $\mathcal{G}(a_n) =a(x)=1+{x}+{x}^{2}$.\\
+
+\subsection{Linearity of $\mathcal{G} $}
+Let $\{a_n\}_{n\in\mathbb{N} }$ and $\{b_n\}_{n\in\mathbb{N} } $ be
+two sequences, $a(t)$ and $b(t)$ their formal power series
+respectively. Lets sum both of them:
+\begin{displaymath}
+  \begin{split}
+    \mathcal{G} (a_n)+ \mathcal{G} (b_n) &= a_0 + a_1 t
+    + a_2 t^2 + \ldots + a_n t^n + \ldots \\
+    &+ b_0 + b_1 t + b_2 t^2 + \ldots + b_n t^n + \ldots =\\
+    &= (a_0 + b_0) + (a_1+b_1) t + (a_2 + b_2) t^2 + \ldots +
+    (a_n+b_n) t^n + \ldots =\\
+    &= \mathcal{G}(a_n + b_n) 
+  \end{split}
+\end{displaymath}
+It is possible to generalize, obtaining:
+\begin{displaymath}
+  \begin{split}
+    \alpha\mathcal{G}(a_n) &= \mathcal{G}(\alpha a_n)\\
+    \alpha\mathcal{G}(a_n) +  \beta\mathcal{G}(b_n) &=
+    \mathcal{G}(\alpha a_n + \beta b_n) 
+  \end{split}
+\end{displaymath}
+So $\mathcal{G}$ is a \emph{linear operator}.
+
+\subsection{Convolution of $\mathcal{G} $}
+
+Let $\{a_n\}_{n\in\mathbb{N} }$ and $\{b_n\}_{n\in\mathbb{N} } $ be
+two sequences, $a(t)$ and $b(t)$ their formal power series
+respectively. We study the product $a(t)b(t)$ with Maxima:\\
+\noindent
+%%%%%%%%%%%%%%%
+%%% INPUT:
+\begin{minipage}[t]{8ex}{\color{red}\bf
+\begin{verbatim}
+(%i190) 
+\end{verbatim}}
+\end{minipage}
+\begin{minipage}[t]{\textwidth}{\color{blue}
+\begin{verbatim}
+makeSequence(t,j):=sum (j[i]*t^i, i, 0, inf);
+as:taylor(makeSequence(t,a), t, 0, 3);
+bs:taylor(makeSequence(t,b), t, 0, 3);
+as*bs;
+sum ((sum(a[k]*b[n-k],k,0,n))*t^n, n, 0, inf);
+taylor(sum((sum(a[k]*b[n-k],k,0,n))*t^n,n,0,inf), t, 0, 3);
+\end{verbatim}}
+\end{minipage}
+%%% OUTPUT:
+\definecolor{labelcolor}{RGB}{100,0,0}
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o190) }
+\mathrm{makeSequence}\left( t,j\right) :=\sum_{i=0}^{\infty }{j}_{i}\,{t}^{i}
+\end{math}\\
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o191) }
+{a}_{0}+{a}_{1}\,t+{a}_{2}\,{t}^{2}+{a}_{3}\,{t}^{3}+...
+\end{math}\\
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o192) }
+{b}_{0}+{b}_{1}\,t+{b}_{2}\,{t}^{2}+{b}_{3}\,{t}^{3}+...
+\end{math}\\
+\begin{math}\displaystyle
+  \parbox{8ex}{\color{labelcolor}(\%o193) } {a}_{0}\,{b}_{0}+\left(
+    {a}_{1}\,{b}_{0}+{a}_{0}\,{b}_{1}\right) \,t+\left(
+    {a}_{2}\,{b}_{0}+{a}_{1}\,{b}_{1}+{a}_{0}\,{b}_{2}\right)
+  \,{t}^{2}+\\
+  \left(
+    {a}_{3}\,{b}_{0}+{a}_{2}\,{b}_{1}+{a}_{1}\,{b}_{2}+{a}_{0}\,{b}_{3}\right)
+  \,{t}^{3}+...
+\end{math}\\
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o194) }
+\sum_{n=0}^{\infty }\left( \sum_{k=0}^{n}{a}_{k}\,{b}_{n-k}\right) \,{t}^{n}
+\end{math}\\
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o195) }
+\left( \sum_{k=0}^{0}{b}_{-k}\,{a}_{k}\right) +\left(
+  \sum_{k=0}^{1}{b}_{1-k}\,{a}_{k}\right) \,t+\left(
+  \sum_{k=0}^{2}{b}_{2-k}\,{a}_{k}\right) \,{t}^{2}+\\
+\left( \sum_{k=0}^{3}{b}_{3-k}\,{a}_{k}\right) \,{t}^{3}+...
+\end{math}\\
+%%%%%%%%%%%%%%%
+So $\mathcal{G}(a_n)\mathcal{G}(b_n) =\mathcal{G}\left(
+  \sum_{k=0}^{n}{a}_{k}\,{b}_{n-k}\right)$.
+
+
+
+
+
+
