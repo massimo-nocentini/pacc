@@ -334,6 +334,7 @@ which we solve it with Maxima:\\
 \end{minipage}
 \begin{minipage}[t]{\textwidth}{\color{blue}
 \begin{verbatim}
+makeSequence(t,j):=sum (j[i]*t^i, i, 0, inf)$
 makeSum(n):=sum (a[i]*b[n-i], i, 0, n)$
 as:taylor(makeSequence(t,a), t, 0, 4);
 bs:taylor(makeSequence(t,b), t, 0, 4);
@@ -373,3 +374,57 @@ $b_i$ is one of the solution reported in the Maxima output above. It
 is interesting to observe that it is possible to find $a^{-1}(t)$ if
 the first term of $\{a_n\}_{n\in\mathbb{N} } $ is such that $a_0 \not
 = 0$.
+
+\begin{exercise}
+  Let $a(t) = 1-t$ be a formal power series such that $a(t) =
+  \mathcal{G} (a_n)$. Find $a^{-1}(t)$ and the sequence
+  $\{b_n\}_{n\in\mathbb{N} } $ such that $a^{-1}(t) = \mathcal{G}(b_n)
+  $.
+\end{exercise}
+\begin{proof}[Sol]
+  We can find it immediately setting $a(t)b(t)=1(t)$ and resolving
+  respect to $b(t)$ which yields $b(t) = \frac{1}{1-t} $.
+
+  To find the sequence $\{b_n\}_{n\in\mathbb{N} } $ such that
+  $a^{-1}(t) = \mathcal{G}(b_n) $, we use Maxima (where
+  \texttt{\color{blue}sol} is the vector obtained in the previous
+  Maxima output):\\
+\noindent
+%%%%%%%%%%%%%%%
+%%% INPUT:
+\begin{minipage}[t]{8ex}{\color{red}\bf
+\begin{verbatim}
+(%i90) 
+\end{verbatim}}
+\end{minipage}
+\begin{minipage}[t]{\textwidth}{\color{blue}
+\begin{verbatim}
+as:[1,-1,0,0,0];
+ev(sol[1],a[0]=as[1],a[1]=as[2],a[2]=as[3],a[3]=as[4],a[4]=as[5]);
+b(t):=1/(1-t);
+taylor(b(t),t,0,8);
+\end{verbatim}}
+\end{minipage}
+%%% OUTPUT:
+\definecolor{labelcolor}{RGB}{100,0,0}
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o90) }
+[1,-1,0,0,0]
+\end{math}\\
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o91) }
+[{b}_{0}=1,{b}_{1}=1,{b}_{2}=1,{b}_{3}=1,{b}_{4}=1]
+\end{math}\\
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o92) }
+\mathrm{b}\left( t\right) :=\frac{1}{1-t}
+\end{math}\\
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o93) }
+1+t+{t}^{2}+{t}^{3}+{t}^{4}+{t}^{5}+{t}^{6}+{t}^{7}+{t}^{8}+...
+\end{math}\\
+%%%%%%%%%%%%%%%
+So we get the sequence $\{b_n\}_{n\in\mathbb{N} }
+=(1,1,1,1,1,1,\ldots)$ ``inverse'' of $\{a_n\}_{n\in\mathbb{N} }
+=(1,-1,0,0,0,0,\ldots)$.
+\end{proof}

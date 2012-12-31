@@ -9,21 +9,15 @@ Design and Analysis of Algorithms
 On quicksort average number of swaps
    [wxMaxima: section end   ] */
 
-/* [wxMaxima: fold    start ] */
-
 /* [wxMaxima: input   start ] */
 generalTerm:(2*k-3)/(6*k*(k-1));
 pf:partfrac(generalTerm,k);
 integrate(pf , k);
 /* [wxMaxima: input   end   ] */
 
-/* [wxMaxima: fold    end   ] */
-
 /* [wxMaxima: section start ]
 On combinatorics
    [wxMaxima: section end   ] */
-
-/* [wxMaxima: fold    start ] */
 
 /* [wxMaxima: input   start ] */
 f(z):=1/sqrt(1+z);
@@ -34,8 +28,6 @@ byDef(k):=(((-1)^k)/(4^k))*binomial(2*k,k);
 map (byDef, [0, 1, 2, 3, 4, 5, 6]);
 /* [wxMaxima: input   end   ] */
 
-/* [wxMaxima: fold    end   ] */
-
 /* [wxMaxima: section start ]
 Generating Function Basics
    [wxMaxima: section end   ] */
@@ -43,8 +35,6 @@ Generating Function Basics
 /* [wxMaxima: subsect start ]
 First examples before properties
    [wxMaxima: subsect end   ] */
-
-/* [wxMaxima: fold    start ] */
 
 /* [wxMaxima: input   start ] */
 makelist(naturals(n),n,0, 6);
@@ -80,8 +70,6 @@ sequence:makelist(onlyFirstThreeTerms(n),n,0, 6);
 ggfOnlyFirstThreeTerms:ggf(sequence);
 taylor(ggfOnlyFirstThreeTerms, x, 0, 100);
 /* [wxMaxima: input   end   ] */
-
-/* [wxMaxima: fold    end   ] */
 
 /* [wxMaxima: subsect start ]
 Convolution of G operator
@@ -120,11 +108,19 @@ Inverse of formal power series
    [wxMaxima: subsect end   ] */
 
 /* [wxMaxima: input   start ] */
+makeSequence(t,j):=sum (j[i]*t^i, i, 0, inf)$
 makeSum(n):=sum (a[i]*b[n-i], i, 0, n)$
 as:taylor(makeSequence(t,a), t, 0, 4);
 bs:taylor(makeSequence(t,b), t, 0, 4);
 prod:as*bs;
-solve([makeSum(0)=1, makeSum(1)=0, makeSum(2)=0, makeSum(3)=0, makeSum(4)=0],[b[0],b[1],b[2],b[3],b[4]]);
+sol:solve([makeSum(0)=1, makeSum(1)=0, makeSum(2)=0, makeSum(3)=0, makeSum(4)=0],[b[0],b[1],b[2],b[3],b[4]]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+as:[1,-1,0,0,0];
+ev(sol[1],a[0]=as[1],a[1]=as[2],a[2]=as[3],a[3]=as[4],a[4]=as[5]);
+f(t):=1/(1-t);
+taylor(f(t),t,0,8);
 /* [wxMaxima: input   end   ] */
 
 /* Maxima can't load/batch files which end with a comment! */
