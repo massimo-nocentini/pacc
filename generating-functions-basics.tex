@@ -285,8 +285,27 @@ where in the last line we've fixed $s = 50$. In general holds
 $\mathcal{G}(a_{n+s}) = \frac{\mathcal{G} (a_n)
   -\sum_{i=0}^{s-1}{a}_{i}\,{t}^{i}}{{t}^{s}}$.
 
+\subsection{Identity respect to product}
 
-
+There exists a function $c(t)$ such that $a(t)c(t)=a(t)$, where $a(t)
+= \mathcal{G} (a_n)$ and where $c(t) = \mathcal{G} (c_n)$? To answer
+we apply the convolution of $\mathcal{G} $ to the product:
+\begin{displaymath}
+  \mathcal{G} (a_n)\mathcal{G} (c_n) = \mathcal{G}\left(
+    \sum_{k=0}^{n}{a}_{k}\,{c}_{n-k}\right)
+\end{displaymath}
+We impose the equality as desired $\mathcal{G} (a_n) = \mathcal{G}\left(
+  \sum_{k=0}^{n}{a}_{k}\,{c}_{n-k}\right)$ which holds if the
+sequences to which $\mathcal{G} $ is applied to are the same. Hence:
+\begin{displaymath}
+  a_n = \sum_{k=0}^{n}{a}_{k}\,{c}_{n-k} = a_0 c_n + a_1 c_{n-1} +
+  \ldots + a_{n-1} c_1 + a_n c_0
+\end{displaymath}
+Which holds if and only if $c_0 = 1 \wedge \forall
+i\in\{1,\ldots,n\}:c_i = 0$. The sequence $\{c_n\}_{n\in \mathbb{N} }$
+is samething like $(1,0,0,0,0,\ldots)$, its formal power series $c(t)
+= \mathcal{G}(c_n) = 1 + 0t + 0t^2 + 0t^3 + \ldots $, hence we rename
+$c(t) = 1(t)$.
 
 
 

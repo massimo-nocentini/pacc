@@ -108,7 +108,7 @@ bs:taylor(makeSequence(t,a,1), t, 0, 3);
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
-load("simplify_sum");
+load("simplify_sum")$
 sequence:makeSequence(t,a,0);
 translated:makeSequence(t,a,s);
 (sequence - sum(a[i]*t^i,i,0,s-1))/t^s;
