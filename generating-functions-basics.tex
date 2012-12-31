@@ -425,6 +425,86 @@ taylor(b(t),t,0,8);
 \end{math}\\
 %%%%%%%%%%%%%%%
 So we get the sequence $\{b_n\}_{n\in\mathbb{N} }
-=(1,1,1,1,1,1,\ldots)$ ``inverse'' of $\{a_n\}_{n\in\mathbb{N} }
-=(1,-1,0,0,0,0,\ldots)$.
+=\{1_n\}_{n\in\mathbb{N} } =(1,1,1,1,1,1,\ldots)$ ``inverse'' of
+$\{a_n\}_{n\in\mathbb{N} } =(1,-1,0,0,0,0,\ldots)$.
 \end{proof}
+
+\subsection{Derivation for $\mathcal{G} $}
+
+Let $\{a_n\}_{n\in\mathbb{N} }$ and $\{n a_{n}\}_{n\in\mathbb{N} } $
+be two sequences. We study how we can obtain $\mathcal{G}(n a_{n} $
+from $\mathcal{G} (a_n)$ with Maxima:\\
+\noindent
+%%%%%%%%%%%%%%%
+%%% INPUT:
+\begin{minipage}[t]{8ex}{\color{red}\bf
+\begin{verbatim}
+(%i207) 
+\end{verbatim}}
+\end{minipage}
+\begin{minipage}[t]{\textwidth}{\color{blue}
+\begin{verbatim}
+makeSum(n):=sum (a[i]*t^i, i, 0, n)$
+makeDerSum(n):=sum (i*a[i]*t^i, i, 0, n)$
+an(n):=taylor(makeSum(n),t,0,6)$
+deran(n):=taylor(makeDerSum(n),t,0,6)$
+an(6);
+deran(6);
+t*diff(an, t);
+\end{verbatim}}
+\end{minipage}
+%%% OUTPUT:
+\definecolor{labelcolor}{RGB}{100,0,0}
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o211) }
+{a}_{0}+{a}_{1}\,t+{a}_{2}\,{t}^{2}+{a}_{3}\,{t}^{3}+{a}_{4}\,{t}^{4}+{a}_{5}\,{t}^{5}+{a}_{6}\,{t}^{6}+...
+\end{math}\\
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o212) }
+{a}_{1}\,t+2\,{a}_{2}\,{t}^{2}+3\,{a}_{3}\,{t}^{3}+4\,{a}_{4}\,{t}^{4}+5\,{a}_{5}\,{t}^{5}+6\,{a}_{6}\,{t}^{6}+...
+\end{math}\\
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o213) }
+{a}_{1}\,t+2\,{a}_{2}\,{t}^{2}+3\,{a}_{3}\,{t}^{3}+4\,{a}_{4}\,{t}^{4}+5\,{a}_{5}\,{t}^{5}+6\,{a}_{6}\,{t}^{6}+...
+\end{math}\\
+%%%%%%%%%%%%%%%
+So $\mathcal{G}(n a_n) = t \frac{\partial}{\partial t}\left(
+  \mathcal{G} (a_n) \right) $.
+
+\subsection{Identity Principle}
+
+Let $\{a_n\}_{n\in\mathbb{N} } $ and $\{b_n\}_{n\in\mathbb{N} } $ be
+two sequences, the \emph{Identity Principle} states:
+\begin{displaymath}
+  \forall n \in \mathbb{N}: \left( a_n = b_n \leftrightarrow
+    \mathcal{G} (a_n) = \mathcal{G} (b_n)\right)
+\end{displaymath}
+
+\begin{exercise}
+  Suppose we forget the result shown in the previous section about
+  $\mathcal{G} (1_n) = \frac{1}{1-t} $, how can be used the
+  \emph{Identity Principle} to prove that result?
+\end{exercise}
+\begin{proof}[Sol]
+  In order to use the principle we've to find two sequences which are
+  equal for all $n \in \mathbb{N} $. Since $\{a_n\}_{n\in\mathbb{N} }
+  = (1,1,1,1,\ldots)$ we can build another sequence
+  $\{a_{n+1}\}_{n\in\mathbb{N} } $ using $\{a_n\}_{n\in\mathbb{N} }
+  $. But the indices $n$ for the former and $n+1$ for the latter
+  doesn't change the series, also $\{a_{n+1}\}_{n\in\mathbb{N} } =
+  (1,1,1,1,\ldots)$, hence $\forall n\in \mathbb{N}: a_n =
+  a_{n+1}$. By the principle $\mathcal{G} (a_n) = \mathcal{G}
+  (a_{n+1})$ holds. We apply the derivation for $\mathcal{G} $:
+  \begin{displaymath}
+    \begin{split}
+      \mathcal{G} (a_n) &= \mathcal{G} (a_{n+1}) = \frac{\mathcal{G}
+        (a_n) - a_0}{t} \quad \quad a_0 = 1 \text{ by def of }
+      \{a_n\}_{n\in\mathbb{N} } \\
+      \mathcal{G} (a_n) &= \frac{\mathcal{G}
+        (a_n) -1}{t} \\
+      \mathcal{G} (a_n) &= \mathcal{G} (1_n) = \frac{1}{1-t}
+    \end{split}
+  \end{displaymath}
+ 
+\end{proof}
+
