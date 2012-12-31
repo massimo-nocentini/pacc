@@ -307,10 +307,69 @@ is samething like $(1,0,0,0,0,\ldots)$, its formal power series $c(t)
 = \mathcal{G}(c_n) = 1 + 0t + 0t^2 + 0t^3 + \ldots $, hence we rename
 $c(t) = 1(t)$.
 
+\subsection{Inverse of a formal power series}
 
 
-
-
-
-
-
+There exists a function $b(t)$ such that $a(t)b(t)=1(t)$, where $a(t)
+= \mathcal{G} (a_n)$ and where $b(t) = \mathcal{G} (b_n)$? Lets study
+the product $a(t)b(t)$:
+\begin{displaymath}
+  \begin{split}
+    a(t)b(t) &= {a}_{0}\,{b}_{0}&+\left(
+      {a}_{1}\,{b}_{0}+{a}_{0}\,{b}_{1}\right) \,t&+\left(
+      {a}_{2}\,{b}_{0}+{a}_{1}\,{b}_{1}+{a}_{0}\,{b}_{2}\right)
+    \,{t}^{2}&+ \ldots\\
+    &= 1 &+ 0 &+ 0 &+ \ldots
+  \end{split}
+\end{displaymath}
+That product have to be equal to $1(t)$, this allow to build a system,
+which we solve it with Maxima:\\
+\noindent
+%%%%%%%%%%%%%%%
+%%% INPUT:
+\begin{minipage}[t]{8ex}{\color{red}\bf
+\begin{verbatim}
+(%i109) 
+\end{verbatim}}
+\end{minipage}
+\begin{minipage}[t]{\textwidth}{\color{blue}
+\begin{verbatim}
+makeSum(n):=sum (a[i]*b[n-i], i, 0, n)$
+as:taylor(makeSequence(t,a), t, 0, 4);
+bs:taylor(makeSequence(t,b), t, 0, 4);
+prod:as*bs;
+solve([makeSum(0)=1, makeSum(1)=0, makeSum(2)=0,
+makeSum(3)=0, makeSum(4)=0],[b[0],b[1],b[2],b[3],b[4]]);
+\end{verbatim}}
+\end{minipage}
+%%% OUTPUT:
+\definecolor{labelcolor}{RGB}{100,0,0}
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o110) }
+{a}_{0}+{a}_{1}\,t+{a}_{2}\,{t}^{2}+{a}_{3}\,{t}^{3}+{a}_{4}\,{t}^{4}+...
+\end{math}\\
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o111) }
+{b}_{0}+{b}_{1}\,t+{b}_{2}\,{t}^{2}+{b}_{3}\,{t}^{3}+{b}_{4}\,{t}^{4}+...
+\end{math}\\
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o112) }
+{a}_{0}\,{b}_{0}+\left( {a}_{1}\,{b}_{0}+{a}_{0}\,{b}_{1}\right)
+\,t+\left( {a}_{2}\,{b}_{0}+{a}_{1}\,{b}_{1}+{a}_{0}\,{b}_{2}\right)
+\,{t}^{2}+\\
+\left( {a}_{3}\,{b}_{0}+{a}_{2}\,{b}_{1}+{a}_{1}\,{b}_{2}+{a}_{0}\,{b}_{3}\right) \,{t}^{3}+\left( {a}_{4}\,{b}_{0}+{a}_{3}\,{b}_{1}+{a}_{2}\,{b}_{2}+{a}_{1}\,{b}_{3}+{a}_{0}\,{b}_{4}\right) \,{t}^{4}+...
+\end{math}\\
+\begin{math}\displaystyle
+  \parbox{8ex}{\color{labelcolor}(\%o113) }
+  [[{b}_{0}=\frac{1}{{a}_{0}},{b}_{1}=-\frac{{a}_{1}}{{a}_{0}^{2}},{b}_{2}=-\frac{{a}_{0}\,{a}_{2}-{a}_{1}^{2}}{{a}_{0}^{3}},{b}_{3}=-\frac{{a}_{0}^{2}\,{a}_{3}-2\,{a}_{0}\,{a}_{1}\,{a}_{2}+{a}_{1}^{3}}{{a}_{0}^{4}},\\
+  {b}_{4}=-\frac{{a}_{0}^{3}\,{a}_{4}+{a}_{0}^{2}\,\left(
+      -2\,{a}_{1}\,{a}_{3}-{a}_{2}^{2}\right)
+    +3\,{a}_{0}\,{a}_{1}^{2}\,{a}_{2}-{a}_{1}^{4}}{{a}_{0}^{5}}]]
+\end{math}\\
+%%%%%%%%%%%%%%%
+So the inverse of $a(t)$ is the function $a^{-1}(t)= b(t)$ such that\\
+$b(t)= \mathcal{G} (b_0, b_1, b_2, b_3, b_4, \ldots )$, where every
+$b_i$ is one of the solution reported in the Maxima output above. It
+is interesting to observe that it is possible to find $a^{-1}(t)$ if
+the first term of $\{a_n\}_{n\in\mathbb{N} } $ is such that $a_0 \not
+= 0$.

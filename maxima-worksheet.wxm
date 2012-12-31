@@ -115,5 +115,17 @@ translated:makeSequence(t,a,s);
 (taylor(sequence, t, 0, 55) - sum(a[i]*t^i,i,0,49))/t^50;
 /* [wxMaxima: input   end   ] */
 
+/* [wxMaxima: subsect start ]
+Inverse of formal power series
+   [wxMaxima: subsect end   ] */
+
+/* [wxMaxima: input   start ] */
+makeSum(n):=sum (a[i]*b[n-i], i, 0, n)$
+as:taylor(makeSequence(t,a), t, 0, 4);
+bs:taylor(makeSequence(t,b), t, 0, 4);
+prod:as*bs;
+solve([makeSum(0)=1, makeSum(1)=0, makeSum(2)=0, makeSum(3)=0, makeSum(4)=0],[b[0],b[1],b[2],b[3],b[4]]);
+/* [wxMaxima: input   end   ] */
+
 /* Maxima can't load/batch files which end with a comment! */
 "Created with wxMaxima"$
