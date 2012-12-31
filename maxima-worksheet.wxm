@@ -119,8 +119,44 @@ sol:solve([makeSum(0)=1, makeSum(1)=0, makeSum(2)=0, makeSum(3)=0, makeSum(4)=0]
 /* [wxMaxima: input   start ] */
 as:[1,-1,0,0,0];
 ev(sol[1],a[0]=as[1],a[1]=as[2],a[2]=as[3],a[3]=as[4],a[4]=as[5]);
-f(t):=1/(1-t);
-taylor(f(t),t,0,8);
+b(t):=1/(1-t);
+taylor(b(t),t,0,8);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: subsect start ]
+Derivation for G operator
+   [wxMaxima: subsect end   ] */
+
+/* [wxMaxima: input   start ] */
+makeSum(n):=sum (a[i]*t^i, i, 0, n)$
+makeDerSum(n):=sum (i*a[i]*t^i, i, 0, n)$
+an(n):=taylor(makeSum(n),t,0,6)$
+deran(n):=taylor(makeDerSum(n),t,0,6)$
+an(6);
+deran(6);
+t*diff(an, t);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: subsect start ]
+Some examples of properties application
+   [wxMaxima: subsect end   ] */
+
+/* [wxMaxima: input   start ] */
+b(t):=1/(1-c*t)$
+taylor(b(t),t,0,8);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+b(t):=1/(1-t)$
+fg(t):=t*diff(b(t),t);
+fg(t);
+taylor(fg(t),t,0,8);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+snder(t):=t*diff(fg(t),t)$
+ratsimp(snder(t));
+taylor(snder(t),t,0,8);
 /* [wxMaxima: input   end   ] */
 
 /* Maxima can't load/batch files which end with a comment! */
