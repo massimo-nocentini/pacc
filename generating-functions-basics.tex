@@ -498,13 +498,52 @@ two sequences, the \emph{Identity Principle} states:
   \begin{displaymath}
     \begin{split}
       \mathcal{G} (a_n) &= \mathcal{G} (a_{n+1}) = \frac{\mathcal{G}
-        (a_n) - a_0}{t} \quad \quad a_0 = 1 \text{ by def of }
+        (a_n) - a_0}{t} \quad \quad \text{where } a_0 = 1 \text{ by def of }
       \{a_n\}_{n\in\mathbb{N} } \\
       \mathcal{G} (a_n) &= \frac{\mathcal{G}
         (a_n) -1}{t} \\
       \mathcal{G} (a_n) &= \mathcal{G} (1_n) = \frac{1}{1-t}
     \end{split}
   \end{displaymath}
- 
+  What we now remember!
 \end{proof}
+
+The exercise above let us to generalize a little. Let
+$\{a_n\}_{n\in\mathbb{N} } $ such that $a_n = c$. When the sequence is
+known a priori as in this case, it is useful to study the ratio
+between consecutive terms:
+\begin{displaymath}
+   \frac{a_{n+1}}{a_n} =  \frac{c}{c} \quad \rightarrow \quad a_{n+1}
+   = a_n \quad \forall n \in \mathbb{N} 
+\end{displaymath}
+By \emph{Identity Principle} follows:
+\begin{displaymath}
+  \begin{split}
+    \mathcal{G} (a_n) &= \mathcal{G} (a_{n+1}) =  \frac{\mathcal{G}
+      (a_n) - a_0}{t} \quad \quad \text{where } a_0 = c \text{ by def of }
+    \{a_n\}_{n\in\mathbb{N} } \\
+    \mathcal{G} (a_n) &= \frac{\mathcal{G}
+        (a_n) -c}{t} \\
+      \mathcal{G} (a_n) &= \mathcal{G} (1_n) = \frac{c}{1-t}
+  \end{split}
+\end{displaymath}
+
+
+\subsection{Composition for $\mathcal{G} $}
+
+Let $\{a_n\}_{n\in\mathbb{N} } $ and $\{b_n\}_{n\in\mathbb{N} } $ be
+two sequences, we can compose their formal power series in the
+following way:
+\begin{displaymath}
+  \begin{split}
+    a(t) &= \sum_{k\geq 0}{a_k t^k} \quad b(t)= \mathcal{G} (b_n) \\
+    \mathcal{G} (a_n) \circ \mathcal{G}(b_n) &= a(b(t)) =
+    \sum_{k=0}^{\infty}{a_k b(t)^k}=
+    \sum_{k=0}^{\infty}{a_k \mathcal{G} (b_n)^k}
+  \end{split}
+\end{displaymath}
+
+In the following section we'll do some example using the properties of
+$\mathcal{G} $.
+
 
