@@ -120,7 +120,7 @@ t+4\,{t}^{2}+9\,{t}^{3}+16\,{t}^{4}+25\,{t}^{5}+36\,{t}^{6}+49\,{t}^{7}+64\,{t}^
 %%%%%%%%%%%%%%%
 
 \subsection{$\{a_n = 1 \text{ if } n \text{ is even }, 0 \text{
-    otherwise}\}$}
+    otherwise}\}_{n\in \mathbb{N} }$}
 
 We compare $\mathcal{G}(a_n) $ with $\mathcal{G} (1_n)$:
 \begin{displaymath}
@@ -157,4 +157,81 @@ taylor(b(t^2),t,0,10);
 1+{t}^{2}+{t}^{4}+{t}^{6}+{t}^{8}+{t}^{10}+...
 \end{math}
 %%%%%%%%%%%%%%%
+
+\subsection{$\{a_n = (1,0,0,1,0,0,1,0,0,1,\ldots)\}_{n\in \mathbb{N} }$}
+
+We compare $\mathcal{G}(a_n) $ with $\mathcal{G} (1_n)$ again:
+\begin{displaymath}
+  \begin{split}
+    \mathcal{G} (a_n) &= 1 + t^3 + t^6 + t^9\ldots \\
+    \mathcal{G} (1_n) &= 1 + t^1 + t^2 + t^3 + \ldots \\
+  \end{split}
+\end{displaymath}
+So we can compose $\mathcal{G} (1_n)$ which is known with the function
+$t^3$ to obtaing $\mathcal{G} (a_n)$:
+\begin{displaymath}
+  \mathcal{G} (a_n) =  \frac{1}{1-t} \circ t^3 =  \frac{1}{1-t^3} 
+\end{displaymath}
+Simple check:
+
+\noindent
+%%%%%%%%%%%%%%%
+%%% INPUT:
+\begin{minipage}[t]{8ex}{\color{red}\bf
+\begin{verbatim}
+(%i10) 
+\end{verbatim}}
+\end{minipage}
+\begin{minipage}[t]{\textwidth}{\color{blue}
+\begin{verbatim}
+taylor(b(t^3),t,0,10);
+\end{verbatim}}
+\end{minipage}
+%%% OUTPUT:
+\definecolor{labelcolor}{RGB}{100,0,0}
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o10) }
+1+{t}^{3}+{t}^{6}+{t}^{9}+...
+\end{math}
+%%%%%%%%%%%%%%%
+
+\subsection{$\{a_n = (1,0,0,2,0,0,4,0,0,8,\ldots)\}_{n\in \mathbb{N} }$}
+
+We compare $\mathcal{G}(a_n) $ with $\mathcal{G} (2^n)$ again:
+\begin{displaymath}
+  \begin{split}
+    \mathcal{G} (a_n) &= 1 + 2t^3 + 4t^6 + 8t^9\ldots \\
+    \mathcal{G} (2^n) &= 1 + 2t^1 + 4t^2 + 8t^3 + \ldots \\
+  \end{split}
+\end{displaymath}
+So we can compose $\mathcal{G} (2^n)$ which is known with the function
+$t^3$ to obtaing $\mathcal{G} (a_n)$:
+\begin{displaymath}
+  \mathcal{G} (a_n) =  \frac{1}{1-2t} \circ t^3 =  \frac{1}{1-2t^3} 
+\end{displaymath}
+Simple check:
+
+\noindent
+%%%%%%%%%%%%%%%
+%%% INPUT:
+\begin{minipage}[t]{8ex}{\color{red}\bf
+\begin{verbatim}
+(%i13) 
+\end{verbatim}}
+\end{minipage}
+\begin{minipage}[t]{\textwidth}{\color{blue}
+\begin{verbatim}
+b(t):=1/(1-2*t)$
+taylor(b(t^3),t,0,15);
+\end{verbatim}}
+\end{minipage}
+%%% OUTPUT:
+\definecolor{labelcolor}{RGB}{100,0,0}
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o14) }
+1+2\,{t}^{3}+4\,{t}^{6}+8\,{t}^{9}+16\,{t}^{12}+32\,{t}^{15}+...
+\end{math}
+%%%%%%%%%%%%%%%
+
+
 
