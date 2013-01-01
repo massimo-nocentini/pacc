@@ -185,5 +185,12 @@ map(harmonic, makelist(n,n,1,10));
 taylor(b(t),t,0,10);
 /* [wxMaxima: input   end   ] */
 
+/* [wxMaxima: input   start ] */
+fibonacci(n):=if is(n=0) then 0 else if is(n=1) then 1 else fibonacci(n-1) + fibonacci(n-2)$
+b(t):=(1/(1-t-t^2))$
+map(fibonacci, makelist(n,n,1,10));
+taylor(b(t),t,0,9);
+/* [wxMaxima: input   end   ] */
+
 /* Maxima can't load/batch files which end with a comment! */
 "Created with wxMaxima"$
