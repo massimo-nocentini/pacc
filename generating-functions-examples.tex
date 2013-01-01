@@ -233,6 +233,75 @@ taylor(b(t^3),t,0,15);
 \end{math}
 %%%%%%%%%%%%%%%
 
+\subsection{$\{a_n =  \frac{1}{n} \}_{n\in \mathbb{N} } \wedge a_0 = 0$}
+
+We try to understand the generating function $\mathcal{G}(a_n) $:
+\begin{displaymath}
+  \begin{split}
+    \mathcal{G} ( \frac{1}{n} ) &= t + \frac{1}{2} t^2 +  \frac{1}{3}
+    t^3 +  \frac{1}{4} t^4 + \ldots \\
+     \frac{a_{n+1}}{a_n} &=  \frac{n}{n+1} \quad \text{ by ratio of
+       consecutive terms}\\
+      (n+1)a_{n+1}  &= n a_n
+  \end{split}
+\end{displaymath}
+In order to apply the identity principle, it is required to check the
+equivalence holds for all $n$. But this isn't the case for $n=0:a_{1}
+= 1 \not = 0 = a_0$. So we've to augment the second member with the
+term $\delta_{n,k}$ such that $\delta_{n,k} = 1 \text{ if } n=k, 0
+\text{ otherwise}$. Augmenting we obtain $(n+1)a_{n+1} = n a_n +
+\delta_{n,0}, \forall n \in \mathbb{N} $, in particular for $n=0:a_{1}
+= 1 = 1 = a_0 + \delta_{0,0}$. Now it is possible to apply the
+identity principle, calling $b_{n+1} = (n+1)a_{n+1}$ (hence $b_n =n
+a_n$ and $b_0 = 0$):
+\begin{displaymath}
+  \begin{split}
+    b_{n+1} &= n a_n + \delta_{n,0} \\
+    &\downarrow \\
+    \mathcal{G} (b_{n+1}) &= \mathcal{G} (n a_n) + \mathcal{G}
+    (\delta_{n,0}) \\
+    \frac{\mathcal{G} (b_n) - b_0}{t} &= \mathcal{G} (n a_n) +
+    \mathcal{G}
+    (\delta_{n,0}) \\
+    \frac{\mathcal{G} (n a_n)}{t} &= \mathcal{G} (n a_n) + \mathcal{G}
+    (\delta_{n,0}) \\
+    \frac{t \frac{\partial}{\partial t}\left( \mathcal{G} (a_n)
+      \right) }{t} &= \mathcal{G} (n a_n) + \mathcal{G}
+    (\delta_{n,0}) \\
+    \frac{\partial}{\partial t}\left( \mathcal{G} (a_n) \right) &= t
+    \frac{\partial}{\partial t}\left( \mathcal{G} (a_n) \right) + 1 \\
+    \frac{\partial}{\partial t}\left( \mathcal{G} (a_n) \right) &=
+    \frac{1}{1-t}\\
+    \mathcal{G} (a_n) &= \log{ \frac{1}{1-t} }
+  \end{split}
+\end{displaymath}
+
+Simple check:
+
+\noindent
+%%%%%%%%%%%%%%%
+%%% INPUT:
+\begin{minipage}[t]{8ex}{\color{red}\bf
+\begin{verbatim}
+(%i15) 
+\end{verbatim}}
+\end{minipage}
+\begin{minipage}[t]{\textwidth}{\color{blue}
+\begin{verbatim}
+b(t):=log(1/(1-t))$
+taylor(b(t),t,0,13);
+\end{verbatim}}
+\end{minipage}
+%%% OUTPUT:
+\definecolor{labelcolor}{RGB}{100,0,0}
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o16) }
+t+\frac{{t}^{2}}{2}+\frac{{t}^{3}}{3}+\frac{{t}^{4}}{4}+\frac{{t}^{5}}{5}+\frac{{t}^{6}}{6}+\frac{{t}^{7}}{7}+\frac{{t}^{8}}{8}+\frac{{t}^{9}}{9}+\frac{{t}^{10}}{10}+\frac{{t}^{11}}{11}+\frac{{t}^{12}}{12}+\frac{{t}^{13}}{13}+...
+\end{math}
+%%%%%%%%%%%%%%%
+
+
+
 
 
 
