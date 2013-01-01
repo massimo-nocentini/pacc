@@ -8,7 +8,7 @@ body contains the building of the relative generating function.
 \subsection{$\{c^n\}_{n\in \mathbb{N} }$}
 \begin{displaymath}
   \begin{split}
-    \mathcal{G} (a_n) = \sum_{n \geq 0}{c^n t^n} &= \sum_{n \geq
+    \mathcal{G} (c^n) = \sum_{n \geq 0}{c^n t^n} &= \sum_{n \geq
       0}{1\cdot (ct)^n} = \sum_{n \geq 0}{a_n \cdot (ct)^n} \quad
     \text{ where } a_n = 1, \forall n \in \mathbb{N} \\
     &= \mathcal{G} (1_n) \circ (ct) = \ \frac{1}{1-ct} \quad \text{ by
@@ -41,7 +41,7 @@ taylor(b(t),t,0,8);
 
 \subsection{$\{(-1)^n a_n\}_{n\in \mathbb{N} }$}
 \begin{displaymath}
-    \mathcal{G} (a_n) = \sum_{n \geq 0}{(-1)^n a_n t^n} = \sum_{n \geq
+    \mathcal{G} ((-1)^n a_n) = \sum_{n \geq 0}{(-1)^n a_n t^n} = \sum_{n \geq
       0}{a_n (-t)^n} = a(-t)
 \end{displaymath}
 
@@ -87,7 +87,7 @@ t+2\,{t}^{2}+3\,{t}^{3}+4\,{t}^{4}+5\,{t}^{5}+6\,{t}^{6}+7\,{t}^{7}+8\,{t}^{8}+.
 \subsection{$\{n^2\}_{n\in \mathbb{N} }$}
 Using the result of the previous exercise:
 \begin{displaymath}
-  \mathcal{G} (n) = \mathcal{G} (n n) = t
+  \mathcal{G} (n^2) = \mathcal{G} (n n) = t
   \frac{\partial}{\partial t}\left( \mathcal{G} (n) \right) = 
   -\frac{{t}^{2}+t}{{t}^{3}-3\,{t}^{2}+3\,t-1}
 \end{displaymath}
@@ -118,3 +118,43 @@ taylor(snder(t),t,0,8);
 t+4\,{t}^{2}+9\,{t}^{3}+16\,{t}^{4}+25\,{t}^{5}+36\,{t}^{6}+49\,{t}^{7}+64\,{t}^{8}+...
 \end{math}
 %%%%%%%%%%%%%%%
+
+\subsection{$\{a_n = 1 \text{ if } n \text{ is even }, 0 \text{
+    otherwise}\}$}
+
+We compare $\mathcal{G}(a_n) $ with $\mathcal{G} (1_n)$:
+\begin{displaymath}
+  \begin{split}
+    \mathcal{G} (a_n) &= 1 + t^2 + t^4 + t^6 + \ldots \\
+    \mathcal{G} (1_n) &= 1 + t^1 + t^2 + t^3 + \ldots \\
+  \end{split}
+\end{displaymath}
+So we can compose $\mathcal{G} (1_n)$ which is known with the function
+$t^2$ to obtaing $\mathcal{G} (a_n)$:
+\begin{displaymath}
+  \mathcal{G} (a_n) =  \frac{1}{1-t} \circ t^2 =  \frac{1}{1-t^2} 
+\end{displaymath}
+Simple check:
+
+\noindent
+%%%%%%%%%%%%%%%
+%%% INPUT:
+\begin{minipage}[t]{8ex}{\color{red}\bf
+\begin{verbatim}
+(%i8) 
+\end{verbatim}}
+\end{minipage}
+\begin{minipage}[t]{\textwidth}{\color{blue}
+\begin{verbatim}
+b(t):=1/(1-t)$
+taylor(b(t^2),t,0,10);
+\end{verbatim}}
+\end{minipage}
+%%% OUTPUT:
+\definecolor{labelcolor}{RGB}{100,0,0}
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o9) }
+1+{t}^{2}+{t}^{4}+{t}^{6}+{t}^{8}+{t}^{10}+...
+\end{math}
+%%%%%%%%%%%%%%%
+
