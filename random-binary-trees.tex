@@ -1,4 +1,21 @@
-Explain the project and what we want to accomplish.
+In this section we'll explain our work on generation of binary trees
+at random. We're interested to setup a simulation to study the means
+of the number of leaves in trees with $n$ nodes and comparing the
+result of the simulation against theoretical results.
+
+In order to do this we've implemented an algorithm to generate binary
+trees: it consume $n \in \mathbb{N} $ and produce a binary tree with
+$n$ nodes.
+
+We've repeated the application of that algorithm $k (>>
+n)$ times in order to check if the algorithm is an \emph{uniform}
+binary tree generator, that is, if the generator would be perfect,
+each tree with $n$ nodes should have $ \frac{1}{
+  \frac{1}{n+1}{{2n}\choose{n}} } $ probability to be generated.
+
+The last point of our work is to check a theoretical result about the
+mean of number of leaves among binary trees with $n$ nodes.
+
 
 \section{Atkinson and Sack algorithm}
 Describe briefly the algorithm here.
@@ -41,7 +58,94 @@ Describe briefly the algorithm here.
   }
 \end{lstlisting}
 
-\input{random-trees-generation/tex-tables.tex}
+\section{Checking randomness}
+
+In order to establish if the algorithm is an \emph{uniform random}
+generator, we perform a $\chi^2$ test on the generated trees. We've
+implemented that process in R and we're going to comment the result
+obtained.
+
+In \autoref{table:p-values-per-nodes} we report the $p$-values
+obtained performing a simulation on trees with $4,5,6,8,10$ nodes
+(in columns) and for each dimension, we build $1000, 2000, 5000,
+10000, 20000, 50000$ trees (in rows). In order to be considered an
+\emph{uniform random} generator, each $p$-value $v$ should be $.1
+\leq v\ \leq .9$.
+\begin{table}[ht]
+  \begin{center}
+    \begin{tabular}{rrrrrr}
+      \hline
+      & 4 & 5 & 6 & 8 & 10 \\ 
+      \hline
+      1000 & 0.60 & 0.85 & 0.54 & 1.00 & 1.00 \\ 
+      2000 & 0.99 & 0.98 & 0.13 & 1.00 & 1.00 \\ 
+      5000 & 0.36 & 0.85 & 0.28 & 1.00 & 1.00 \\ 
+      10000 & 0.69 & 0.73 & 0.11 & 0.65 & 1.00 \\ 
+      20000 & 0.63 & 0.23 & 0.50 & 0.16 & 1.00 \\ 
+      50000 & 0.09 & 0.74 & 0.63 & 0.90 & 1.00 \\ 
+      \hline
+    \end{tabular}
+    \caption{$p$-values per trees and nodes}
+    \label{table:p-values-per-nodes}
+  \end{center}
+\end{table}
+Our simulation is quite good, there are two strange $p$-values for
+dimension $2000$ and trees $4,5$ where we find $.99$ and $.98$. Maybe
+the chance has played its role at the running time. Instead, the cell
+containing $1$s means that the number of trees isn't sufficient to
+perform a $\chi^2$ test (there are $16796$ different trees with $10$
+nodes, with all simulated dimension isn't possible to test
+randomness).
+
+In table \autoref{table:empirical-trees-per-nodes} we report the
+empirical number of trees calculated for trees with some nodes, each a
+different number of times (as in the case above).
+% latex table generated in R 2.15.1 by xtable 1.5-6 package
+% Sun Dec 23 17:49:56 2012
+\begin{table}[ht]
+  \begin{center}
+    \begin{tabular}{rrrrrr}
+      \hline
+      & 4 & 5 & 6 & 8 & 10 \\ 
+      \hline
+      1000 & 11.08 & 31.69 & 128.86 & 1456.74 & 16770.17 \\ 
+      2000 & 4.39 & 24.36 & 149.75 & 1454.88 & 17046.66 \\ 
+      5000 & 14.18 & 31.62 & 140.13 & 1378.37 & 16478.72 \\ 
+      10000 & 10.09 & 35.05 & 151.54 & 1414.26 & 17028.12 \\ 
+      20000 & 10.75 & 47.34 & 130.37 & 1483.03 & 16813.47 \\ 
+      50000 & 20.26 & 34.83 & 125.10 & 1359.54 & 16778.21 \\ 
+      \hline
+    \end{tabular}
+    \caption{Empirical number of trees per nodes}
+    \label{table:empirical-trees-per-nodes}
+  \end{center}
+\end{table}
+We can see a correspondence of ``strange'' values in $p$-values table
+and in the empirical number of trees table: where the $p$-values $v$
+indicate a non random sequence we've a corresponding empirical value
+very different respect the others in the same column.
+
+It is possible to compare the values contained in table
+\autoref{table:empirical-trees-per-nodes} with those (theoretically
+correct) contained in \autoref{table:catalan-numbers}.
+\begin{table}[ht]
+  \begin{center}
+    \begin{tabular}{rrrrrr}
+      \hline
+      number of nodes & 4 & 5 & 6 & 8 & 10 \\ 
+      number of trees & 14 & 42 & 132 & 1430 & 16796 \\ 
+      \hline
+    \end{tabular}
+    \caption{Number of trees per nodes}
+    \label{table:catalan-numbers}
+  \end{center}
+\end{table}
+
+
+%\input{random-trees-generation/tex-tables.tex}
+
+\section{Means of leaves and heights}
+
 
 \noindent
 %%%%%%%%%%%%%%%
@@ -91,6 +195,7 @@ of 500 trees each with 5 nodes.
   \label{fig:binary-trees-with-four-nodes}
 \end{figure}
 
+\section{Drawing trees}
 
 \begin{figure}[htb]
   \centering
