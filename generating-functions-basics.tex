@@ -208,17 +208,19 @@ Let $\{a_n\}_{n\in\mathbb{N} }$ and $\{a_{n+1}\}_{n\in\mathbb{N} } $
 be two sequences, $a(t)$ and $b(t)$ their formal power series
 respectively. We study how we can obtain $\mathcal{G}(a_{n+1} $ from
 $\mathcal{G} (a_n)$ with Maxima:\\
+
 \noindent
 %%%%%%%%%%%%%%%
 %%% INPUT:
 \begin{minipage}[t]{8ex}{\color{red}\bf
 \begin{verbatim}
-(%i237) 
+(%i78) 
 \end{verbatim}}
 \end{minipage}
 \begin{minipage}[t]{\textwidth}{\color{blue}
 \begin{verbatim}
-makeSequence(t,j,offset):=sum (j[i+offset]*t^i, i, 0, inf);
+makeSequence(t,j,offset):=if is(offset >= 0) then sum
+(j[i+offset]*t^i, i, 0, inf) else sum (j[i]*t^(i-offset), i, 0, inf)$
 as:taylor(makeSequence(t,a,0), t, 0, 4);
 bs:taylor(makeSequence(t,a,1), t, 0, 3);
 (as-a[0])/t;
@@ -227,22 +229,19 @@ bs:taylor(makeSequence(t,a,1), t, 0, 3);
 %%% OUTPUT:
 \definecolor{labelcolor}{RGB}{100,0,0}
 \begin{math}\displaystyle
-\parbox{8ex}{\color{labelcolor}(\%o237) }
-\mathrm{makeSequence}\left( t,j,offset\right) :=\sum_{i=0}^{\infty }{j}_{i+offset}\,{t}^{i}
-\end{math}\\
-\begin{math}\displaystyle
-\parbox{8ex}{\color{labelcolor}(\%o238) }
+\parbox{8ex}{\color{labelcolor}(\%o79) }
 {a}_{0}+{a}_{1}\,t+{a}_{2}\,{t}^{2}+{a}_{3}\,{t}^{3}+{a}_{4}\,{t}^{4}+...
 \end{math}\\
 \begin{math}\displaystyle
-\parbox{8ex}{\color{labelcolor}(\%o239) }
+\parbox{8ex}{\color{labelcolor}(\%o80) }
 {a}_{1}+{a}_{2}\,t+{a}_{3}\,{t}^{2}+{a}_{4}\,{t}^{3}+...
 \end{math}\\
 \begin{math}\displaystyle
-\parbox{8ex}{\color{labelcolor}(\%o240) }
+\parbox{8ex}{\color{labelcolor}(\%o81) }
 {a}_{1}+{a}_{2}\,t+{a}_{3}\,{t}^{2}+{a}_{4}\,{t}^{3}+...
-\end{math}\\
+\end{math}
 %%%%%%%%%%%%%%%
+
 So $\mathcal{G}(a_{n+1}) =  \frac{\mathcal{G} (a_n) - a_0}{t}$. We can
 generalize:\\
 \noindent
@@ -257,7 +256,7 @@ generalize:\\
 \begin{verbatim}
 load("simplify_sum");
 sequence:makeSequence(t,a,0);
-translated:makeSequence(t,a,s);
+translated:makeSequence(t,a,s)$
 (sequence - sum(a[i]*t^i,i,0,s-1))/t^s;
 (taylor(sequence, t, 0, 55) - sum(a[i]*t^i,i,0,49))/t^50;
 \end{verbatim}}
@@ -267,10 +266,6 @@ translated:makeSequence(t,a,s);
 \begin{math}\displaystyle
 \parbox{8ex}{\color{labelcolor}(\%o250) }
 \sum_{i=0}^{\infty }{a}_{i}\,{t}^{i}
-\end{math}\\
-\begin{math}\displaystyle
-\parbox{8ex}{\color{labelcolor}(\%o251) }
-\sum_{i=0}^{\infty }{a}_{s+i}\,{t}^{i}
 \end{math}\\
 \begin{math}\displaystyle
 \parbox{8ex}{\color{labelcolor}(\%o252) }
@@ -283,7 +278,38 @@ translated:makeSequence(t,a,s);
 %%%%%%%%%%%%%%%
 where in the last line we've fixed $s = 50$. In general holds
 $\mathcal{G}(a_{n+s}) = \frac{\mathcal{G} (a_n)
-  -\sum_{i=0}^{s-1}{a}_{i}\,{t}^{i}}{{t}^{s}}$.
+  -\sum_{i=0}^{s-1}{a}_{i}\,{t}^{i}}{{t}^{s}}$ for $s \geq 0$. If we
+have $\mathcal{G} (a_{n-s})$, where $n \geq s $, then $\mathcal{G}
+(a_{n-s}) = a_0 t^s + a_1 t^{s+1} + a_2 t^{s+2} + \ldots
+= t^s \mathcal{G} (a_n)$. With Maxima:\\
+
+\noindent
+%%%%%%%%%%%%%%%
+%%% INPUT:
+\begin{minipage}[t]{8ex}{\color{red}\bf
+\begin{verbatim}
+(%i129) 
+\end{verbatim}}
+\end{minipage}
+\begin{minipage}[t]{\textwidth}{\color{blue}
+\begin{verbatim}
+p:5$
+cs:taylor(makeSequence(t,a,-p), t, 0, 10);
+ds:taylor((t^p)*makeSequence(t,a,0), t, 0, 10);
+\end{verbatim}}
+\end{minipage}
+%%% OUTPUT:
+\definecolor{labelcolor}{RGB}{100,0,0}
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o130) }
+{a}_{0}\,{t}^{5}+{a}_{1}\,{t}^{6}+{a}_{2}\,{t}^{7}+{a}_{3}\,{t}^{8}+{a}_{4}\,{t}^{9}+{a}_{5}\,{t}^{10}+...
+\end{math}\\
+\begin{math}\displaystyle
+  \parbox{8ex}{\color{labelcolor}(\%o131) }
+  {a}_{0}\,{t}^{5}+{a}_{1}\,{t}^{6}+{a}_{2}\,{t}^{7}+{a}_{3}\,{t}^{8}+{a}_{4}\,{t}^{9}+{a}_{5}\,{t}^{10}+...
+\end{math}
+%%%%%%%%%%%%%%%
+
 
 \subsection{Identity respect to product}
 
@@ -545,5 +571,70 @@ following way:
 
 In the following section we'll do some example using the properties of
 $\mathcal{G} $.
+
+
+\subsection{$\mathcal{G} ( \frac{1}{n} a_n) = \int{ \frac{\mathcal{G}
+      (a_n) - a_0}{t}dt }$}
+
+Let $b_n = \frac{1}{n} a_n$ be a new generic term of a sequence
+$\{b_n\}_{n\in\mathbb{N} } $. Follow that $a_n = n b_n$, but it isn't
+sufficient to apply the \emph{Identity Principle} because in $n=0$ the
+term $b_0$ isn't defined. So we've to augment $a_n = n b_n +
+a_0\delta_{n,0}$:
+\begin{displaymath}
+  \begin{split}
+    a_n &= n b_n + a_0\delta_{n,0} \\
+    &\downarrow \\
+    \mathcal{G} (a_n) &= \mathcal{G} (n b_n) + \mathcal{G}
+    (a_0\delta_{n,0})\\
+    \mathcal{G} (a_n) &= t \frac{\partial}{\partial t}\left(
+      \mathcal{G} ( b_n) \right) + a_0\mathcal{G} (\delta_{n,0})\\
+    \mathcal{G} (a_n) &= t \frac{\partial}{\partial t}\left(
+      \mathcal{G} ( \frac{1}{n} a_n) \right) + a_0\\
+    \frac{\partial}{\partial t}\left( \mathcal{G} ( \frac{1}{n} a_n)
+    \right) &= \frac{\mathcal{G} (a_n) - a_0}{t}\\
+    \mathcal{G} ( \frac{1}{n} a_n) &=\int{ \frac{\mathcal{G} (a_n) -
+        a_0}{t}dt}
+  \end{split}
+\end{displaymath}
+
+\subsection{$\mathcal{G} ( \frac{1}{n+1} a_n) = \frac{1}{t} \int{
+    \mathcal{G} (a_n)dt }$}
+
+Let $g_n = a_{n-1}$, where $g_0 = 0$ (otherwise $a_{-1}$ hasn't
+meaning), to have:
+\begin{displaymath}
+  \frac{1}{n+1} a_n = \frac{1}{n+1} g_{n+1}
+\end{displaymath}
+We apply the \emph{Identity Principle} directly because
+we've just renamed the general term of the sequence:
+\begin{displaymath}
+  \begin{split}
+    \frac{1}{n+1} a_n &= \frac{1}{n+1} g_{n+1} \\
+    &\downarrow\\
+    \mathcal{G} (\frac{1}{n+1} a_n) &= \mathcal{G} (\frac{1}{n+1}
+    g_{n+1}) \\
+    \mathcal{G} (\frac{1}{n+1} a_n) &= \frac{ \mathcal{G} (\frac{1}{n}
+      g_n)-g_0}{t} \quad \text{ by translation of
+    }\mathcal{G} \\
+    \mathcal{G} (\frac{1}{n+1} a_n) &= \frac{1}{t} \mathcal{G}
+    (\frac{1}{n} g_n)    \quad g_0 = 0\\
+    \mathcal{G} (\frac{1}{n+1} a_n) &= \frac{1}{t} \int{
+      \frac{\mathcal{G} (g_n) - g_0}{t}dt } \quad \text{by previous
+      result}\\
+    \mathcal{G} (\frac{1}{n+1} a_n) &= \frac{1}{t} \int{
+      \frac{\mathcal{G} (a_{n-1})}{t}dt }\\
+    \mathcal{G} (\frac{1}{n+1} a_n) &= \frac{1}{t} \int{ \mathcal{G}
+      (a_{n})dt } \quad \text{ by } \mathcal{G} (a_{n-1}) = t
+    \mathcal{G} (a_n)
+  \end{split}
+\end{displaymath}
+
+
+
+
+
+
+
 
 

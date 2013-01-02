@@ -89,7 +89,7 @@ Translation of G operator
    [wxMaxima: subsect end   ] */
 
 /* [wxMaxima: input   start ] */
-makeSequence(t,j,offset):=sum (j[i+offset]*t^i, i, 0, inf);
+makeSequence(t,j,offset):=if is(offset >= 0) then sum (j[i+offset]*t^i, i, 0, inf) else sum (j[i]*t^(i-offset), i, 0, inf)$
 as:taylor(makeSequence(t,a,0), t, 0, 4);
 bs:taylor(makeSequence(t,a,1), t, 0, 3);
 (as-a[0])/t;
@@ -98,9 +98,15 @@ bs:taylor(makeSequence(t,a,1), t, 0, 3);
 /* [wxMaxima: input   start ] */
 load("simplify_sum")$
 sequence:makeSequence(t,a,0);
-translated:makeSequence(t,a,s);
+translated:makeSequence(t,a,s)$
 (sequence - sum(a[i]*t^i,i,0,s-1))/t^s;
 (taylor(sequence, t, 0, 55) - sum(a[i]*t^i,i,0,49))/t^50;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+p:5$
+cs:taylor(makeSequence(t,a,-p), t, 0, 10);
+ds:taylor((t^p)*makeSequence(t,a,0), t, 0, 10);
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: subsect start ]
