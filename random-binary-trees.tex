@@ -141,11 +141,17 @@ correct) contained in \autoref{table:catalan-numbers}.
   \end{center}
 \end{table}
 
-
-%\input{random-trees-generation/tex-tables.tex}
-
 \section{Means of leaves and heights}
 
+In this section we study the means of the number of leaves and of
+heights of all different binary trees with $n$ nodes.
+
+From theory we know that the mean of leaves of trees with $n$ nodes
+is:
+\begin{displaymath}
+  \frac{n\,\left( n+1\right)  }{2\,\left( 2\,n-1\right) }
+\end{displaymath}
+Using Maxima to have the expacted means for some nodes dimensions:
 
 \noindent
 %%%%%%%%%%%%%%%
@@ -172,31 +178,76 @@ map(combineResult, makelist(n,n,1,10)),numer;
 \end{math}\\
 \begin{math}\displaystyle
 \parbox{8ex}{\color{labelcolor}(\%o181) }
-[[1,1],[2,1],[3,1.2],[4,1.429],[5,1.667],[6,1.909],[7,2.154],[8,2.4],[9,2.647],[10,2.895]]
+[[1,1],[2,1],[3,1.2],[4,1.429],[5,1.667],[6,1.909],[7,2.154],[8,2.4],
+[9,2.647],[10,2.895]]
 \end{math}
 %%%%%%%%%%%%%%%
 
+\begin{table}[!ht]
+  \label{table:means-of-leaves-height}
+  \begin{center}
+    \rotatebox{90}{
+      \begin{tabular}{rrrrrrr}
+        \hline
+        & nodes & dimensions & theo.mean.leaves & theo.mean.height & emp.mean.leaves & emp.mean.height \\ 
+        \hline
+         &   3 & 100 & 1.20 & 2.80 & 1.16 & 2.84 \\ 
+         &   4 & 200 & 1.43 & 3.57 & 1.35 & 3.65 \\ 
+         &   5 & 300 & 1.67 & 4.24 & 1.70 & 4.23 \\ 
+         &   6 & 1000 & 1.91 & 4.88 & 1.91 & 4.87 \\ 
+         &   7 & 10000 & 2.15 & 5.47 & 2.15 & 5.46 \\ 
+         &   8 & 10000 & 2.40 & 6.03 & 2.41 & 6.02 \\ 
+         &   9 & 50000 & 2.65 & 6.56 & 2.65 & 6.56 \\ 
+         &  10 & 100000 & 2.89 & 7.07 & 2.90 & 7.07 \\ 
+        \hline
+      \end{tabular}
+    }
+  \end{center}
+  \caption{Theoretical and empirical means for leaves and height}
+\end{table}
 
-The following plots are obtained repeating 1000 times the generation
-of 500 trees each with 5 nodes.
+In \autoref{table:means-of-leaves-height} we report the results
+obtained with our implementation in R: the second column report the
+number of trees generated with the correspondent number of nodes.
+
+\section{Standardized means and asymptotic distributions}
+
+In this section we study the asymptotic distribution of the means for
+the leaves and heights of trees with $n$ nodes. We use the result of
+the \emph{Central Limit Theorem} to check if the two means under study
+behave like a normal distrubution in repeated sampling.
+
+Each of the following plots are obtained repeating 1000 times the
+generation of 500 trees each with 5 nodes. In each plot the red dotted
+curve is the normal distribution (out ``target''), while the blue
+continue curve is the inferred distribution.
+
+In \autoref{fig:leaves-mean-distribution} we report the standardized
+mean of leaves.
 \begin{figure}[htb]
   \centering
   \includegraphics[height=13cm,
   width=13cm]{pictures/repeated-sampling-leaves-mean.pdf}
-  \caption{Binary trees with four nodes}
-  \label{fig:binary-trees-with-four-nodes}
+  \caption{Standardized leaves mean distribution}
+  \label{fig:leaves-mean-distribution}
 \end{figure}
 
+In \autoref{fig:height-mean-distribution} we report the standardized
+mean of leaves.
 \begin{figure}[htb]
   \centering
   \includegraphics[height=13cm,
   width=13cm]{pictures/repeated-sampling-height-mean.pdf}
-  \caption{Binary trees with four nodes}
-  \label{fig:binary-trees-with-four-nodes}
+  \caption{Standardized height mean distribution}
+  \label{fig:height-mean-distribution}
 \end{figure}
 
 \section{Drawing trees}
 
+Just for fun, our implementation draw all different trees with $n$
+nodes (this implementation is done in OCaml). In
+\autoref{fig:binary-trees-with-four-nodes} we report the image with
+all binary trees with $4$ nodes.
 \begin{figure}[htb]
   \centering
   \rotatebox{90}{

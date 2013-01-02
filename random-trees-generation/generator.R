@@ -39,6 +39,36 @@ main <- function(){
     v.observed.matrix=v.observed.matrix)
 }
 
+produce.leaves.height.frame <- function(){
+  nodes <- 3:10
+  dimensions <- c(100,200,300,1000, 10000, 10000, 50000, 100000)
+  ## nodes <- 3:6
+  ## dimensions <- c(100,200,300,1000)
+
+  rows <- length(nodes)
+  theo.mean.leaves <- rep(0, rows)
+  theo.mean.height <- rep(0, rows)
+  emp.mean.leaves <- rep(0, rows)
+  emp.mean.height <- rep(0, rows)
+  frame <- data.frame(nodes,
+                      dimensions,
+                      theo.mean.leaves,
+                      theo.mean.height,
+                      emp.mean.leaves,
+                      emp.mean.height)
+  for(i in 1:length(dimensions)){
+    sim <- simulation(dimensions[i],
+                      nodes[i])
+    frame$theo.mean.leaves[i] <- sim$theoretical.mean.leaves
+    frame$theo.mean.height[i] <- sim$theoretical.mean.height
+    frame$emp.mean.leaves[i] <-  sim$sampling.mean.leaves
+    frame$emp.mean.height[i] <-  sim$sampling.mean.height
+    
+  }
+  print.latex.table(frame)
+  frame
+}
+
 print.latex.table <- function(matrix){
   library(xtable)
   tex.code <- xtable(matrix)
