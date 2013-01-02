@@ -221,5 +221,12 @@ map(ratsimp, map(curriedBinomial, makelist(n,n,0,5)));
 taylor(a(t),t,0,5);
 /* [wxMaxima: input   end   ] */
 
+/* [wxMaxima: input   start ] */
+b(t):=(1-sqrt(1-4*t))/(2*t)$
+catalan(n):=binomial(2*n,n)/(n+1)$
+map(catalan, makelist(n,n,0,10));
+taylor(b(t),t,0,10);
+/* [wxMaxima: input   end   ] */
+
 /* Maxima can't load/batch files which end with a comment! */
 "Created with wxMaxima"$
