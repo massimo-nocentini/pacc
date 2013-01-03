@@ -22,7 +22,8 @@ The set of binary trees with $n$ nodes is in one-to-one correspondence
 with many other sets of combinatorial objects, one of them is the set
 of well-formed bracket sequences with $n$ pairs of brackets. The
 Atkinson and Sack algorithm focus on generating those sequences: in
-this section we'll explain in our words their solution.
+this section we'll explain in our words their solution (in
+\autoref{chapter:appendix} is reported the original article).
 
 \subsection{Definitions}
 
@@ -165,7 +166,7 @@ follow ($\epsilon$ represent the empty string):
   \end{split}
 \end{displaymath}
 In order to recognize if a word $w$ is \emph{well-formed} it is
-sufficient to compute the comulative sequence of sums $s$ and check
+sufficient to compute the cumulative sequence of sums $s$ and check
 that $\forall i:s_i \geq 0$. Let's do some examples:
 \begin{verbatim}
       /\
@@ -194,6 +195,15 @@ where $u=)t($, $t=))(()($ and $v=\epsilon$. Now $\phi(v) =
  /\/  \/\
 ------------
 \end{verbatim}
+
+\subsection{Complexity and Space}
+
+Let $w$ a \emph{balanced} word and $T(n)$ the number of operation
+required. The decomposition $w=uv$ can be computed in $T(r)$ where $n
+\geq r = |u|$ by cumulative summations, remaining $T(n-r)$ operation
+for $v$. Hence $T(n) = O(r) + T(n-r) = O(n)$ a linear time.
+
+For a space analysis, the algorithm use integers up to $2n$.
 
 
 \section{Implementation using R}
@@ -303,7 +313,7 @@ very different respect the others in the same column.
 
 It is possible to compare the values contained in table
 \autoref{table:empirical-trees-per-nodes} with those (theoretically
-correct) contained in \autoref{table:catalan-numbers}.
+correct) contained in \autoref{table:Catalan-numbers}.
 \begin{table}[ht]
   \begin{center}
     \begin{tabular}{rrrrrr}
@@ -327,7 +337,7 @@ is:
 \begin{displaymath}
   \frac{n\,\left( n+1\right)  }{2\,\left( 2\,n-1\right) }
 \end{displaymath}
-Using Maxima to have the expacted means for some nodes dimensions:
+Using Maxima to have the exacted means for some nodes dimensions:
 
 \noindent
 %%%%%%%%%%%%%%%
@@ -390,7 +400,7 @@ number of trees generated with the correspondent number of nodes.
 In this section we study the asymptotic distribution of the means for
 the leaves and heights of trees with $n$ nodes. We use the result of
 the \emph{Central Limit Theorem} to check if the two means under study
-behave like a normal distrubution in repeated sampling.
+behave like a normal distribution in repeated sampling.
 
 Each of the following plots are obtained repeating 1000 times the
 generation of 500 trees each with 5 nodes. In each plot the red dotted
