@@ -18,7 +18,183 @@ mean of number of leaves among binary trees with $n$ nodes.
 
 
 \section{Atkinson and Sack algorithm}
-Describe briefly the algorithm here.
+The set of binary trees with $n$ nodes is in one-to-one correspondence
+with many other sets of combinatorial objects, one of them is the set
+of well-formed bracket sequences with $n$ pairs of brackets. The
+Atkinson and Sack algorithm focus on generating those sequences: in
+this section we'll explain in our words their solution.
+
+\subsection{Definitions}
+
+A sequence is a word $w \in \{(,)\}^*$. In the following we draw a
+sequence as a zigzag walk which starts from a base line (represented
+as \texttt{-----}) and for each $( \in w$ we draw the character
+slash, for each $) \in w$ we draw the character backslash. For
+instance, the sequence of brackets $())()((())$ is drawn as:
+\begin{verbatim}
+          /\
+ /\      /  \
+--------------
+    \/\/ 
+\end{verbatim}
+A word is \emph{balanced} if it contains an equal number of $($ and
+$)$, as in the sequence above. Graphically speaking, balanced words
+are sequences that start from the base line and, at right-most, return
+to the base line (in the middle it is possible to cross zero, one or
+more time the base line).\\
+
+A word $w$ is \emph{reducible} if $w = w_1 w_2$ where $w_1$ and $w_2$
+are \emph{balanced} and \emph{non empty}. For instance the sequence
+reported above is reducible in four words while the following one
+isn't:
+\begin{verbatim}
+
+   /\
+  /  \/\ 
+ /      \
+----------
+\end{verbatim}
+
+A \emph{balanced} word $w$ has \emph{defect} $i$ if $w$ has $i$
+bracket pairs under the base line. Words with \emph{defect} $0$ are
+called \emph{well-formed}. The previous word has \emph{defect} $0$,
+while the following one has \emph{defect} $3$:
+\begin{verbatim}
+ /\        /\
+----------------
+    \/\  /
+       \/
+\end{verbatim}
+
+A word $w^*$ is the complement of a word $w$ if $\forall i \in
+\{0,\ldots,|w|\}: w[i]=( \leftrightarrow w^*[i]=)$, for instance the
+complement of the previous word is:
+\begin{verbatim}
+       /\
+    /\/  \   
+--------------
+ \/        \/ 
+\end{verbatim}
+
+If a \emph{balanced} word $w$ is \emph{non reducible} then either $w$
+or $w^*$ is \emph{well-formed}. We can see this result assuming $w$ be
+one of the following words:
+\begin{verbatim}
+            ----------
+   /\        \      /
+  /  \/\      \  /\/
+ /      \      \/
+----------
+\end{verbatim}
+Both of them are \emph{balanced} and \emph{non reducible}: if $w$ is
+the left-most one then $w$ is \emph{well-formed}, if $w$ is the
+right-most one then $w^*$ is \emph{well-formed}.
+
+\subsection{Splitting a \emph{reducible} word}
+How can we decide if a word $w$ is \emph{reducible} or not? We can do
+a cumulative summation on $w$ where we consider each $($ as $1$ and
+each $)$ as $-1$. The following word has the cumulative sums
+$(0,-1,0,1,0,1,2,1,0,-1,0)$:
+\begin{verbatim}
+       /\
+    /\/  \   
+--------------
+ \/        \/ 
+\end{verbatim}
+
+The following words have cumulative sums $(0,1,2,3,2,1,2,1,0)$ and\\
+$(0,-1,-2,-3,-2,-1,-2,-1,0)$ respectively:
+\begin{verbatim}
+            ----------
+   /\        \      /
+  /  \/\      \  /\/
+ /      \      \/
+----------
+\end{verbatim}
+Let $w$ be a word and $s = (0, s_1, \ldots, s_n)$ be the sequence of
+cumulative sums respect of $w$, where $n = |w|$. We split $w= uv$ such
+that $|u|>0 \wedge |v| \geq 0$ using the following strategy:
+\begin{displaymath}
+  \begin{split}
+    i &=    \min\{k\in\{1,\ldots,n\}:s_k = 0 \}\\
+    u &= (w_1,\ldots,w_i) \quad v = (w_{i+1},\ldots,w_n)
+  \end{split}
+\end{displaymath}
+
+For instance, the following sequence as cumulative sums
+$(0,1,0,1,2,1,0)$, hence $i = 2$ so $u=()$ and $v=(())$:
+\begin{verbatim}
+    /\
+ /\/  \   
+--------
+\end{verbatim}
+While the following one as cumulative sums $(0, 1, 2, 3, 2, 1,
+2,1,0)$, hence $i = 8$ so $u=((())())$ and $v$ empty:
+\begin{verbatim}
+   /\
+  /  \/\
+ /      \ 
+----------
+\end{verbatim}
+
+\subsection{Generating a \emph{balanced} word}
+
+In order to generate a \emph{balanced} word of length $2n$ (not
+necessary \emph{well-formed}) we use the follow strategy:
+\begin{enumerate}
+\item generate a uniform sample $L$ of length $n$ from
+  $\{1,\ldots,2n\}$;
+\item let $w = w_1w_2\ldots w_{2n}$ a word such that $w_i = (
+  \leftrightarrow i \in L$;
+\end{enumerate}
+
+\subsection{Transform a \emph{balanced} word in a \emph{well-formed}
+  word}
+
+Let $w=uv$ a \emph{balanced} word obtained using the strategy described
+in the previous section. To get a \emph{well-formed} word from $w$ we
+define a function $\phi:\{(,)\}^*\rightarrow \{(,)\}^*$ inductively as
+follow ($\epsilon$ represent the empty string):
+\begin{displaymath}
+  \begin{split}
+    \phi(\epsilon) &= \epsilon \\
+    \phi(w) &= u \phi(v) \quad \text{if } u \text{ is
+      \emph{well-formed}}\\
+    \phi(w) &= ( \phi(v) )t^* \quad \text{if } u=)t( \text{ is
+      \emph{not well-formed}} 
+  \end{split}
+\end{displaymath}
+In order to recognize if a word $w$ is \emph{well-formed} it is
+sufficient to compute the comulative sequence of sums $s$ and check
+that $\forall i:s_i \geq 0$. Let's do some examples:
+\begin{verbatim}
+      /\
+----------
+ \  /
+  \/
+\end{verbatim}
+The previous sequence represents the word $w=))((()$. It is
+\emph{balanced} so applying $\phi$ we get $\phi(w) = (\phi(v))()$
+where $u=)t($, $t=)($ and $v=()$. Now $\phi(v) = ()$ because $v=()$ is
+\emph{well-formed}, hence $\phi(w) = (())()$.
+
+Another limit example:
+\begin{verbatim}
+----------
+ \      /
+  \  /\/
+   \/
+\end{verbatim}
+The previous sequence represents the word $w=)))(()(($. It is
+\emph{balanced} so applying $\phi$ we get $\phi(w) = (\phi(v))(())()$
+where $u=)t($, $t=))(()($ and $v=\epsilon$. Now $\phi(v) =
+\epsilon$ hence $\phi(w) = ()(())()$, graphically:
+\begin{verbatim}
+    /\
+ /\/  \/\
+------------
+\end{verbatim}
+
 
 \section{Implementation using R}
 
@@ -180,12 +356,16 @@ map(combineResult, makelist(n,n,1,10)),numer;
 \parbox{8ex}{\color{labelcolor}(\%o181) }
 [[1,1],[2,1],[3,1.2],[4,1.429],[5,1.667],[6,1.909],[7,2.154],[8,2.4],
 [9,2.647],[10,2.895]]
-\end{math}
+\end{math}\\
 %%%%%%%%%%%%%%%
 
+In \autoref{tab:means-of-leaves-height} we report the results
+obtained with our implementation in R: the second column report the
+number of trees generated with the correspondent number of nodes.
 \begin{table}[!ht]
-  \label{table:means-of-leaves-height}
   \begin{center}
+    \label{tab:means-of-leaves-height}
+    \caption{Theoretical and empirical means for leaves and height}
     \rotatebox{90}{
       \begin{tabular}{rrrrrrr}
         \hline
@@ -203,12 +383,7 @@ map(combineResult, makelist(n,n,1,10)),numer;
       \end{tabular}
     }
   \end{center}
-  \caption{Theoretical and empirical means for leaves and height}
 \end{table}
-
-In \autoref{table:means-of-leaves-height} we report the results
-obtained with our implementation in R: the second column report the
-number of trees generated with the correspondent number of nodes.
 
 \section{Standardized means and asymptotic distributions}
 
