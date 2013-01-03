@@ -126,7 +126,45 @@
 \chapter{Appendix}
 \label{chapter:appendix}
 
+\section{Project description}
+
+In this section we explain some details ``under the hood'' of the
+implementation of this project.
+
+We've used the statistical environment R to use its very efficient
+functions to perform uniform sampling (required by the Atkinson and
+Sack algorithm) and $\chi^2$ test in order to check the randomness of
+the generator. To produce the images with all different trees with $n$
+nodes, we've used the OCaml language to use its functional power.
+
+The two programs works together: the entry point for the user are the
+R functions (which can be loaded in any R interpreter). During their
+computation, they invoke an OCaml program giving their argument in
+form a file written on the file system. The OCaml program parse the
+input file, compute the representation of trees and write them back in
+another file. The control return to R functions, which invoke the
+\emph{graphviz} programs to build a representation of trees in image
+form.
+
+\section{Project hosting}
+
+This entire work, including the source code for the document you're
+reading, the R functions and the OCaml implementations are completely
+available for download at:\\
+\href{https://github.com/massimo-nocentini/pacc}{https://github.com/massimo-nocentini/pacc}\\
+It is possible to clone the entire Git repository typing the following
+command in a Unix terminal:\\
+\texttt{git clone git@github.com:massimo-nocentini/pacc.git}\\
+A compiled version of this document is available at: \\
+\href{https://github.com/massimo-nocentini/pacc/blob/master/compiled-versions/Elaborato.pdf}{https://github.com/massimo-nocentini/pacc/blob/master/compiled-versions/Elaborato.pdf}
+
 \section{Original article about random binary trees generation}
+
+In the last pages of this document we report the original article
+about the algorithm for random trees generation written by Atkinson
+and Sack (this isn't our work, we report it here because it is
+difficult to find and it is just for getting the reading experience of
+this document more complete).
 
 \includepdf[pages={-}]{atkinson-sack-original-article.pdf}
 
