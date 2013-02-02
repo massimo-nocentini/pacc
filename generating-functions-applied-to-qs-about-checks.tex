@@ -1,5 +1,5 @@
 
-\section{$\mathcal{G}$ applied to quicksort's average checks }
+\section{Generating function quicksort's average checks }
 In this section we go back to the recurrence about the average number
 of checks for the basic implementation of quicksort algorithm and
 we'll try to find the generating function for the sequence $C_n$ of
@@ -53,17 +53,16 @@ with initial condition $C(0) = 0$. Now we study the homogeneous
 associate equation $\mu(t)$ (excluding for a moment the term $
 \frac{2}{(1-t)^3}$):
 \begin{eqnarray}
-    \mu^{\prime} (t) &=  \frac{2}{1-t} \mu (t)\\
-    \frac{\mu^{\prime}(t)}{\mu (t)} &= \frac{2}{1-t} \label{eq:assoc-checks-qs}\\
-    \log\mu (t) &= -2\log (1-t) = \log \frac{1}{(1-t)^2} \quad \text{
+    \mu^{\prime} (t) &=&  \frac{2}{1-t} \mu (t)\\
+    \frac{\mu^{\prime}(t)}{\mu (t)} &=& \frac{2}{1-t} \label{eq:assoc-checks-qs}\\
+    \log\mu (t) &=& -2\log (1-t) = \log \frac{1}{(1-t)^2} \quad \text{
       integrating both members} \\
     \label{eq:final-assoc-checks-qs}
-    \mu (t) &= \frac{1}{(1-t)^2}\quad \text{
+    \mu (t) &=& \frac{1}{(1-t)^2}\quad \text{
       exping both members}
 \end{eqnarray}
 Now we study the derivative which complies the $\mu$ function,
-solution of the unknown function $C(t)$
-we hope to find:
+solution of the unknown function $C(t)$ we hope to find:
 \begin{displaymath}
   \begin{split}
     \frac{\partial}{\partial t}\left( \frac{C(t)}{\mu (t)} \right) &=
