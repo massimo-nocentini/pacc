@@ -372,10 +372,14 @@ F_{n-1} + F_{n-2} $ for $n=0$):
     + \mathcal{G}
     (F_{n}) \\
     \mathcal{G} (F_n) - t &= t \mathcal{G} (F_n) + t^2 \mathcal{G}
-    (F_n)\\
-    \mathcal{G} (F_n) &= - \frac{t}{t^2 + t - 1} = \frac{1}{1-t-t^2}
+    (F_n)    
   \end{split}
 \end{displaymath}
+Finally we get:
+\begin{equation}
+  \label{eq:fibonacci-generating-function}
+  \mathcal{G} (F_n) = - \frac{t}{t^2 + t - 1} = \frac{t}{1-t-t^2}
+\end{equation}
 
 Simple check:
 
@@ -384,25 +388,26 @@ Simple check:
 %%% INPUT:
 \begin{minipage}[t]{8ex}{\color{red}\bf
 \begin{verbatim}
-(%i106) 
+(%i779) 
 \end{verbatim}}
 \end{minipage}
 \begin{minipage}[t]{\textwidth}{\color{blue}
 \begin{verbatim}
-b(t):=(1/(1-t-t^2))$
+b(t):=t/(1-t-t^2)$
 map(fib, makelist(n,n,1,10));
-taylor(b(t),t,0,9);
+taylor(b(t),t,0,10);
 \end{verbatim}}
 \end{minipage}
 %%% OUTPUT:
 \definecolor{labelcolor}{RGB}{100,0,0}
 \begin{math}\displaystyle
-\parbox{8ex}{\color{labelcolor}(\%o108) }
+\parbox{8ex}{\color{labelcolor}(\%o780) }
 [1,1,2,3,5,8,13,21,34,55]
-\end{math}\\
+\end{math}
+
 \begin{math}\displaystyle
-\parbox{8ex}{\color{labelcolor}(\%o109) }
-1+t+2\,{t}^{2}+3\,{t}^{3}+5\,{t}^{4}+8\,{t}^{5}+13\,{t}^{6}+21\,{t}^{7}+34\,{t}^{8}+55\,{t}^{9}+...
+\parbox{8ex}{\color{labelcolor}(\%o781) }
+t+{t}^{2}+2\,{t}^{3}+3\,{t}^{4}+5\,{t}^{5}+8\,{t}^{6}+13\,{t}^{7}+21\,{t}^{8}+34\,{t}^{9}+55\,{t}^{10}+...
 \end{math}
 %%%%%%%%%%%%%%%
 

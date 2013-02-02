@@ -192,8 +192,9 @@ taylor(b(t),t,0,10);
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
+b(t):=t/(1-t-t^2)$
 map(fib, makelist(n,n,1,10));
-taylor(b(t),t,0,9);
+taylor(b(t),t,0,10);
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
