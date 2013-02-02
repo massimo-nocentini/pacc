@@ -1,0 +1,127 @@
+
+\section{$\mathcal{G}$ applied to quicksort's average checks }
+In this section we go back to the recurrence about the average number
+of checks for the basic implementation of quicksort algorithm and
+we'll try to find the generating function for the sequence $C_n$ of
+average checks.
+
+We start again from the known recurrence:
+\begin{displaymath}
+  \begin{split}
+    C_n &= n+1 +  \frac{1}{n}\sum_{k=1}^{n}{C_k + C_{n-k}}  \\
+    C_n &= n+1 +  \frac{2}{n}\sum_{k=0}^{n-1}{C_k}  \\
+    nC_n &= n(n+1) + 2\sum_{k=0}^{n-1}{C_k}  \\
+    \mathcal{G} (nC_n) &= \mathcal{G} (n^2+n) +
+    2\mathcal{G} \left(\sum_{k=0}^{n-1}{C_k} \right) \\
+    \mathcal{G} (nC_n) &= \mathcal{G} (n^2) +\mathcal{G} (n) +
+    2\mathcal{G} \left(\sum_{k=0}^{n-1}{C_k} \right) \\
+  \end{split}
+\end{displaymath}
+Now we remeber the following equalities:
+\begin{displaymath}
+  \begin{split}
+    \mathcal{G} (n) &=  \frac{t}{(1-t)^2} \\
+    \mathcal{G} (n^2) &=
+    t\frac{\partial}{\partial t}(\mathcal{G} (n)) =
+    \frac{t(1+t)}{(1-t)^3} \\
+  \end{split}
+\end{displaymath}
+And it is possible to see $\sum_{k=0}^{n-1}{C_k} = a_{n-1}$ as a
+sequence, so $\mathcal{G} (a_{n-1}) = t \mathcal{G} (a_n)$;
+substituting those rewritings and using the convolution property we
+get:
+\begin{displaymath}
+  \begin{split}
+    t \frac{\partial}{\partial t}\left( \mathcal{G} (C_n) \right) &=
+    \frac{t}{(1-t)^2} + \frac{t(1+t)}{(1-t)^3} + 2t\mathcal{G}
+    \left(\sum_{k=0}^{n}{C_k} \right)\\
+    t \frac{\partial}{\partial t}\left( \mathcal{G} (C_n) \right) &=
+    \frac{t -t^2+ t+t^2}{(1-t)^3} + \frac{2t}{1-t} \mathcal{G}
+    \left(C_n \right)\\
+    \frac{\partial}{\partial t}\left( \mathcal{G} (C_n) \right) &=
+    \frac{2}{(1-t)^3} + \frac{2}{1-t} \mathcal{G}
+    \left(C_n \right)\\
+  \end{split}
+\end{displaymath}
+We can write the same expression by $\mathcal{G} (C_n) = C(t)$ as a
+differential equation:
+\begin{equation}
+  \label{eq:main-assoc-checks-qs}
+  C^{\prime}(t) = \frac{2}{(1-t)^3} + \frac{2}{1-t} C(t)
+\end{equation}
+with initial condition $C(0) = 0$. Now we study the homogeneous
+associate equation $\mu(t)$ (excluding for a moment the term $
+\frac{2}{(1-t)^3}$):
+\begin{eqnarray}
+    \mu^{\prime} (t) &=  \frac{2}{1-t} \mu (t)\\
+    \frac{\mu^{\prime}(t)}{\mu (t)} &= \frac{2}{1-t} \label{eq:assoc-checks-qs}\\
+    \log\mu (t) &= -2\log (1-t) = \log \frac{1}{(1-t)^2} \quad \text{
+      integrating both members} \\
+    \label{eq:final-assoc-checks-qs}
+    \mu (t) &= \frac{1}{(1-t)^2}\quad \text{
+      exping both members}
+\end{eqnarray}
+Now we study the derivative which complies the $\mu$ function,
+solution of the unknown function $C(t)$
+we hope to find:
+\begin{displaymath}
+  \begin{split}
+    \frac{\partial}{\partial t}\left( \frac{C(t)}{\mu (t)} \right) &=
+    \frac{C^{\prime} (t)\mu (t) - C(t)\mu^{\prime} (t)}{\mu (t)^2} \\
+    &= \mu (t)\frac{C^{\prime} (t) - C(t) \frac{\mu^{\prime} (t)}{\mu
+        (t)} }{\mu (t)^2} \\
+    &= \frac{1}{\mu (t)} (C^{\prime} (t) - \frac{2}{1-t}C(t) ) \quad
+    \text{by \autoref{eq:assoc-checks-qs}}\\
+    &= \frac{1}{\mu (t)}\frac{2}{(1-t)^3}\quad \text{by
+      \autoref{eq:main-assoc-checks-qs}} \\
+    &= \frac{2}{1-t}
+  \end{split}
+\end{displaymath}
+Now we integrate both members:
+\begin{displaymath}
+  \begin{split}
+    \frac{C(t)}{\mu (t)} &= -2\log (1-t) +k \\
+    C(t) &= \frac{2\log{ \frac{1}{1-t} } + k}{(1-t)^2}\quad \text{by
+      \autoref{eq:final-assoc-checks-qs}}
+  \end{split}
+\end{displaymath}
+Since $C(0)=0$ it must have $k=0$, hence:
+\begin{equation}
+  C(t) = \frac{2}{(1-t)^2}\log{ \frac{1}{1-t} }
+\end{equation}
+
+Simple check with Maxima:
+
+\noindent
+%%%%%%%%%%%%%%%
+%%% INPUT:
+\begin{minipage}[t]{8ex}{\color{red}\bf
+\begin{verbatim}
+(%i5) 
+\end{verbatim}}
+\end{minipage}
+\begin{minipage}[t]{\textwidth}{\color{blue}
+\begin{verbatim}
+c(t):=(2/(1-t)^2)*log(1/(1-t))$
+taylor(c(t),t,0,8);
+\end{verbatim}}
+\end{minipage}
+%%% OUTPUT:
+\definecolor{labelcolor}{RGB}{100,0,0}
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o6)}
+2\,t+5\,{t}^{2}+\frac{26\,{t}^{3}}{3}+\frac{77\,{t}^{4}}{6}+\frac{87\,{t}^{5}}{5}+\frac{223\,{t}^{6}}{10}+\frac{962\,{t}^{7}}{35}+\frac{4609\,{t}^{8}}{140}+...
+\end{math}
+%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+ 
+
+
+
+

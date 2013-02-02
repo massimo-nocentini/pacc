@@ -32,8 +32,6 @@ map (byDef, [0, 1, 2, 3, 4, 5, 6]);
 Generating Function Basics
    [wxMaxima: section end   ] */
 
-/* [wxMaxima: fold    start ] */
-
 /* [wxMaxima: subsect start ]
 First examples before properties
    [wxMaxima: subsect end   ] */
@@ -230,7 +228,15 @@ map(catalan, makelist(n,n,0,10));
 taylor(b(t),t,0,10);
 /* [wxMaxima: input   end   ] */
 
-/* [wxMaxima: fold    end   ] */
+/* [wxMaxima: subsect start ]
+QS average checks generating function
+
+   [wxMaxima: subsect end   ] */
+
+/* [wxMaxima: input   start ] */
+c(t):=(2/(1-t)^2)*log(1/(1-t))$
+taylor(c(t),t,0,8);
+/* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: section start ]
 Generate binary trees at random
