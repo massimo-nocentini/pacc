@@ -54,7 +54,7 @@ niceindicespref;
 
 /* [wxMaxima: input   start ] */
 sequence:makelist(n,n,0, 6);
-taylor(ggf(sequence), x, 0, 8);
+taylor(ggf(sequence), n, 0, 8);
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
