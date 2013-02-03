@@ -1,7 +1,66 @@
 
-\section{Inverse of generating function operator}
+\section{ $[t^{n}] $ inverse operator of generating function operator}
 
-\subsection{Some properties}
+In this section we'll study the inverse operator $[t^{n}] $ of
+$\mathcal{G} $, which consume a generating function $g(t)$, where
+$g(t) = \mathcal{G} (\{a_n\}_{n\in\mathbb{N} } )$, and returns the
+$a_n$ coefficient of the sequence $\{a_n\}_{n\in\mathbb{N} }$,
+formally $[t^{n}] gj(t) = a_n$.
+
+\subsection{Linearity of $[t^{n}] $}
+\begin{displaymath}
+  \begin{split}
+    [t^{n}] (\alpha a(t) + \beta b(t)) = [t^{n}]
+    \left(\sum_{n=0}^{\infty}{(\alpha a_n + \beta b_n )t^n}\right) =
+    \alpha a_n + \beta b_n
+  \end{split}
+\end{displaymath}
+
+\subsection{Translation of $[t^{n}] $}
+Let $s\in \mathbb{Z}$:
+\begin{displaymath}
+  \begin{split}
+    [t^{n}] t^s a(t) &= [t^{n}] t^s (a_0 + a_1 t + a_2 t^2 + \ldots +
+    a_n t^n + \ldots )\\
+    &= [t^{n}] (a_0 t^s + a_1 t^{s+1} + a_2 t^{s+2} + \ldots + a_n
+    t^{n+s} + \ldots )\\
+    &= [t^{n-s}] a(t)
+  \end{split}
+\end{displaymath}
+A simple observation:
+\begin{displaymath}
+  [t^{n}]  \frac{  a(t)}{t^s} = [t^{n+s}] a(t)
+\end{displaymath}
+
+\subsection{Derivation of $[t^{n}] $}
+\begin{displaymath}
+  \begin{split}
+    a(t) &= a_0 + a_1 t + a_2 t^2 + \ldots + a_n t^n + \ldots \\
+    \frac{\partial}{\partial t}\left(a(t) \right) &= a_1 + 2a_2 t +
+    3a_3 t^2+\ldots + (n+1)a_{n+1} t^n + \ldots \\
+    [t^{n}] \frac{\partial}{\partial t}\left(a(t) \right) &=
+    (n+1)a_{n+1}
+  \end{split}
+\end{displaymath}
+
+\subsection{Convolution of $[t^{n}] $}
+\begin{displaymath}
+  \begin{split}
+    [t^{n}] a(t)b(t) &= [t^{n}] \mathcal{G} (a_n) \mathcal{G} (b_n) =
+    [t^{n}]\mathcal{G} \left(\sum_{k=0}^{n}{a_k b_{n-k}} \right) =
+    \sum_{k=0}^{n}{a_k b_{n-k}}
+  \end{split}
+\end{displaymath}
+
+\subsection{Composition of $[t^{n}] $}
+\begin{displaymath}
+  \begin{split}
+    [t^{n}] a(t)\circ b(t) &=[t^{n}] a(b(t))
+    =[t^{n}]\sum_{k=0}^{\infty}{a_k (\mathcal{G} (b_n))^k}\\
+    &=\sum_{k=0}^{\infty}{a_k [t^{n}] b(t)^k} \quad \text{by linearity
+      of } [t^n]
+  \end{split}
+\end{displaymath}
 
 \subsection{Netwon's rule}
 

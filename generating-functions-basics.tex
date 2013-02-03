@@ -450,9 +450,14 @@ taylor(b(t),t,0,8);
 1+t+{t}^{2}+{t}^{3}+{t}^{4}+{t}^{5}+{t}^{6}+{t}^{7}+{t}^{8}+...
 \end{math}\\
 %%%%%%%%%%%%%%%
-So we get the sequence $\{b_n\}_{n\in\mathbb{N} }
-=\{1_n\}_{n\in\mathbb{N} } =(1,1,1,1,1,1,\ldots)$ ``inverse'' of
-$\{a_n\}_{n\in\mathbb{N} } =(1,-1,0,0,0,0,\ldots)$.
+So the sequence $\{b_n\}_{n\in\mathbb{N} } =\{1_n\}_{n\in\mathbb{N} }
+=(1,1,1,1,1,1,\ldots)$ is the ``inverse'' of $\{a_n\}_{n\in\mathbb{N}
+} =(1,-1,0,0,0,0,\ldots)$, and we've found the following important
+result:
+\begin{equation}
+  \label{eq:genfun-of-ones-sequence}
+  b(t) = \mathcal{G} (\{1_n\}_{n\in\mathbb{N} }) =  \frac{1}{1-t}
+\end{equation}
 \end{proof}
 
 \subsection{Derivation for $\mathcal{G} $}
@@ -545,15 +550,15 @@ between consecutive terms:
 By \emph{Identity Principle} follows:
 \begin{displaymath}
   \begin{split}
-    \mathcal{G} (a_n) &= \mathcal{G} (a_{n+1}) =  \frac{\mathcal{G}
-      (a_n) - a_0}{t} \quad \quad \text{where } a_0 = c \text{ by def of }
+    \mathcal{G} (a_n) &= \mathcal{G} (a_{n+1}) = \frac{\mathcal{G}
+      (a_n) - a_0}{t} \quad \quad \text{where } a_0 = c \text{ by def
+      of }
     \{a_n\}_{n\in\mathbb{N} } \\
     \mathcal{G} (a_n) &= \frac{\mathcal{G}
-        (a_n) -c}{t} \\
-      \mathcal{G} (a_n) &= \mathcal{G} (1_n) = \frac{c}{1-t}
+      (a_n) -c}{t} \\
+    \mathcal{G} (a_n) &= c\mathcal{G} (1_n) = \frac{c}{1-t}
   \end{split}
 \end{displaymath}
-
 
 \subsection{Composition for $\mathcal{G} $}
 
