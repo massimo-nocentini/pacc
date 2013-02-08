@@ -280,5 +280,96 @@ map(combineResult, makelist(n,n,1,10)),numer;
 float((%o511) ), numer;
 /* [wxMaxima: input   end   ] */
 
+/* [wxMaxima: section start ]
+Symbolic method
+   [wxMaxima: section end   ] */
+
+/* [wxMaxima: input   start ] */
+f(t):=(1-t^4)/(1-2*t+t^5);
+taylor(f(t),t,0,10);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+dick(t):=(1-sqrt(1-4*t^2))/(2*t^2);
+taylor(dick(t),t,0,20);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+solutions:solve([ P(t,z,w)=t*z+t^2*w^2*E(t,z,w), 
+        M(t,z,w)=t+t,
+        A(t,z,w)=t+t, 
+        E(t,z,w)=T(t,z,w)+A(t,z,w)*T(t,z,w), 
+        T(t,z,w)=F(t,z,w)+T(t,z,w)*A(t,z,w)*F(t,z,w),
+        F(t,z,w)=P(t,z,w)+F(t,z,w)*M(t,z,w)*P(t,z,w)],
+    [P(t,z,w),M(t,z,w),A(t,z,w),E(t,z,w),T(t,z,w),F(t,z,w)])$
+/*
+    I've to understand better because there are two solutions, the result using solutions[1] does not satisfy much
+*/
+ev(taylor(E(t,z,w),t,0,10),solutions[2]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+solutions:solve(t*B^2-B+1=0,B);
+c:ev(B,solutions[1]);
+taylor(t/(1-2*t*c),t,0,10);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: section start ]
+Lagrange inversion
+   [wxMaxima: section end   ] */
+
+/* [wxMaxima: input   start ] */
+a(t):=sum (a[i]*t^i, i, 0, 2);
+b(t):=sum (b[i]*t^i, i, 0, 2);
+term:ratsimp(a(b(t)));
+coeff(term,t,0);
+term:ev(term,a[0]=0);
+solve([ coeff(term,t,0)=0,
+        coeff(term,t,1)=1,
+        coeff(term,t,2)=0,
+        coeff(term,t,3)=0,
+        coeff(term,t,4)=0], 
+      [b[0],b[1],b[2],a[1],a[2]]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+A(n):=n^(n-1)/n!;
+map(A, makelist(k,k,1,10));
+B(n):=n^n/n!;
+map(B, makelist(k,k,1,10));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+length:8$
+f(n,t):=(1+t)^(2*n);
+tt:taylor(taylor(f(n,t),n,0,length),t,0,length)$
+coeffCurry(index):=ev(coeff(tt, t, index), n=index)$
+map(coeffCurry, makelist(i,i,0,length));
+T(t) := 1/sqrt(1-4*t);
+taylor(T(t),t,0,length);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+length:10$
+alpha:1$
+beta:1$
+f(n,t):=(1+alpha*t+beta*t^2)^n;
+tt:taylor(taylor(f(n,t),n,0,length),t,0,length)$
+coeffCurry(index):=ev(coeff(tt, t, index), n=index)$
+map(coeffCurry, makelist(i,i,0,length));
+T(t) := 1/sqrt((alpha^2-4*beta)*t^2  -2*alpha*t +1);
+taylor(T(t),t,0,length);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+length:8$
+f(n,t):=sqrt(1-2*t)/(1-t)^(n+1);
+tt:taylor(taylor(f(n,t),n,0,length),t,0,length)$
+coeffCurry(index):=ev(coeff(tt, t, index), n=index)$
+map(coeffCurry, makelist(i,i,0,length));
+T(t) := (1-4*t)^(-(1/4));
+taylor(T(t),t,0,length);
+/* [wxMaxima: input   end   ] */
+
 /* Maxima can't load/batch files which end with a comment! */
 "Created with wxMaxima"$
