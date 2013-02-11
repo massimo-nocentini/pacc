@@ -474,3 +474,67 @@ all binary trees with $4$ nodes.
   \caption{Binary trees with four nodes}
   \label{fig:binary-trees-with-four-nodes}
 \end{figure}
+
+\subsection{From bracket representations to binary trees}
+
+In this section we report the algorithm used to build the OCaml tree
+objects from bracket representations. The algorithm is recursive:
+given an input bracket representation, the algorithm breaks the
+representation in smaller representations, which are valid bracket
+representations themselves, recurs on each of them and then collects
+the results to returns the final answer. In order to describe it more
+precisely we distinguish two cases, let $d$ be a bracket
+representation:
+\begin{itemize}
+\item the base of the recursion is for $d=\epsilon$, the empty bracket
+  representation. In this case the tree for $d$ is an empty binary
+  tree;
+\item $d$ cannot be broken into two shorter bracket
+  representations. It follows that, since $d$ is however a valid
+  bracket representation (ie. $d$ is balanced as we've defined in
+  previous sections), it must have the form $d = (M)$, where $M$ is a
+  shorter bracket representation (can be the case of $M = \epsilon$
+  empty, this is necessary to reach the base of recursion). In this
+  case we recur on $M$ combining the result using the following
+  strategy:
+  \begin{quote}
+    let $m$ be the tree corresponding to bracket representation $M$:
+    build an empty tree $t$ for bracket representation $d$ attaching
+    the root of tree $m$ to the \emph{right} leaf of tree $t$.
+  \end{quote}
+  For instance assume $d = (())$, hence $M=()$, so we build the
+  following tree $t$ for bracket representation $d$:
+\begin{verbatim}
+       t
+      / \
+     /   m
+    /   / \
+\end{verbatim}
+\item $d$ can be broken into two shorter bracket representations, that
+  is $d = d_1d_2$. Using the toy $d=()(())$ we've $d_1=()$ and
+  $d_2=(())$. In this case we recur on both $d_1,d_2$ combining the
+  results using the following strategy:
+  \begin{quote}
+    let $w$ be the tree corresponding to bracket representation $d_1$
+    and let $r$ be the tree corresponding to bracket representation
+    $d_2$: build a tree $t$ for bracket representation $d$ attaching
+    the root of tree $t_1$ to the \emph{left-most} leaf of tree $t_2$.
+  \end{quote}
+  For example let $d=()(())$ we get the following trees by recursive
+  application on $d_1=(),d_2 =(())$ respectively:
+\begin{verbatim}
+  w       r          r
+ / \     / \        / \
+        /   o      /   o
+       l   / \    w   / \
+                 / \
+\end{verbatim}
+  We attach the tree rooted at $w$ to the \emph{left-most} leaf $l$ of
+  tree rooted at $r$ to get the right-most tree rooted at $t$ for $d$
+  in the picture above.
+
+  If a bracket representation $d$ can be broken in more shorter
+  bracket representations $d_1,\ldots,d_n$ then we break $d$ using the
+  \emph{right-most} breakpoint, that is we recur on $d^{\prime} =
+  d_1,\ldots,d_{n-1}$ and $d_n$ and proceed as explained above.
+\end{itemize}
