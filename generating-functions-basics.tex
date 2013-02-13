@@ -117,6 +117,9 @@ taylor(ggfOnlyFirstThreeTerms, x, 0, 100);
 %%%%%%%%%%%%%%%
 So $\mathcal{G}(a_n) =a(x)=1+{x}+{x}^{2}$.\\
 
+In the following subsections we'll explore some properties of
+$\mathcal{G} $.
+
 \subsection{Linearity of $\mathcal{G} $}
 Let $\{a_n\}_{n\in\mathbb{N} }$ and $\{b_n\}_{n\in\mathbb{N} } $ be
 two sequences, $a(t)$ and $b(t)$ their formal power series
@@ -199,14 +202,18 @@ taylor(sum((sum(a[k]*b[n-k],k,0,n))*t^n,n,0,inf), t, 0, 3);
 \left( \sum_{k=0}^{3}{b}_{3-k}\,{a}_{k}\right) \,{t}^{3}+...
 \end{math}\\
 %%%%%%%%%%%%%%%
-So $\mathcal{G}(a_n)\mathcal{G}(b_n) =\mathcal{G}\left(
+\\\\
+Looking at output \parbox{8ex}{\color{labelcolor}(\%o193) }, we can
+generalize the general term of the unknown generating function as done
+in \parbox{8ex}{\color{labelcolor}(\%o194) }, so
+$\mathcal{G}(a_n)\mathcal{G}(b_n) =\mathcal{G}\left(
   \sum_{k=0}^{n}{a}_{k}\,{b}_{n-k}\right)$.
 
 \subsection{Translation of $\mathcal{G} $}
 
 Let $\{a_n\}_{n\in\mathbb{N} }$ and $\{a_{n+1}\}_{n\in\mathbb{N} } $
 be two sequences, $a(t)$ and $b(t)$ their formal power series
-respectively. We study how we can obtain $\mathcal{G}(a_{n+1} $ from
+respectively. We study how we can obtain $\mathcal{G}(a_{n+1}) $ from
 $\mathcal{G} (a_n)$ with Maxima:\\
 
 \noindent
@@ -241,8 +248,13 @@ bs:taylor(makeSequence(t,a,1), t, 0, 3);
 {a}_{1}+{a}_{2}\,t+{a}_{3}\,{t}^{2}+{a}_{4}\,{t}^{3}+...
 \end{math}
 %%%%%%%%%%%%%%%
-
-So $\mathcal{G}(a_{n+1}) =  \frac{\mathcal{G} (a_n) - a_0}{t}$. We can
+\\\\
+In \parbox{8ex}{\color{labelcolor}(\%o80) } we report some term of
+$\mathcal{G}(a_{n+1})$ while in
+\parbox{8ex}{\color{labelcolor}(\%o81) } we subtract $a_0$ from
+$\mathcal{G} (a_n)$, dividing the result by $t$, getting
+again \parbox{8ex}{\color{labelcolor}(\%o80) }, so
+$\mathcal{G}(a_{n+1}) = \frac{\mathcal{G} (a_n) - a_0}{t}$. We can
 generalize:\\
 \noindent
 %%%%%%%%%%%%%%%
@@ -349,7 +361,7 @@ the product $a(t)b(t)$:
   \end{split}
 \end{displaymath}
 That product have to be equal to $1(t)$, this allow to build a system,
-which we solve it with Maxima:\\
+which we solve with Maxima:\\
 \noindent
 %%%%%%%%%%%%%%%
 %%% INPUT:
@@ -396,10 +408,10 @@ makeSum(3)=0, makeSum(4)=0],[b[0],b[1],b[2],b[3],b[4]]);
 %%%%%%%%%%%%%%%
 So the inverse of $a(t)$ is the function $a^{-1}(t)= b(t)$ such that\\
 $b(t)= \mathcal{G} (b_0, b_1, b_2, b_3, b_4, \ldots )$, where every
-$b_i$ is one of the solution reported in the Maxima output above. It
-is interesting to observe that it is possible to find $a^{-1}(t)$ if
-the first term of $\{a_n\}_{n\in\mathbb{N} } $ is such that $a_0 \not
-= 0$.
+$b_i$ is one of the solution reported in the Maxima
+output \parbox{8ex}{\color{labelcolor}(\%o113) }. It is interesting to
+observe that it is possible to find $a^{-1}(t)$ if the first term of
+$\{a_n\}_{n\in\mathbb{N} } $ is such that $a_0 \not = 0$.
 
 \begin{exercise}
   Let $a(t) = 1-t$ be a formal power series such that $a(t) =
@@ -463,7 +475,7 @@ result:
 \subsection{Derivation for $\mathcal{G} $}
 
 Let $\{a_n\}_{n\in\mathbb{N} }$ and $\{n a_{n}\}_{n\in\mathbb{N} } $
-be two sequences. We study how we can obtain $\mathcal{G}(n a_{n} $
+be two sequences. We study how we can obtain $\mathcal{G}(n a_{n}) $
 from $\mathcal{G} (a_n)$ with Maxima:\\
 \noindent
 %%%%%%%%%%%%%%%
@@ -521,11 +533,12 @@ two sequences, the \emph{Identity Principle} states:
   equal for all $n \in \mathbb{N} $. Since $\{a_n\}_{n\in\mathbb{N} }
   = (1,1,1,1,\ldots)$ we can build another sequence
   $\{a_{n+1}\}_{n\in\mathbb{N} } $ using $\{a_n\}_{n\in\mathbb{N} }
-  $. But the indices $n$ for the former and $n+1$ for the latter
-  doesn't change the series, also $\{a_{n+1}\}_{n\in\mathbb{N} } =
+  $. But the index $n$ for the former and $n+1$ for the latter doesn't
+  change the sequence, also $\{a_{n+1}\}_{n\in\mathbb{N} } =
   (1,1,1,1,\ldots)$, hence $\forall n\in \mathbb{N}: a_n =
   a_{n+1}$. By the principle $\mathcal{G} (a_n) = \mathcal{G}
-  (a_{n+1})$ holds. We apply the derivation for $\mathcal{G} $:
+  (a_{n+1})$ holds. We apply the translation property of $\mathcal{G}
+  $:
   \begin{displaymath}
     \begin{split}
       \mathcal{G} (a_n) &= \mathcal{G} (a_{n+1}) = \frac{\mathcal{G}
@@ -574,17 +587,13 @@ following way:
   \end{split}
 \end{displaymath}
 
-In the following section we'll do some example using the properties of
-$\mathcal{G} $.
-
-
 \subsection{$\mathcal{G} ( \frac{1}{n} a_n) = \int{ \frac{\mathcal{G}
       (a_n) - a_0}{t}dt }$}
 
-Let $b_n = \frac{1}{n} a_n$ be a new generic term of a sequence
-$\{b_n\}_{n\in\mathbb{N} } $. Follow that $a_n = n b_n$, but it isn't
-sufficient to apply the \emph{Identity Principle} because in $n=0$ the
-term $b_0$ isn't defined. So we've to augment $a_n = n b_n +
+Let $b_n = \frac{1}{n} a_n$ be the generic term of a new sequence
+$\{b_n\}_{n\in\mathbb{N} } $. It follows that $a_n = n b_n$, but it
+isn't sufficient to apply the \emph{Identity Principle} because in
+$n=0$ the term $b_0$ isn't defined. So we've to augment $a_n = n b_n +
 a_0\delta_{n,0}$:
 \begin{displaymath}
   \begin{split}
@@ -634,12 +643,3 @@ we've just renamed the general term of the sequence:
     \mathcal{G} (a_n)
   \end{split}
 \end{displaymath}
-
-
-
-
-
-
-
-
-

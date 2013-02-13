@@ -156,26 +156,54 @@ Now we can substitute the previous into $f(z)$:
   {{\frac{1}{2}}\choose{0}}z^0 + {{\frac{1}{2}}\choose{1}}z^1 +
   {{\frac{1}{2}}\choose{2}}z^2 + {{\frac{1}{2}}\choose{3}}z^3 + \ldots$
 
-  Using Maxima we expand with Taylor:
-  \\\texttt{f(z):=sqrt(1+z);\\taylor(f(z), z, 0, 6),numer;}\\
-  Getting:
-  \begin{displaymath}
-    f(z) = 1+z/2-z^2/8+z^3/16-(5*z^4)/128+(7*z^5)/256-(21*z^6)/1024+...
-  \end{displaymath}
-  Now we do a simple check:
-  \\\texttt{mapBinomial(x):=binomial (1/2, x);\\
-    map (mapBinomial, [0, 1, 2, 3, 4, 5, 6]);}\\
-  Getting:
-  \begin{displaymath}
-    [1,1/2,-1/8,1/16,-5/128,7/256,-21/1024]
-  \end{displaymath}
+  Simple check using \texttt{Maxima}:
+
+\noindent
+%%%%%%%%%%%%%%%
+%%% INPUT:
+\begin{minipage}[t]{8ex}{\color{red}\bf
+\begin{verbatim}
+(%i27) 
+\end{verbatim}}
+\end{minipage}
+\begin{minipage}[t]{\textwidth}{\color{blue}
+\begin{verbatim}
+f(z):=sqrt(1+z);
+taylor(f(z), z, 0, 6);
+mapBinomial(x):=binomial (1/2, x)$
+map (mapBinomial, [0, 1, 2, 3, 4, 5, 6]);
+\end{verbatim}}
+\end{minipage}
+%%% OUTPUT:
+\definecolor{labelcolor}{RGB}{100,0,0}
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o27) }
+\mathrm{f}\left( z\right) :=\sqrt{1+z}
+\end{math}
+
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o28) }
+1+\frac{z}{2}-\frac{{z}^{2}}{8}+\frac{{z}^{3}}{16}-\frac{5\,{z}^{4}}{128}+\frac{7\,{z}^{5}}{256}-\frac{21\,{z}^{6}}{1024}+...
+\end{math}
+
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o30) }
+[1,\frac{1}{2},-\frac{1}{8},\frac{1}{16},-\frac{5}{128},\frac{7}{256},-\frac{21}{1024}]
+\end{math}
+%%%%%%%%%%%%%%%
+\\\\
+Where output \parbox{8ex}{\color{labelcolor}(\%o28) } is obtained
+using the Taylor expansion,
+while \parbox{8ex}{\color{labelcolor}(\%o29) } is obtained computing
+${{ \frac{1}{2} }\choose{3}} $ using combinatorial \texttt{Maxima}
+function.
 \end{proof}
 
 Now suppose to have ${{-n}\choose{k}}, n\in \mathbb{N}  $:
 \begin{displaymath}
   {{-n}\choose{k}} =  \frac{-n(-n-1)\cdots(-n-k+1)}{k!} 
 \end{displaymath}
-At the numerator there are $k$ terms, so factor -1:
+At numerator there are $k$ terms, so factor -1:
 \begin{displaymath}
   \begin{split}
     {{-n}\choose{k}} &= \frac{(-1)^k (n + k-1)\cdots(n+1)n}{k!} =
@@ -210,7 +238,7 @@ holds:
   \right| = {{n-1}\choose{k-1}} +  {{n-1}\choose{k}}
 \end{displaymath}
 \begin{proof}
-  We've chosen $a_j$ to partition $S$, hence
+  We've chosen $a_j$ to partition $S$, hence:
   \begin{itemize}
   \item $\left| S_{a_j}^+ \right| = {{n-1}\choose{k-1}}$ because
     $S_{a_j}^+$ contains sets which everyone contains $a_j$. But we
@@ -218,14 +246,15 @@ holds:
     is contained in every set of $S_{a_j}^+$, hence we have to build
     combinations of length $k-1$) from $\left \lbrace a_1, \ldots, a_n
     \right\rbrace \setminus \left \lbrace a_j \right\rbrace $ ($a_j$
-    is an implicit choice)
+    is an implicit choice, so we choose from $n-1$ elements)
   \item $\left| S_{a_j}^- \right| = {{n-1}\choose{k}}$ because $
     S_{a_j}^-$ contains sets which everyone doesn't contains
     $a_j$. But we can build $ S_{a_j}^- $ from scratch choosing $k$
     elements ($a_j$ isn't contained in any set of $S_{a_j}^-$, hence
     we have to build combinations of length $k$) from $\left \lbrace
       a_1, \ldots, a_n \right\rbrace \setminus \left \lbrace a_j
-    \right\rbrace $ ($a_j$ is an impossible choice)
+    \right\rbrace $ ($a_j$ is an impossible choice, so we choose from
+    $n-1$ elements)
   \end{itemize}
 \end{proof}
 
