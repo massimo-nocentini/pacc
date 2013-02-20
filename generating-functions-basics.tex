@@ -685,9 +685,12 @@ we've just renamed the general term of the sequence:
       \frac{\mathcal{G} (g_n) - g_0}{t}dt } \quad \text{by previous
       result}\\
     \mathcal{G} (\frac{1}{n+1} a_n) &= \frac{1}{t} \int{
-      \frac{\mathcal{G} (a_{n-1})}{t}dt }\\
-    \mathcal{G} (\frac{1}{n+1} a_n) &= \frac{1}{t} \int{ \mathcal{G}
-      (a_{n})dt } \quad \text{ by } \mathcal{G} (a_{n-1}) = t
-    \mathcal{G} (a_n)
+      \frac{\mathcal{G} (a_{n-1})}{t}dt }
   \end{split}
 \end{displaymath}
+Recalling that $\mathcal{G} (a_{n-1}) = t \mathcal{G} (a_n)$, we have:
+\begin{equation}
+  \label{eq:n-plus-one-a-n-gen-fun}
+  \mathcal{G} (\frac{1}{n+1} a_n) = \frac{1}{t} \int{ \mathcal{G}
+    (a_{n})dt }
+\end{equation}
