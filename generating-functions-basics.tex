@@ -438,11 +438,12 @@ makeSum(3)=0, makeSum(4)=0],[b[0],b[1],b[2],b[3],b[4]]);
 %%%%%%%%%%%%%%%
 So the inverse of $a(t)$ is the function $a^{\langle -1\rangle}(t)=
 b(t)$ such that $b(t)= \mathcal{G} (b_n )$, where
-$\{b_n\}_{n\in\mathbb{N} } $ is such that every $b_i$ is one of the
-solution reported in \parbox{8ex}{\color{labelcolor}(\%o113) }. It is
-interesting to observe that it is possible to find $a^{\langle
-  -1\rangle}(t)$ if and only if the first term of
-$\{a_n\}_{n\in\mathbb{N} } $ is such that $a_0 \not = 0$.
+$\{b_n\}_{n\in\mathbb{N} } $ is such that $b_i$ is the $i$-th (zero
+based indexing) solution reported
+in \parbox{8ex}{\color{labelcolor}(\%o113) }. It is interesting to
+observe that it is possible to find $a^{\langle -1\rangle}(t)$ if and
+only if the first term of $\{a_n\}_{n\in\mathbb{N} } $ is such that
+$a_0 \not = 0$.
 
 \begin{exercise}
   Let $a(t) = 1-t$ be a formal power series such that $a(t) =
@@ -452,17 +453,20 @@ $\{a_n\}_{n\in\mathbb{N} } $ is such that $a_0 \not = 0$.
 \end{exercise}
 \begin{proof}[Sol]
   We can find it immediately by setting $a(t)b(t)=1(t)$ and resolving
-  respect to $b(t)$, obtaining $b(t) = \frac{1}{1-t} $.
+  respect to $b(t)$, obtaining $b(t) = \frac{1}{1-t} $ (to find the
+  term $b_i$ of the sequence just expand $b(t)$ using Taylor and get
+  the coefficients).
 
   To find the sequence $\{b_n\}_{n\in\mathbb{N} } $ such that
   $a^{\langle -1\rangle}(t) = \mathcal{G}(b_n) $, we use Maxima (where
   \texttt{\color{blue}sol} is the vector obtained in the previous
   Maxima output): in \parbox{8ex}{\color{labelcolor}(\%o91) } we
   report the coefficients of the sequence $\{b_n\}_{n\in\mathbb{N} } $
-  using the solutions of the system reported above, while
-  in \parbox{8ex}{\color{labelcolor}(\%o93) } we expand the function
-  $b(t) = \frac{1}{1-t} $ using Taylor, both methods returns the
-  sequence $\{b_n\}_{n\in\mathbb{N} } = (1,1,1,1,1,\ldots)$.
+  using the solutions of the system reported
+  in \parbox{8ex}{\color{labelcolor}(\%o113) } of the above paragraph,
+  while in \parbox{8ex}{\color{labelcolor}(\%o93) } we expand the
+  function $b(t) = \frac{1}{1-t} $ using Taylor, both methods returns
+  the sequence $\{b_n\}_{n\in\mathbb{N} } = (1,1,1,1,1,\ldots)$.
   
 \noindent
 %%%%%%%%%%%%%%%
