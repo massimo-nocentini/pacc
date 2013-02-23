@@ -25,13 +25,18 @@ recurrence holds for all $n \in \mathbb{N} $. By the \emph{Identity
     6t S^{\prime} (t) &= \frac{t + t^2}{(1-t)^3} - \frac{2t}{(1-t)^2}
     + 12 t \mathcal{G} \left(\sum_{j=0}^{n}{S_j}\right) + t\\
     6t S^{\prime} (t) &= \frac{t + t^2 -2t(1-t) + t(1-t)^3}{(1-t)^3} +
-    \frac{12 t}{1-t} S(t)\\
+    \frac{12 t}{1-t} S(t) \quad \text{by } \mathcal{G}
+    \left(\sum_{j=0}^{n}{S_j 1_{n-j}} \right)=\mathcal{G} (1_n)\mathcal{G} (S_n)\\
     6 S^{\prime} (t) &= \frac{1 + t -2(1-t) + (1-t)^3}{(1-t)^3} +
-    \frac{12}{1-t} S(t)\\
-    S^{\prime} (t) &= \frac{t^2(3-t)}{6(1-t)^3} +
-    \frac{2}{1-t} S(t)\\
+    \frac{12}{1-t} S(t) \quad \text{by dividing both members by } t
   \end{split}
 \end{displaymath}
+Finally we have:
+\begin{equation}
+  \label{eq:main-assoc-swaps-qs}
+  S^{\prime} (t) = \frac{t^2(3-t)}{6(1-t)^3} +
+  \frac{2}{1-t} S(t)
+\end{equation}
 with initial condition $S(0) = 0$. Now we study the homogeneous
 associate equation $\mu(t)$ (excluding for a moment the term $
 \frac{t^2(3-t)}{6(1-t)^3}$):
@@ -54,8 +59,10 @@ solution of the unknown function $S(t)$ we hope to find:
         (t)} }{\mu (t)^2} \\
     &= \frac{1}{\mu (t)} (S^{\prime} (t) - \frac{2}{1-t}S(t) ) \quad
     \text{by \autoref{eq:assoc-swaps-qs}}\\
-    &= \frac{1}{\mu (t)}\frac{t^2(3-t)}{6(1-t)^3} \\
-    &= \frac{t^2(3-t)}{6(1-t)}
+    &= \frac{1}{\mu (t)}\frac{t^2(3-t)}{6(1-t)^3} \quad \text{by
+      \autoref{eq:main-assoc-swaps-qs}} \\
+    &= \frac{t^2(3-t)}{6(1-t)} \quad
+    \text{by \autoref{eq:final-assoc-swaps-qs}}
   \end{split}
 \end{displaymath}
 We do simple manipulation in order to ease the integration:
@@ -77,9 +84,8 @@ Now we integrate both members:
   \begin{split}
     \frac{S(t)}{\mu (t)} &= \frac{1}{6}\left( \frac{t^3}{3} - t^2 -2t
       -2\log{(1-t)} + k\right)\\
-    S(t) &= \frac{1-t}{t^2(3-t)}\left( \frac{t^3}{3} -
-      t^2 -2t
-      -2\log{(1-t)} + k\right)\\
+    S(t) &= \frac{1}{6(1-t)^2}\left( \frac{t^3}{3} - t^2 -2t
+      -2\log{(1-t)} + k\right) \quad \text{by \autoref{eq:final-assoc-swaps-qs}}\\
   \end{split}
 \end{displaymath}
 After simplification and $k=0$ by the initial conditions $S(0)=S(1)=0$

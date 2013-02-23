@@ -9,8 +9,7 @@ body contains the building of the relative generating function.
 \begin{displaymath}
   \begin{split}
     \mathcal{G} (c^n) = \sum_{n \geq 0}{c^n t^n} &= \sum_{n \geq
-      0}{1\cdot (ct)^n} = \sum_{n \geq 0}{a_n \cdot (ct)^n} \quad
-    \text{ where } a_n = 1, \forall n \in \mathbb{N} \\
+      0}{1_n\cdot (ct)^n} = \sum_{n \geq 0}{1_n \cdot (ct)^n}  \\
     &= \mathcal{G} (1_n) \circ (ct) = \ \frac{1}{1-ct} \quad \text{ by
     composition of } \mathcal{G} 
   \end{split}
@@ -42,7 +41,7 @@ taylor(b(t),t,0,8);
 \subsection{$\{(-1)^n a_n\}_{n\in \mathbb{N} }$}
 \begin{displaymath}
     \mathcal{G} ((-1)^n a_n) = \sum_{n \geq 0}{(-1)^n a_n t^n} = \sum_{n \geq
-      0}{a_n (-t)^n} = a(-t)
+      0}{a_n (-t)^n} = \mathcal{G} (a_n) \circ (-t) = a(-t)
 \end{displaymath}
 
 \subsection{$\{n\}_{n\in \mathbb{N} }$}
@@ -271,11 +270,14 @@ the identity principle, calling $b_{n+1} = (n+1)a_{n+1}$ (hence $b_n
     \frac{\partial}{\partial t}\left( \mathcal{G} (a_n) \right) &= t
     \frac{\partial}{\partial t}\left( \mathcal{G} (a_n) \right) + 1 \\
     \frac{\partial}{\partial t}\left( \mathcal{G} (a_n) \right) &=
-    \frac{1}{1-t}\\
-    \mathcal{G} (a_n) &= \log{ \frac{1}{1-t} }
+    \frac{1}{1-t}
   \end{split}
 \end{displaymath}
-
+Integrating both members:
+\begin{equation}
+  \label{eq:one-above-n-gen-function}
+  \mathcal{G} ( \frac{1}{n} ) = \log{ \frac{1}{1-t} }
+\end{equation}
 Simple check:
 
 \noindent
@@ -305,10 +307,14 @@ t+\frac{{t}^{2}}{2}+\frac{{t}^{3}}{3}+\frac{{t}^{4}}{4}+\frac{{t}^{5}}{5}+\frac{
 
 \begin{displaymath}
   \begin{split}
-    \mathcal{G} (\sum_{k=1}^{n}{ \frac{1}{k} } ) = \mathcal{G}
-    (\sum_{k=1}^{n}{ \frac{1}{k} 1_k } ) = \mathcal{G} (\frac{1}{k})
-    \mathcal{G} (1_k) = \left (\log{ \frac{1}{1-t}}\right)
-    \frac{1}{1-t} \quad \text{ by convolution of }\mathcal{G}
+    \mathcal{G} \left(\sum_{k=1}^{n}{ \frac{1}{k} } \right) &=
+    \mathcal{G} \left(\sum_{k=1}^{n}{ \frac{1}{k} 1_{n-k} } \right) = \\
+    &=\mathcal{G} \left(\frac{1}{n}\right) \mathcal{G} (1_n) \quad
+    \text{ by
+      convolution of }\mathcal{G}\\
+    &= \left (\log{ \frac{1}{1-t}}\right) \frac{1}{1-t} \quad \text{by
+      \autoref{eq:one-above-n-gen-function} and
+      \autoref{eq:genfun-of-ones-sequence}}
   \end{split}
 \end{displaymath}
 
@@ -522,8 +528,8 @@ $a(0) = a_0 + 0t+0t^2 + 0t^3+\ldots = 1$, hence $c=0$ .
 \begin{displaymath}
   \begin{split}
     \log{a(t)} &= \log{(1+t)}^p\\
-    &\downarrow \\
-    a(t) &= (1+t)^p
+    &\downarrow \quad \text{exping both members}\\
+    a(t) = \mathcal{G}\left({{p}\choose{n}}\right) &= (1+t)^p
   \end{split}
 \end{displaymath}
 
@@ -594,7 +600,7 @@ a_n$:
 
 \begin{displaymath}
   \begin{split}
-    b_{n+1} &= 2(2n + 1)a_n \\
+    b_{n+1} &= (n+1)a_{n+1} \\
     &\downarrow \\
     \mathcal{G} (b_{n+1}) &= \mathcal{G} (2(2n+1)a_n)\\
     \frac{\mathcal{G} (b_n) - b_0}{t} &= \mathcal{G} (2(2n+1)a_n)\\
@@ -626,6 +632,12 @@ c$, with $a(0) = a_0 + 0t+0t^2 + 0t^3+\ldots = 1$, hence $c=0$ .
   \end{split}
 \end{displaymath}
 
+Finally we have found:
+\begin{equation}
+  \label{eq:binomial-coefficient-gen-fun}
+  \mathcal{G} \left({{2n}\choose{n}} \right) =
+  \frac{1}{\sqrt{1-4t}}
+\end{equation}
 Simple check:
 
 
@@ -672,9 +684,10 @@ taylor(a(t),t,0,5);
 
 \begin{displaymath}
   \begin{split}
-    \mathcal{G} ( \frac{1}{n+1} {{2n}\choose{n}}) = \frac{1}{t}
-    \int{\mathcal{G} ({{2n}\choose{n}} )dt} = \frac{1}{t} \int{
-      \frac{1}{\sqrt{1-4t}} dt} =
+    \mathcal{G} ( \frac{1}{n+1} {{2n}\choose{n}}) &= \frac{1}{t}
+    \int{\mathcal{G} ({{2n}\choose{n}} )dt} \quad \text{by \autoref{eq:n-plus-one-a-n-gen-fun}}\\
+    &= \frac{1}{t} \int{ \frac{1}{\sqrt{1-4t}} dt} \quad \text{by
+      \autoref{eq:binomial-coefficient-gen-fun}}
   \end{split}
 \end{displaymath}
 Calling $\sqrt{1-4t} = y$ follows $t = \frac{1-y^2}{4} $ and $dt = -

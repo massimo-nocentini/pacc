@@ -241,12 +241,14 @@ defined in the previous sections and an uniform distribution above it.
         w_i : w_i < j \right\rbrace \right| = k$ and
     $\left| \left \lbrace
         w_i : w_i > j \right\rbrace \right| = k$
-  \item we can choose $k$ keys from $\left \lbrace w_i : w_i < j
-    \right\rbrace$ in ${{j-1}\choose{k}}$ ways and, for each choice,
-    there are $(j-1)!$ ways to sort them;
-  \item we can choose $k$ keys from $\left \lbrace w_i : w_i > j
-    \right\rbrace$ in ${{n-j}\choose{k}}$ ways and, for each choice,
-    there are $(n-j)!$ ways to sort them;
+  \item consider the set $\left \lbrace w_i : w_i < j \right\rbrace$:
+    we can build permutations of length $j-1$, and foreach disposition
+    we can choose $k$ keys in ${{j-1}\choose{k}}$ ways, hence the term
+    ${{j-1}\choose{k}}(j-1)!$;
+  \item consider the set $\left \lbrace w_i : w_i > j \right\rbrace$:
+    we can build permutations of length $n-j$, and foreach disposition
+    we can choose $k$ keys in ${{n-j}\choose{k}}$ ways, hence the term
+    ${{n-j}\choose{k}}(n-j)!$;
   \item the total number of possible permutation of $n$ keys excluding
     the $pivot$ (which is fixed in the right-most position) is
     $(n-1)!$
