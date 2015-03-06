@@ -4,17 +4,19 @@
 \subsection{Permutations $P_n$}
 
 Given a vector $\left ( a_1, \ldots, a_n \right) $ the number of
-permutations (or the possible ways to order the elements $a_i$) is
-$n!$. A simple proof of that is as follow: for the position 1 are
-available $n$ elements, for the second position (after fixing the
-first) are available $n-1$ elements arriving to the position $n$ where
-only one element is left, hence $n!$.
+permutations (ie. the possible ways to order elements $a_i$) is
+$n!$. A simple proof of that is as follow: for position 1 are
+available $n$ elements, for the second position (after having choosed
+an element for the first one) are available $n-1$ elements, down
+to the latter position $n$ where only one element is left, hence $n!$.
 
 It is interesting to show how to add a new element $a_{n+1}$ to
-existing permutations from the set $\left \lbrace a_1, \ldots,
-  a_n\right\rbrace $, this is indeed another proof (by induction) to
-the number $n!$ justified above. Having the permutations of length $n$
-by hypothesis, we study how is it possible to add $a_{n+1}$ into a
+existing permutations from a set $\left \lbrace a_1, \ldots,
+  a_n\right\rbrace $, moreover this is indeed another proof (by induction) to
+the number $n!$ justified above.
+
+Having permutations of length $n$ by hypothesis,
+we study how is it possible to add $a_{n+1}$ into a
 given permutation $w = \left ( a_1, a_2, \ldots, a_n\right) $:
 \begin{displaymath}
   \begin{split}
@@ -27,25 +29,27 @@ given permutation $w = \left ( a_1, a_2, \ldots, a_n\right) $:
 \end{displaymath}
 Those new vectors are $n+1$ because in the original permutation $w =
 \left ( a_1, a_2, \ldots, a_n\right) $ there are $n-1$ ``internal
-holes'' between the consecutive elements $a_i$ and $a_{i+1}$, plus the
+holes'' between the consecutive elements $(\ldots, a_i, \Box,
+a_{i+1}, \ldots)$, plus the
 left-most and right-most ``external holes'' $(\Box, a_1,...)$ and
 $(..., a_n, \Box)$. So far we've considered only one permutation $w$
 of $n$ elements, repeating the same reasoning for the others $w_i$
-(which are $n!-1$), it must exists $n+1$ new vectors for each of
-them. So the number of permutation of $n+1$ elements is $(n+1)n! =
-(n+1)!$ (what we would have expected).
+(which are $n!-1$), it must exists $n+1$ new vectors for each one of
+them. So the number of permutations of $n+1$ elements is $(n+1)n! =
+(n+1)!$, what we would have expected.
 
 \subsection{Dispositions $D_{n,k}$}
 
 A special case of permutations are dispositions, that is the number of
 different ways in which $k$ elements can be chosen from a set of
-length $n$, with $n \geq k$. We have $n$ elements available for the
-first choice, $n-1$ for the second choice arriving to $n-k+1$ elements
+length $n$, such that $n \geq k$: we have $n$ elements available for the
+first choice, $n-1$ for the second choice down to $n-k+1$ elements
 for the $k$-th choice, hence $D_{n,k} = n(n-1)\cdots(n-k+1)$.  We can
 write an example to show how to build dispositions. Let $\Omega =
 \left \lbrace a,b,c, d\right\rbrace $ and we want to build $D_{4,2}$,
 that is the set of ordered pairs, paying attention that $ \forall i:
-(i,i)\not \in D_{n,2}$. The following pairs are the candidates (the
+(i,i)\not \in D_{n,2}$, ie. no repetition allowed.
+The following pairs are the candidates (the
 pairs of the form $(i,i)$ aren't listed because after we choose $i$
 for the first position it isn't possible to choose it again for the
 second):
@@ -71,13 +75,16 @@ that there exists another set that doesn't take care of the order.
 
 \subsection{Combinations $C_{n,k}$}
 
-A special case of dispositions are combinations. With combinations,
-notation $C_{n,k}$, we mean a set of sets $\left \lbrace \left \lbrace
-    a_{i_1}, \ldots, a_{i_k} \right\rbrace \right\rbrace$ without
-regard to the order in which $a_{i_1}, \ldots, a_{i_k}$ appear. We can
-see combinations like dispositions modulo the symmetric relation:
-$(j,i) \in C_{n,2} \rightarrow (i, j) \not \in C_{n,2}$ and $(i,i)\not
-\in C_{n,2}, \forall i$). The following sub matrix is to combinations
+A special case of dispositions are combinations. Symbol $C_{n,k}$ denotes
+a set of sets $\left \lbrace \left \lbrace
+    a_{i_1}, \ldots, a_{i_k} \right\rbrace , \ldots,  \left \lbrace
+    a_{j_1}, \ldots, a_{j_k} \right\rbrace\right\rbrace$ without
+regard to the order in which elements $a_{1}, \ldots, a_{k}$ appear in
+a set $s \in C_{n,k}$.
+
+We can see combinations as dispositions modulo the symmetric relation:
+$(a_j,a_i) \in C_{n,2} \rightarrow (a_i, a_j) \not \in C_{n,2}$ and $(a_i,a_i)\not
+\in C_{n,2}, \forall i$. The following sub matrix is to combinations
 as the previous one is to dispositions:
 \begin{displaymath}
   \begin{split}
@@ -96,31 +103,33 @@ as the previous one is to dispositions:
   \end{split}
 \end{displaymath}
 The combinations matrix is obtained by the disposition matrix, breaking
-the symmetry, only half of them belongs to the dispositions
-$C_{4,2}$. Hence $C_{n,k} = {{n}\choose{k}} = \frac{D_{n,k}}{k!} =
-\frac{n(n-1)\cdots(n-k+1)}{k!} = \frac{n!}{k!(n-k)!)} $.
+the symmetry, only half of them belongs to $C_{4,2}$, hence:
+$$C_{n,k} = {{n}\choose{k}} = \frac{D_{n,k}}{k!} =
+\frac{n(n-1)\cdots(n-k+1)}{k!} = \frac{n!}{k!(n-k)!} $$
 
 \subsection{Binomial coefficients}
 
 In this section we study the binomial coefficients, and in the
-particular the writing $(a + b)^n, n\in \mathbb{N}$. It is known that:
+particular the writing $(a + b)^n$ where $n\in \mathbb{N}$. It is known that:
 \begin{displaymath}
   (a+b)^n = \sum_{k=0}^{n}{{{n}\choose{k}}a^k b^{n-k} }
 \end{displaymath}
-Now we study $(a + b)^r = \sum_{k=0}^{r}{{{r}\choose{k}}a^k b^{r-k} },
-r\in \mathbb{R}$, in particular we have to pay attention to the
-binomial coefficient when $r\in \mathbb{R}$:
+Now consider $(a + b)^r = \sum_{k=0}^{r}{{{r}\choose{k}}a^k b^{r-k} }$ where
+$r\in \mathbb{R}$, in particular we have to pay attention to the
+binomial coefficient under $r\in \mathbb{R}$:
 \begin{displaymath}
   {{r}\choose{k}}  = \frac{r(r-1)\cdots(r-k+1)}{k!}
 \end{displaymath}
-The previous product make sense, instead we would have had problem
-with $ \frac{r!}{k!(r-k)!} $. Now do simple manipulation:
+The previous rewriting makes sense, instead we would have had problem
+with $ \frac{r!}{k!(r-k)!} $ since $r!$ isn't defined for $r \in \mathbb{R}$
+because the recursion doesn't have a base case.
+Now do simple manipulation:
 \begin{displaymath}
   (a+b)^r = \left( a\left(1 +  \frac{b}{a}\right)\right)^r =
   a^r \left(1 +  \frac{b}{a}\right)^r
 \end{displaymath}
 In general we can call $z= \frac{b}{a} $ and reduce to study the
-function $f(z)=(1+z)^r$, which can be expanded with Taylor:
+function $f(z)=(1+z)^r$, which can be expanded with Taylor near $0$:
 \begin{displaymath}
   f(z) = \sum_{k \geq 0}{ \frac{f^{(k)}(0)}{k!} z^k }
 \end{displaymath}
@@ -136,12 +145,16 @@ Study the derivatives of $f(z)$:
     \quad \rightarrow \quad f^{(k)}(0) = r(r-1)\cdots(r-k+1)\\
   \end{split}
 \end{displaymath}
-Now we can substitute the previous into $f(z)$:
+Now we can substitute the previous results into $f(z)$ expansion:
 \begin{displaymath}
   f(z) = \sum_{k \geq 0}{ \frac{f^{(k)}(0)}{k!} z^k } =
   \sum_{k \geq 0}{ \frac{r(r-1)\cdots(r-k+1)}{k!} z^k } =
   \sum_{k \geq 0}{ {{r}\choose{k}} z^k }
 \end{displaymath}
+This is an important result since $k$-th coefficient of Taylor
+expansion of a function $f(z) = (1+z)^r$ gives the value of ${{r} \choose {k}}$:
+observe that $z$ is a dummy variable since its role is only releated to
+derivation to build the expansion.
 
 \begin{exercise}
   \label{exercise:first-on-comb-with-real}
@@ -149,54 +162,20 @@ Now we can substitute the previous into $f(z)$:
 \end{exercise}
 \begin{proof}[Sol]
   It is sufficient to build a function $f(z) = (1+z)^r$ with the right
-  value for $r$ and then expand $f(z)$ with Taylor, the coefficient of
+  value for $r$ and then expand $f(z)$ with Taylor, than coefficient of
   $z^3$ is the desired value ${{ r }\choose{3}} $.
 
-  In this case $r= \frac{1}{2} $, so $f(z) = \sqrt{1+z} =
-  {{\frac{1}{2}}\choose{0}}z^0 + {{\frac{1}{2}}\choose{1}}z^1 +
-  {{\frac{1}{2}}\choose{2}}z^2 + {{\frac{1}{2}}\choose{3}}z^3 + \ldots$
+  In this case $r= \frac{1}{2} $, so :
+  \begin{displaymath}
+      \begin{split}
+          f(z) = \sqrt{1+z} &=
+          {{\frac{1}{2}}\choose{0}}z^0 + {{\frac{1}{2}}\choose{1}}z^1 +
+          {{\frac{1}{2}}\choose{2}}z^2 + {{\frac{1}{2}}\choose{3}}z^3 + \ldots \\
+          &= 1 + \frac{z}{2} - \frac{z^{2}}{8} + \frac{z^{3}}{16} - \frac{5 z^{4}}{128} + \frac{7 z^{5}}{256} + \mathcal{O}\left(z^{6}\right)
+      \end{split}
+  \end{displaymath}
+  Hence $ { \frac{1}{2} \choose {3} } = \frac{1}{16}$.
 
-  Simple check using \texttt{Maxima}:
-
-\noindent
-%%%%%%%%%%%%%%%
-%%% INPUT:
-\begin{minipage}[t]{8ex}{\color{red}\bf
-\begin{verbatim}
-(%i27)
-\end{verbatim}}
-\end{minipage}
-\begin{minipage}[t]{\textwidth}{\color{blue}
-\begin{verbatim}
-f(z):=sqrt(1+z);
-taylor(f(z), z, 0, 6);
-mapBinomial(x):=binomial (1/2, x)$
-map (mapBinomial, [0, 1, 2, 3, 4, 5, 6]);
-\end{verbatim}}
-\end{minipage}
-%%% OUTPUT:
-\definecolor{labelcolor}{RGB}{100,0,0}
-\begin{math}\displaystyle
-\parbox{8ex}{\color{labelcolor}(\%o27) }
-\mathrm{f}\left( z\right) :=\sqrt{1+z}
-\end{math}
-
-\begin{math}\displaystyle
-\parbox{8ex}{\color{labelcolor}(\%o28) }
-1+\frac{z}{2}-\frac{{z}^{2}}{8}+\frac{{z}^{3}}{16}-\frac{5\,{z}^{4}}{128}+\frac{7\,{z}^{5}}{256}-\frac{21\,{z}^{6}}{1024}+...
-\end{math}
-
-\begin{math}\displaystyle
-\parbox{8ex}{\color{labelcolor}(\%o30) }
-[1,\frac{1}{2},-\frac{1}{8},\frac{1}{16},-\frac{5}{128},\frac{7}{256},-\frac{21}{1024}]
-\end{math}
-%%%%%%%%%%%%%%%
-\\\\
-Where output \parbox{8ex}{\color{labelcolor}(\%o28) } is obtained
-using the Taylor expansion,
-while \parbox{8ex}{\color{labelcolor}(\%o30) } is obtained computing
-${{ \frac{1}{2} }\choose{3}} $ using combinatorial \texttt{Maxima}
-function.
 \end{proof}
 
 Now suppose to have ${{-n}\choose{k}}, n\in \mathbb{N}  $:
