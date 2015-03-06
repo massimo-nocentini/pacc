@@ -1,13 +1,13 @@
 %--------------------------------------------------------------
-% dia-classicthesis-ldpkg.sty 
+% dia-classicthesis-ldpkg.sty
 %--------------------------------------------------------------
 % based on classicthesis-ldpkg.sty
 %
 % Copyright (C) 2008 Andr� Miede http://www.miede.de
 %
-% If you like the style then I would appreciate a postcard. My address 
-% can be found in the file ClassicThesis.pdf. A collection of the 
-% postcards I received so far is available online at 
+% If you like the style then I would appreciate a postcard. My address
+% can be found in the file ClassicThesis.pdf. A collection of the
+% postcards I received so far is available online at
 % http://postcards.miede.de
 %
 % License:
@@ -26,48 +26,48 @@
 % the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 % Boston, MA 02111-1307, USA.
 %
-% ********************************************************************  
+% ********************************************************************
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{dia-classicthesis-ldpkg}[2008/10/01 v2.5 Package Loader for Classic Thesis Style]
- 
+
 \@ifpackageloaded{classicthesis}%
     {\PackageWarningNoLine{classicthesis-ldpkg}{Package "classicthesis" should be loaded AFTER "classicthesis-ldpkg".}}%
-    {\relax}%    
- 
+    {\relax}%
+
 % ********************************************************************
 % Options
-% ******************************************************************** 
+% ********************************************************************
 \RequirePackage{ifthen}
     \newboolean{cld@nochapters} % disable all chapter-specific commands
 \DeclareOption{nochapters}{\setboolean{cld@nochapters}{true}}
 \ProcessOptions\relax
 
-% ******************************************************************** 
+% ********************************************************************
 % Packages
-% ******************************************************************** 
-\RequirePackage[T1]{fontenc}                
+% ********************************************************************
+\RequirePackage[T1]{fontenc}
 \RequirePackage{textcomp}
-%\RequirePackage[dvipsnames]{xcolor} 
+%\RequirePackage[dvipsnames]{xcolor}
 \RequirePackage{xspace} % to get the spacing after macros right
 \RequirePackage{tabularx} % better tables
 \RequirePackage{mparhack} % get marginpar right
 \RequirePackage{fixltx2e} % fixes some LaTeX stuff
-%\RequirePackage{ellipsis} % ... ;-)                  
-\RequirePackage{relsize} % scale font up or down                                        
+%\RequirePackage{ellipsis} % ... ;-)
+\RequirePackage{relsize} % scale font up or down
 \RequirePackage[smaller]{acronym} % nice macros for handling all acronyms in the thesis
-\renewcommand{\bflabel}[1]{{#1}\hfill} % fix the list of acronyms
+%\renewcommand{\bflabel}[1]{{#1}\hfill} % fix the list of acronyms
 %\RequirePackage{natbib}
 
 % ********************************************************************
 % Commands
-% ********************************************************************                
+% ********************************************************************
 \newcounter{dummy} % necessary for correct hyperlinks (to index, bib, etc.)
 \newcommand{\longpage}{\enlargethispage{3\baselineskip}}
 \newcommand{\medpage}{\enlargethispage{2\baselineskip}}
 \newcommand{\shortpage}{\enlargethispage{\baselineskip}}
 \newcommand{\concskip}{\medskip}
-\newcommand{\myPrimRef}[1]{\textit{#1}} % how primary index entries will be marked 
-% ******************************************************************** 
+\newcommand{\myPrimRef}[1]{\textit{#1}} % how primary index entries will be marked
+% ********************************************************************
 \newcommand{\ie}{i.\,e.}
 \newcommand{\Ie}{I.\,e.}
 \newcommand{\eg}{e.\,g.}
@@ -75,7 +75,7 @@
 \newcommand{\etAl}{et al.\xspace}
 \newcommand{\twod}{2\textsc{d}\xspace}
 \newcommand{\threed}{3\textsc{d}\xspace}
-% ******************************************************************** 
+% ********************************************************************
 \newcommand{\system}[1]{\emph{#1}}
 \newcommand{\person}[1]{#1}
 \newcommand{\term}[1]{\emph{#1}}
@@ -85,7 +85,7 @@
     }{\PackageWarningNoLine{classicthesis-ldpk}{Package "natbib" not loaded, %
         command "cauthor" will not work.}}
 \newcommand{\tableheadline}[1]{\multicolumn{1}{c}{\spacedlowsmallcaps{#1}}}
-% ******************************************************************** 
+% ********************************************************************
 \newcommand{\RA}{\ensuremath{\Rightarrow}}
 \newcommand{\ra}{\ensuremath{\rightarrow}}
 \newcommand{\lra}{\ensuremath{\leftrightarrow}}
@@ -96,7 +96,7 @@
 % ********************************************************************
 % take care of the caption fonts and sizes (tables and figures)
 \RequirePackage{caption}
-    
+
 % ********************************************************************
 % caption numbering now w/o chapter number
 \RequirePackage{remreset}
@@ -112,16 +112,16 @@
         {\relax}{%
             \@removefromreset{figure}{chapter}  % requires remreset package
         }
-        \renewcommand{\thefigure}{\arabic{figure}}  
+        \renewcommand{\thefigure}{\arabic{figure}}
     \makeatother
 
 % ********************************************************************
 % enable subfigures in figures
-\RequirePackage{subfig}  
+\RequirePackage{subfig}
 
 % ********************************************************************
 % fine typesetting of code listings
-\RequirePackage{listings}  
+\RequirePackage{listings}
 % ********************************************************************
 % caption numbering now w/o chapter number
 %\makeatletter
@@ -173,7 +173,7 @@
     frameround=ftff,
     frame=single
     %frame=L
-}    
+}
 
 \RequirePackage{ifpdf}
 \ifpdf
@@ -182,10 +182,10 @@
 	% ********************************************************************
 	\RequirePackage[pdftex,hyperfootnotes=false,pdfpagelabels,pagebackref]{hyperref}  % backref linktocpage pagebackref
 	\pdfcompresslevel=9
-	\pdfadjustspacing=1 
+	\pdfadjustspacing=1
 	\RequirePackage[pdftex]{graphicx} % PDFTeX driver for graphicx
-	\DeclareGraphicsRule{*}{mps}{*}{} % enables use of MetaPost graphics with pdflatex 
-	
+	\DeclareGraphicsRule{*}{mps}{*}{} % enables use of MetaPost graphics with pdflatex
+
 	%*******************************************************
 	% for German texts to get \autoref macros right
 	\renewcommand{\figureautorefname}{Figure}
@@ -201,9 +201,9 @@
 	%\renewcommand{\FancyVerbLineautorefname}{Zeile}
 	%\renewcommand{\theoremautorefname}{Theorem}
 	%\renewcommand{\appendixautorefname}{Anhang}
-	%\renewcommand{\equationautorefname}{Gleichung}        
-	%\renewcommand{\itemautorefname}{Punkt}                
-	%\newcommand*{\subfigureautorefname}{Abbildung}	
+	%\renewcommand{\equationautorefname}{Gleichung}
+	%\renewcommand{\itemautorefname}{Punkt}
+	%\newcommand*{\subfigureautorefname}{Abbildung}
 \else
 	% ********************************************************************
 	% NOT using PDFLaTeX:
@@ -220,7 +220,7 @@
 \newcommand{\backrefcitedsinglestring}[1]{(Cited on page~#1.)}
 \newcommand{\backrefcitedmultistring}[1]{(Cited on pages~#1.)}
 
-\RequirePackage[hyperpageref]{backref} % to be loaded after hyperref package 
+\RequirePackage[hyperpageref]{backref} % to be loaded after hyperref package
    \renewcommand{\backreftwosep}{ and~} % seperate 2 pages
    \renewcommand{\backreflastsep}{, and~} % seperate last of longer list
    \renewcommand*{\backref}[1]{}  % Disable standard
@@ -239,4 +239,4 @@
 %     (Cited on pages~%
 %   \fi
 %   #2)}
-%}       
+%}

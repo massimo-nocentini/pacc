@@ -5,22 +5,21 @@ are MERGESORT and QUICKSORT.
 
 \subsection{MERGESORT algorithm}
 
-The MERGESORT algorithm is independent from the keys present in the
-input vector and its methodology behaves always the same. Let $n =
-2^m$ be the length of the vector to be ordered, we can define a
+The MERGESORT algorithm is independent from keys present in the
+input vector and it behaves the same regardless the given input.
+Let $n = 2^m$ be the length of the vector to be ordered, we define a
 function $C$ which count the number of checks needed to order the
-input vector. We define the function $C$ using the method used by the
-algorithm at each step:
+input vector. $C$ definition strictly follows the algorithmic method:
 \begin{displaymath}
   C(2^m) = 2C(2^{m-1}) + 2^m
 \end{displaymath}
-Solving the recurrence\footnote{put here the proof} we obtain $C(n)
-\in O(n logn)$. We can observe that if we use a method (like the ones
-we're studying in this section) based on checks between keys, isn't
-possible to do better than build a ``checks tree'', this allow use to
-have a lower bound for the complexity of those algorithms.\footnote{in
+Solving the recurrence\footnote{put here the proof} we get $C(n)
+\in O(n logn)$: observe that if we use an algorithm based on checks
+between keys, it isn't possible to do better than to build a ``checks tree'',
+hence we've found
+a lower bound for the complexity of this class of algorithms \footnote{in
   the slides of the first lecture maybe there's more material about
-  this topic}
+  this topic}.
 
 \subsection{QUICKSORT algorithm}
 The QUICKSORT algorithm depends on the distribution of the keys in the
@@ -30,45 +29,47 @@ without repetition over $\{1,\ldots,n\}$. We focus on the simpler
 variant where the pivot is chosen as the right-most
 key\footnote{report here the code}.  We study the behavior of an
 application to the vector $\left ( 20, 25, 7, 3, 30, 8, 41,
-  18\right)$, reporting in \autoref{tab:quicksort-example} the steps
-performed.
+  18\right)$, \autoref{tab:quicksort-example} reports performed steps.
 \begin{table}[ht]
   \caption{Quicksort example}
   \label{tab:quicksort-example}
   \begin{center}
     \begin{tabular}{cccccccccc}
-      20 & 25 & 7 & 3 & 30 & 8 & 41 & 18 &  &  \\ 
+      20 & 25 & 7 & 3 & 30 & 8 & 41 & 18 &  &  \\
       $\uparrow i$ & & & & & $\uparrow j$ & & $\uparrow pivot$ &
       $\rightarrow$ & $\{20, 41, 8\}$ \\
-      8 & 25 & 7 & 3 & 30 & 20 & 41 & 18 &  &  \\ 
+      8 & 25 & 7 & 3 & 30 & 20 & 41 & 18 &  &  \\
        & $\uparrow i$ & & $\uparrow j$ & &  & & $\uparrow pivot$ &
        $\rightarrow$ & $\{25, 30, 3\}$ \\
-       8 & 3 & 7 & 25 & 30 & 20 & 41 & 18 &  &  \\ 
+       8 & 3 & 7 & 25 & 30 & 20 & 41 & 18 &  &  \\
        &  & $\uparrow j$ & $\uparrow i$ & &  & & $\uparrow pivot$ &
        $\rightarrow$ & $\{7, 25, 7\}$ \\
-       8 & 3 & 7 & 18 & 30 & 20 & 41 & 25 &  &  \\ 
+       8 & 3 & 7 & 18 & 30 & 20 & 41 & 25 &  &  \\
        &  &  & $\uparrow pivot$ & &  & &  &
        $\rightarrow$ & recursion \\
     \end{tabular}
   \end{center}
 \end{table}
-We can observe that in order to move the $pivot$ element in its final
+Observe that in order to move the $pivot$ element in its final
 position, it is necessary for two keys ($7, 25$) to be checked
-twice. Hence, given a vector of length $n$, the number of checks
-performed before recurring on left and right partitions is $(n-1) + 2$
-(where $n-1$ is explained by the $pivot$ isn't indexed neither with
-$i$ nor with $j$).
+twice against the $pivot$, moreover when the second of those checks
+happens, indexes $i$ and $j$ overlapped at some time such that $j < i$
+eventually holds.
 
-We can analyze the number of checks performed, partitioning it in the
-following cases:
+Hence, given a vector of length $n$, the number of checks
+performed before recurring on left and right partitions is $(n-1) + 2$,
+where $n-1$ appears because the $pivot$ element isn't indexed neither with
+$i$ nor with $j$.  We analyze the number of performed checks by cases:
+
 \begin{description}
-\item[worst case] when the vector is already ordered (in one of the
-  two directions). In this case we got:
+\item[worst case] when the vector is already ordered, in either one of the
+  two directions, recursion works over one partition only because the
+  other one has to be empty, hence the number of checks satisfies
+  the following relation:
   \begin{displaymath}
     C(n) = (n-1)+2 + C(n-1)
   \end{displaymath}
-  recurring only on one partition because the other have to be
-  empty. We can expand the recurrence, fixing $C(0) = 0$:
+  Unfolding $C(n-1)$ and fixing $C(0) = 0$ as base case, the following holds:
   \begin{displaymath}
     \begin{split}
       C(n) &= (n+1) + C(n-1) = (n+1) + n + C(n-2) = \\
@@ -78,12 +79,12 @@ following cases:
     \end{split}
   \end{displaymath}
   so $C(n) \in O(n^2)$.
-\item[best case] when the partition phase puts the $pivot$ in the
-  middle, hence the QUICKSORT recurs on balanced partitions. In this
-  case we have the same complexity of MERGESORT, hence $C(n) \in O(n
+\item[best case] when the partition phase puts the $pivot$ element
+    in the middle then QUICKSORT recurs on balanced partitions. In this
+  case it has the same complexity of MERGESORT, hence $C(n) \in O(n
   logn)$
 \end{description}
-We explain the average case in a dedicated section.
+We explain the average case in the following dedicated section.
 
 \subsection{QUICKSORT: On the average number of checks}
 
@@ -100,14 +101,14 @@ probability to have $j$ as $pivot$ considering the uniform
 distribution on $\Omega$:
 \begin{displaymath}
   \mathbb{P}\left(w\in\Omega: w[n]=j \right) =
-  \frac{(n-1)!}{n!} =  \frac{1}{n} 
+  \frac{(n-1)!}{n!} =  \frac{1}{n}
 \end{displaymath}
 Our goal here is to build a function $C(n)$ which counts the average
 number of checks during an execution of the algorithm given an input
 vector of length $n$. In order to do that observe that every keys $j
 \in \{1,\ldots,n\}$ can be the $pivot$, we can write:
 \begin{displaymath}
-  C(n) = (n+1) +  \frac{1}{n}\sum_{j=1}^{n}{C(j-1) + C(n-j)} 
+  C(n) = (n+1) +  \frac{1}{n}\sum_{j=1}^{n}{C(j-1) + C(n-j)}
 \end{displaymath}
 Observing the sum when $j$ runs:
 \begin{displaymath}
@@ -121,7 +122,7 @@ Observing the sum when $j$ runs:
 \end{displaymath}
 Hence we can rewrite:
 \begin{displaymath}
-  C(n) = (n+1) +  \frac{2}{n}\sum_{j=0}^{n-1}{C(j)} 
+  C(n) = (n+1) +  \frac{2}{n}\sum_{j=0}^{n-1}{C(j)}
 \end{displaymath}
 Now we do some manipulation:
 \begin{displaymath}
@@ -139,7 +140,7 @@ Subtract the previous $(n-1)$ term to both members:
     &= n(n+1) + 2\sum_{j=0}^{n-1}{C(j)} \\
     &-n(n-1) - 2\sum_{j=0}^{n-2}{C(j)} \\
     &= n(n+1-(n-1)) + 2C(n-1) \\
-    &= 2(n + C(n-1)) \\      
+    &= 2(n + C(n-1)) \\
   \end{split}
 \end{displaymath}
 Getting $nC(n) = 2n + (n+1)C(n-1)$, divide both member by $n(n+1)$:
@@ -170,7 +171,7 @@ $C(0) = 0$:
       \frac{1}{3}+
       \frac{1}{2}+
       1\right) -2 \\
-    &= 2(H_{n+1}-1) 
+    &= 2(H_{n+1}-1)
   \end{split}
 \end{displaymath}
 Having recognized the harmonic numbers $H_{n+1}=\left(\frac{1}{n+1} +
@@ -201,11 +202,11 @@ vector of length $n$.
 
 The recurrence for the average number of swaps is as follow:
 \begin{displaymath}
-  S(n) =  \frac{n-2}{6} +  \frac{1}{n} \sum_{j=1}^{n}{S(j-1) + S(n-j)} 
+  S(n) =  \frac{n-2}{6} +  \frac{1}{n} \sum_{j=1}^{n}{S(j-1) + S(n-j)}
 \end{displaymath}
 We proceed the proof in two stages, first studying
 \begin{displaymath}
-  one: \mathbb{E} \left[K_j \right]  = \frac{(j-1)(n-j)}{n-1} 
+  one: \mathbb{E} \left[K_j \right]  = \frac{(j-1)(n-j)}{n-1}
 \end{displaymath}
 where $K_j$ is a random variable that depends on $j$, after
 \begin{displaymath}
@@ -230,7 +231,7 @@ defined in the previous sections and an uniform distribution above it.
   probability to have $k$ swaps when $j$ is the $pivot$:
   \begin{displaymath}
     \mathbb{P}\left(K_j = k \right) =  \frac{{{n-j}\choose{k}}
-      {{j-1}\choose{k}} (n-j)! (j-1)! }{(n-1)!} 
+      {{j-1}\choose{k}} (n-j)! (j-1)! }{(n-1)!}
   \end{displaymath}
   We can justify the above formula in the following steps:
   \begin{itemize}
@@ -251,7 +252,7 @@ defined in the previous sections and an uniform distribution above it.
   Now we study the mean of the variable $K_j$:
   \begin{displaymath}
     \mathbb{E} \left[ K_j \right] = \sum_{k \geq 0}{k \mathbb{P}\left(
-        K_j = k      \right) } 
+        K_j = k      \right) }
   \end{displaymath}
   Using ${{n}\choose{m}} =  \frac{n!}{m!(n-m)!} $, we can rewrite:
   \begin{displaymath}
@@ -270,7 +271,7 @@ defined in the previous sections and an uniform distribution above it.
   \begin{displaymath}
     {{j-1}\choose{k}} =  \frac{(j-1)!}{k!(j-1-k)!} =
     \frac{(j-1)}{k} \frac{(j-2)!}{(k-1)!(j-1-k)!} =
-    \frac{(j-1)}{k}{{j-2}\choose{k-1}} 
+    \frac{(j-1)}{k}{{j-2}\choose{k-1}}
   \end{displaymath}
   And ${{n}\choose{m}} = {{n}\choose{n-m}}$ implies ${{j-2}\choose{k-1}}
   = {{j-2}\choose{j-2 -(k-1)}} = {{j-2}\choose{j -k-1}}$, then:
@@ -289,7 +290,7 @@ defined in the previous sections and an uniform distribution above it.
   Now we recognize the Vandermonde result:
   \begin{displaymath}
     \sum_{k \geq 0}{{{r}\choose{k}} {{s}\choose{n-k}}  } =
-    {{r + s}\choose{n}} 
+    {{r + s}\choose{n}}
   \end{displaymath}
   which can be proved directly because the ipergeometric distribution
   has exactly the same structure, and being a distribution, it sum up
@@ -302,7 +303,7 @@ defined in the previous sections and an uniform distribution above it.
       {{n-2}\choose{j-1}} =
       \frac{(j-1)(n-2)!(j-1)!(n-j)!}{(n-1)!(j-1)!(n-j-1)!}=\\
       &=\frac{(j-1)(n-2)!(j-1)!(n-j)(n-j-1)!}
-      {(n-1)(n-2)!(j-1)!(n-j-1)!}= \frac{(j-1)(n-j)}{n-1} 
+      {(n-1)(n-2)!(j-1)!(n-j-1)!}= \frac{(j-1)(n-j)}{n-1}
     \end{split}
   \end{displaymath}
 \end{proof}
@@ -318,9 +319,9 @@ Now we proceed with the second proof:
       &=\frac{1}{n(n-1)} \left( (n+1)\sum_{j=1}^{n}{j} -
         \sum_{j=1}^{n}{j^2} -n \sum_{j=1}^{n}{1}  \right)\\
       &=\frac{1}{n(n-1)}\left( \frac{n(n+1)^2}{2} -
-        \frac{n(n+1)(2n+1)}{6} - n^2 \right) = \ldots =  \frac{n-2}{6} 
+        \frac{n(n+1)(2n+1)}{6} - n^2 \right) = \ldots =  \frac{n-2}{6}
     \end{split}
-  \end{displaymath} 
+  \end{displaymath}
 \end{proof}
 
 We are now ready to solve the main recurrence using the same strategy
@@ -331,7 +332,7 @@ for the average number of checks, fixing $S(0) = S(1) = S(2) =
     nS(n) - (n-1)S(n-1) &=  \frac{2n-3}{6} + 2S(n-1)\\
     \frac{S(n)}{n+1} &=  \frac{S(n-1)}{n} +  \frac{2n -3}{6n(n+1)} =
       % \frac{S(2)}{3} +
-      \sum_{k=3}^{n}{ \frac{2k-3}{6k(k+1)} }  
+      \sum_{k=3}^{n}{ \frac{2k-3}{6k(k+1)} }
   \end{split}
 \end{displaymath}
 Study the general term of the summation $ \frac{2k-3}{6k(k+1)}$ and
@@ -341,7 +342,7 @@ decompose it in partial fractions using Maxima:\\
 %%% INPUT:
 \begin{minipage}[t]{8ex}{\color{red}\bf
 \begin{verbatim}
-(%i131) 
+(%i131)
 \end{verbatim}}
 \end{minipage}
 \begin{minipage}[t]{\textwidth}{\color{blue}
