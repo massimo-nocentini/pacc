@@ -1,11 +1,27 @@
 
+draw.chi.square.curve <- function(){
+  postscript("chi-squared-theo-curve-4nodes-13fd.ps",
+             horizontal = FALSE)  
+  curve(dchisq(x, 13),
+        from=-3,
+        to=45,        
+        col="blue",
+        ylab="Chi-squared with 13 freedom degrees")
+  dev.off()                             
+}
+
 main <- function(){
   
-  number_of_nodes <- c(4, 5, 6, 8, 10) 
+  number_of_nodes <- c(4, 5, 6, 8) 
   number_of_trees <- c(1000, 2000, 5000, 10000, 20000, 50000)
 
   dimension.matrix=rbind(number_of_nodes,
     count.trees.with.vector.of.nodes(number_of_nodes))
+
+  categories.atleast.elements.count.matrix=matrix(nrow =
+                           length(number_of_trees), ncol =
+                           length(number_of_nodes), dimnames =
+                           list(number_of_trees, number_of_nodes))
   
   p.value.matrix <- matrix(nrow = length(number_of_trees), 
                            ncol = length(number_of_nodes), 
@@ -16,27 +32,49 @@ main <- function(){
                               ncol = length(number_of_nodes), 
                               dimnames = list(number_of_trees,
                                 number_of_nodes))
+
+  X.squared.matrix <- matrix(nrow = length(number_of_trees), 
+                              ncol = length(number_of_nodes), 
+                              dimnames = list(number_of_trees,
+                                number_of_nodes))
   
   for(tree_index in 1:length(number_of_trees)){
     for(node_index in 1:length(number_of_nodes)){
       
-      simulation.data <- simulation(number_of_trees[tree_index],
-                                    number_of_nodes[node_index],
-                                    enable.computation.on.trees=FALSE)
+      simulation.data <-
+        simulation(number_of_trees[tree_index],
+                   number_of_nodes[node_index],
+                   enable.computation.on.trees=FALSE)
+      
+      p.value.matrix[tree_index, node_index] <-
+        simulation.data$p.value
+      
+      v.observed.matrix[tree_index, node_index] <-
+        simulation.data$v.observed
 
-      p.value.matrix[tree_index, node_index] <- simulation.data$p.value
-      v.observed.matrix[tree_index, node_index] <- simulation.data$v.observed
+      X.squared.matrix[tree_index, node_index] <-
+        simulation.data$chi.square.obs.statistic
+
+      categories.atleast.elements.count.matrix[tree_index, node_index] <-
+        number_of_trees[tree_index] /
+        count.of.trees.with.specified.nodes(
+          number_of_nodes[node_index])
     }
   }
 
   print.latex.table(dimension.matrix)
   print.latex.table(p.value.matrix)
-  print.latex.table(v.observed.matrix)  
+  print.latex.table(v.observed.matrix)
+  print.latex.table(X.squared.matrix)
+  print.latex.table(categories.atleast.elements.count.matrix)  
   
   list(
     dimension.matrix=dimension.matrix,
     p.value.matrix=p.value.matrix,
-    v.observed.matrix=v.observed.matrix)
+    v.observed.matrix=v.observed.matrix,
+    X.squared.matrix=X.squared.matrix,
+    categories.atleast.elements.count.matrix=
+    categories.atleast.elements.count.matrix)  
 }
 
 produce.leaves.height.frame <- function(){
@@ -257,7 +295,9 @@ simulation <- function(number_of_trees,
                                  nodes_in_each_tree))
 }
 
-count.trees.with.vector.of.nodes <- function(vector.of.nodes.dimension){
+count.trees.with.vector.of.nodes <-
+  function(vector.of.nodes.dimension){
+    
   result <- rep(0, length(vector.of.nodes.dimension))
   for(i in 1:length(vector.of.nodes.dimension)){
     result[i] <- count.of.trees.with.specified.nodes(
@@ -282,6 +322,13 @@ make_interesting_report <- function(datas,
 
   v.observed <- ((number.of.possible.trees / number.of.trees) *
                  sum(datas$hits^2))-number.of.trees
+
+  ## the following formula is another way to compute the observed
+  ## statistic, equivalent to the one written above (the following is
+  ## kept from the lecture notes LucidiSimulazione1213.pdf)
+  ## v.observed <- sum((datas$hits - number.of.trees /
+  ##                    number.of.possible.trees)^2 / (number.of.trees /
+  ##                    number.of.possible.trees))
   
   theoretical.mean.leaves <- mean(datas$leaves)
   theoretical.mean.height <- mean(datas$height)
@@ -312,7 +359,7 @@ make_interesting_report <- function(datas,
   
   list(
     v.observed=v.observed,
-    chi.square.obs.statistic = sqrt(chi_square_test$statistic),
+    chi.square.obs.statistic = chi_square_test$statistic,
     p.value = chi_square_test$p.value,
     freedom.degree = chi_square_test$parameter,
     theoretical.mean.leaves=theoretical.mean.leaves,

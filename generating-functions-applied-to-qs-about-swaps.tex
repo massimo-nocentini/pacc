@@ -1,0 +1,129 @@
+\section{Generating function of quicksort's average swaps }
+
+In this section we go back again to the recurrence about the average
+number of swaps for the basic implementation of quicksort algorithm
+and we'll try to find the generating function for the sequence $S_n$
+of average swaps.
+
+We start again from the known recurrence:
+\begin{displaymath}
+  \begin{split}
+    S_n &= \frac{n-2}{6} + \frac{2}{n}\sum_{j=0}^{n-1}{S_j}\\
+    6nS_n &= n(n-2) + 12\sum_{j=0}^{n-1}{S_j}\\
+  \end{split}
+\end{displaymath}
+with $S_0 = S_1 = 0$. We've to remember to check if the recurrence
+holds for all $n$, the previous doesn't for $n=1$ because $0 \not=
+-1$. So we fix augmenting the second member with the sequence
+$\delta_{n,1}$ which returns $1$ if and only if $n=1$, now the
+recurrence holds for all $n \in \mathbb{N} $. By the \emph{Identity
+  principle} we get:
+\begin{displaymath}
+  \begin{split}
+    6 \mathcal{G} (nS_n) &= \mathcal{G} (n^2) -2 \mathcal{G} (n) + 12
+    \sum_{j=0}^{n-1}{S_j} + \mathcal{G} (\delta_{n,1}) \\
+    6t S^{\prime} (t) &= \frac{t + t^2}{(1-t)^3} - \frac{2t}{(1-t)^2}
+    + 12 t \mathcal{G} \left(\sum_{j=0}^{n}{S_j}\right) + t\\
+    6t S^{\prime} (t) &= \frac{t + t^2 -2t(1-t) + t(1-t)^3}{(1-t)^3} +
+    \frac{12 t}{1-t} S(t) \quad \text{by } \mathcal{G}
+    \left(\sum_{j=0}^{n}{S_j 1_{n-j}} \right)=\mathcal{G} (1_n)\mathcal{G} (S_n)\\
+    6 S^{\prime} (t) &= \frac{1 + t -2(1-t) + (1-t)^3}{(1-t)^3} +
+    \frac{12}{1-t} S(t) \quad \text{by dividing both members by } t
+  \end{split}
+\end{displaymath}
+Finally we have:
+\begin{equation}
+  \label{eq:main-assoc-swaps-qs}
+  S^{\prime} (t) = \frac{t^2(3-t)}{6(1-t)^3} +
+  \frac{2}{1-t} S(t)
+\end{equation}
+with initial condition $S(0) = 0$. Now we study the homogeneous
+associate equation $\mu(t)$ (excluding for a moment the term $
+\frac{t^2(3-t)}{6(1-t)^3}$):
+\begin{eqnarray}
+  \mu^{\prime} (t) &=&  \frac{2}{1-t} \mu (t)\\
+  \frac{\mu^{\prime}(t)}{\mu (t)} &=& \frac{2}{1-t} \label{eq:assoc-swaps-qs}\\
+  \log\mu (t) &=& -2\log (1-t) = \log \frac{1}{(1-t)^2} \quad \text{
+    integrating both members} \\
+  \label{eq:final-assoc-swaps-qs}
+  \mu (t) &=& \frac{1}{(1-t)^2}\quad \text{
+    exping both members}
+\end{eqnarray}
+Now we study the derivative which complies the $\mu$ function,
+solution of the unknown function $S(t)$ we hope to find:
+\begin{displaymath}
+  \begin{split}
+    \frac{\partial}{\partial t}\left( \frac{S(t)}{\mu (t)} \right) &=
+    \frac{S^{\prime} (t)\mu (t) - S(t)\mu^{\prime} (t)}{\mu (t)^2} \\
+    &= \mu (t)\frac{S^{\prime} (t) - S(t) \frac{\mu^{\prime} (t)}{\mu
+        (t)} }{\mu (t)^2} \\
+    &= \frac{1}{\mu (t)} (S^{\prime} (t) - \frac{2}{1-t}S(t) ) \quad
+    \text{by \autoref{eq:assoc-swaps-qs}}\\
+    &= \frac{1}{\mu (t)}\frac{t^2(3-t)}{6(1-t)^3} \quad \text{by
+      \autoref{eq:main-assoc-swaps-qs}} \\
+    &= \frac{t^2(3-t)}{6(1-t)} \quad
+    \text{by \autoref{eq:final-assoc-swaps-qs}}
+  \end{split}
+\end{displaymath}
+We do simple manipulation in order to ease the integration:
+\begin{displaymath}
+  \begin{split}
+    \frac{\partial}{\partial t}\left( \frac{S(t)}{\mu (t)} \right) &=
+    \frac{t^2(3-t)}{6(1-t)} = \frac{t^2(1-t + 2)}{6(1-t)} =
+    \frac{1}{6}\left(t^2 + \frac{2t^2}{1-t} \right) =
+    \frac{1}{6}\left(t^2 + \frac{2t^2-2+2}{1-t} \right) =\\
+    &= \frac{1}{6}\left(t^2 + \frac{2(t-1)(t+1)}{1-t} +
+      \frac{2}{1-t}\right) = \frac{1}{6}\left(t^2 -
+      \frac{2(1-t)(t+1)}{1-t} + \frac{2}{1-t}\right) =\\
+    &=
+    \frac{1}{6}\left(t^2 - 2(t+1) + \frac{2}{1-t}\right)
+  \end{split}
+\end{displaymath}
+Now we integrate both members:
+\begin{displaymath}
+  \begin{split}
+    \frac{S(t)}{\mu (t)} &= \frac{1}{6}\left( \frac{t^3}{3} - t^2 -2t
+      -2\log{(1-t)} + k\right)\\
+    S(t) &= \frac{1}{6(1-t)^2}\left( \frac{t^3}{3} - t^2 -2t
+      -2\log{(1-t)} + k\right) \quad \text{by \autoref{eq:final-assoc-swaps-qs}}\\
+  \end{split}
+\end{displaymath}
+After simplification and $k=0$ by the initial conditions $S(0)=S(1)=0$
+we get:
+\begin{equation}
+  S(t) =  \frac{1}{3 (1-t)^2} \log{  \frac{1}{1-t} } +  \frac{t^3
+    -3t^2 -6t}{18 (1-t)^2} 
+\end{equation}
+
+Simple check with Maxima:
+
+\noindent
+%%%%%%%%%%%%%%%
+%%% INPUT:
+\begin{minipage}[t]{8ex}{\color{red}\bf
+\begin{verbatim}
+(%i3) 
+\end{verbatim}}
+\end{minipage}
+\begin{minipage}[t]{\textwidth}{\color{blue}
+\begin{verbatim}
+s(t):=(1/(3*(1-t)^2))*log(1/(1-t)) + (t^3-3*t^2-6*t)/(18*(1-t)^2)$
+taylor(s(t),t,0,8);
+\end{verbatim}}
+\end{minipage}
+%%% OUTPUT:
+\definecolor{labelcolor}{RGB}{100,0,0}
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o4) }
+\frac{{t}^{3}}{6}+\frac{5\,{t}^{4}}{12}+\frac{11\,{t}^{5}}{15}+\frac{199\,{t}^{6}}{180}+\frac{961\,{t}^{7}}{630}+\frac{1669\,{t}^{8}}{840}+...
+\end{math}
+%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+

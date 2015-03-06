@@ -9,8 +9,7 @@ body contains the building of the relative generating function.
 \begin{displaymath}
   \begin{split}
     \mathcal{G} (c^n) = \sum_{n \geq 0}{c^n t^n} &= \sum_{n \geq
-      0}{1\cdot (ct)^n} = \sum_{n \geq 0}{a_n \cdot (ct)^n} \quad
-    \text{ where } a_n = 1, \forall n \in \mathbb{N} \\
+      0}{1_n\cdot (ct)^n} = \sum_{n \geq 0}{1_n \cdot (ct)^n}  \\
     &= \mathcal{G} (1_n) \circ (ct) = \ \frac{1}{1-ct} \quad \text{ by
     composition of } \mathcal{G} 
   \end{split}
@@ -42,7 +41,7 @@ taylor(b(t),t,0,8);
 \subsection{$\{(-1)^n a_n\}_{n\in \mathbb{N} }$}
 \begin{displaymath}
     \mathcal{G} ((-1)^n a_n) = \sum_{n \geq 0}{(-1)^n a_n t^n} = \sum_{n \geq
-      0}{a_n (-t)^n} = a(-t)
+      0}{a_n (-t)^n} = \mathcal{G} (a_n) \circ (-t) = a(-t)
 \end{displaymath}
 
 \subsection{$\{n\}_{n\in \mathbb{N} }$}
@@ -245,15 +244,15 @@ We try to understand the generating function $\mathcal{G}(a_n) $:
       (n+1)a_{n+1}  &= n a_n
   \end{split}
 \end{displaymath}
-In order to apply the identity principle, it is required to check the
-equivalence holds for all $n$. But this isn't the case for $n=0:a_{1}
-= 1 \not = 0 = a_0$. So we've to augment the second member with the
-term $\delta_{n,k}$ such that $\delta_{n,k} = 1 \text{ if } n=k, 0
-\text{ otherwise}$. Augmenting we obtain $(n+1)a_{n+1} = n a_n +
-\delta_{n,0}, \forall n \in \mathbb{N} $, in particular for $n=0:a_{1}
-= 1 = 1 = a_0 + \delta_{0,0}$. Now it is possible to apply the
-identity principle, calling $b_{n+1} = (n+1)a_{n+1}$ (hence $b_n =n
-a_n$ and $b_0 = 0$):
+In order to apply the identity principle, it is required to check if
+the equivalence holds for all $n$. But this isn't the case for
+$n=0:a_{1} = 1 \not = 0 = a_0$. So we've to augment the second member
+with the term $\delta_{n,k}$ such that $\delta_{n,k} = 1 \text{ if }
+n=k, 0 \text{ otherwise}$. Augmenting we obtain $(n+1)a_{n+1} = n a_n
++ \delta_{n,0}, \forall n \in \mathbb{N} $, in particular for
+$n=0:a_{1} = 1 = 1 = a_0 + \delta_{0,0}$. Now it is possible to apply
+the identity principle, calling $b_{n+1} = (n+1)a_{n+1}$ (hence $b_n
+=n a_n$ and $b_0 = 0$):
 \begin{displaymath}
   \begin{split}
     b_{n+1} &= n a_n + \delta_{n,0} \\
@@ -271,11 +270,14 @@ a_n$ and $b_0 = 0$):
     \frac{\partial}{\partial t}\left( \mathcal{G} (a_n) \right) &= t
     \frac{\partial}{\partial t}\left( \mathcal{G} (a_n) \right) + 1 \\
     \frac{\partial}{\partial t}\left( \mathcal{G} (a_n) \right) &=
-    \frac{1}{1-t}\\
-    \mathcal{G} (a_n) &= \log{ \frac{1}{1-t} }
+    \frac{1}{1-t}
   \end{split}
 \end{displaymath}
-
+Integrating both members:
+\begin{equation}
+  \label{eq:one-above-n-gen-function}
+  \mathcal{G} ( \frac{1}{n} ) = \log{ \frac{1}{1-t} }
+\end{equation}
 Simple check:
 
 \noindent
@@ -305,10 +307,14 @@ t+\frac{{t}^{2}}{2}+\frac{{t}^{3}}{3}+\frac{{t}^{4}}{4}+\frac{{t}^{5}}{5}+\frac{
 
 \begin{displaymath}
   \begin{split}
-    \mathcal{G} (\sum_{k=1}^{n}{ \frac{1}{k} } ) = \mathcal{G}
-    (\sum_{k=1}^{n}{ \frac{1}{k} 1_k } ) = \mathcal{G} (\frac{1}{k})
-    \mathcal{G} (1_k) = \left (\log{ \frac{1}{1-t}}\right)
-    \frac{1}{1-t} \quad \text{ by convolution of }\mathcal{G}
+    \mathcal{G} \left(\sum_{k=1}^{n}{ \frac{1}{k} } \right) &=
+    \mathcal{G} \left(\sum_{k=1}^{n}{ \frac{1}{k} 1_{n-k} } \right) = \\
+    &=\mathcal{G} \left(\frac{1}{n}\right) \mathcal{G} (1_n) \quad
+    \text{ by
+      convolution of }\mathcal{G}\\
+    &= \left (\log{ \frac{1}{1-t}}\right) \frac{1}{1-t} \quad \text{by
+      \autoref{eq:one-above-n-gen-function} and
+      \autoref{eq:genfun-of-ones-sequence}}
   \end{split}
 \end{displaymath}
 
@@ -372,10 +378,14 @@ F_{n-1} + F_{n-2} $ for $n=0$):
     + \mathcal{G}
     (F_{n}) \\
     \mathcal{G} (F_n) - t &= t \mathcal{G} (F_n) + t^2 \mathcal{G}
-    (F_n)\\
-    \mathcal{G} (F_n) &= - \frac{t}{t^2 + t - 1} = \frac{1}{1-t-t^2}
+    (F_n)    
   \end{split}
 \end{displaymath}
+Finally we get:
+\begin{equation}
+  \label{eq:fibonacci-generating-function}
+  \mathcal{G} (F_n) = - \frac{t}{t^2 + t - 1} = \frac{t}{1-t-t^2}
+\end{equation}
 
 Simple check:
 
@@ -384,25 +394,26 @@ Simple check:
 %%% INPUT:
 \begin{minipage}[t]{8ex}{\color{red}\bf
 \begin{verbatim}
-(%i106) 
+(%i779) 
 \end{verbatim}}
 \end{minipage}
 \begin{minipage}[t]{\textwidth}{\color{blue}
 \begin{verbatim}
-b(t):=(1/(1-t-t^2))$
+b(t):=t/(1-t-t^2)$
 map(fib, makelist(n,n,1,10));
-taylor(b(t),t,0,9);
+taylor(b(t),t,0,10);
 \end{verbatim}}
 \end{minipage}
 %%% OUTPUT:
 \definecolor{labelcolor}{RGB}{100,0,0}
 \begin{math}\displaystyle
-\parbox{8ex}{\color{labelcolor}(\%o108) }
+\parbox{8ex}{\color{labelcolor}(\%o780) }
 [1,1,2,3,5,8,13,21,34,55]
-\end{math}\\
+\end{math}
+
 \begin{math}\displaystyle
-\parbox{8ex}{\color{labelcolor}(\%o109) }
-1+t+2\,{t}^{2}+3\,{t}^{3}+5\,{t}^{4}+8\,{t}^{5}+13\,{t}^{6}+21\,{t}^{7}+34\,{t}^{8}+55\,{t}^{9}+...
+\parbox{8ex}{\color{labelcolor}(\%o781) }
+t+{t}^{2}+2\,{t}^{3}+3\,{t}^{4}+5\,{t}^{5}+8\,{t}^{6}+13\,{t}^{7}+21\,{t}^{8}+34\,{t}^{9}+55\,{t}^{10}+...
 \end{math}
 %%%%%%%%%%%%%%%
 
@@ -430,46 +441,48 @@ the equality $T_{n+3} = T_{n+2} + T_{n+1} + T_{n}$ holds $\forall n
     \mathcal{G} (T_n) - t - t^2 &= t(\mathcal{G} (T_n) - t) +
     t^2\mathcal{G} (T_n) + t^3\mathcal{G}
     (T_{n})\\
-    \mathcal{G} (T_n) &= \frac{1}{1-t-t^2-t^3
+    \mathcal{G} (T_n) &= \frac{t}{1-t-t^2-t^3
 }
   \end{split}
 \end{displaymath}
 
 Simple check:
 
-
 \noindent
 %%%%%%%%%%%%%%%
 %%% INPUT:
 \begin{minipage}[t]{8ex}{\color{red}\bf
 \begin{verbatim}
-(%i9) 
+(%i41) 
 \end{verbatim}}
 \end{minipage}
 \begin{minipage}[t]{\textwidth}{\color{blue}
 \begin{verbatim}
 tribonacci(n):=if is(n=0) then 0 else if is(n=1) then 1 else if
-is(n=2) then 1 else tribonacci(n-1)+tribonacci(n-2)+tribonacci(n-3)$
-b(t):=(1/(1-t-t^2-t^3));
-map(tribonacci, makelist(n,n,1,10));
+is(n=2) then 1 else tribonacci(n-1)+tribonacci(n-2)+tribonacci(n-3)\$
+b(t):=(t/(1-t-t^2-t^3));
+map(tribonacci, makelist(n,n,0,9));
 taylor(b(t),t,0,9);
 \end{verbatim}}
 \end{minipage}
 %%% OUTPUT:
 \definecolor{labelcolor}{RGB}{100,0,0}
 \begin{math}\displaystyle
-\parbox{8ex}{\color{labelcolor}(\%o10) }
-\mathrm{b}\left( t\right) :=\frac{1}{1-t-{t}^{2}-{t}^{3}}
-\end{math}\\
+\parbox{8ex}{\color{labelcolor}(\%o42) }
+\mathrm{b}\left( t\right) :=\frac{t}{1-t-{t}^{2}-{t}^{3}}
+\end{math}
+
 \begin{math}\displaystyle
-\parbox{8ex}{\color{labelcolor}(\%o11) }
-[1,1,2,4,7,13,24,44,81,149]
-\end{math}\\
+\parbox{8ex}{\color{labelcolor}(\%o43) }
+[0,1,1,2,4,7,13,24,44,81]
+\end{math}
+
 \begin{math}\displaystyle
-\parbox{8ex}{\color{labelcolor}(\%o12) }
-1+t+2\,{t}^{2}+4\,{t}^{3}+7\,{t}^{4}+13\,{t}^{5}+24\,{t}^{6}+44\,{t}^{7}+81\,{t}^{8}+149\,{t}^{9}+...
+\parbox{8ex}{\color{labelcolor}(\%o44) }
+t+{t}^{2}+2\,{t}^{3}+4\,{t}^{4}+7\,{t}^{5}+13\,{t}^{6}+24\,{t}^{7}+44\,{t}^{8}+81\,{t}^{9}+...
 \end{math}
 %%%%%%%%%%%%%%%
+
 
 \subsection{$\{a_n = {{p}\choose{n}} \}_{n \in \mathbb{N} }$}
 
@@ -515,8 +528,8 @@ $a(0) = a_0 + 0t+0t^2 + 0t^3+\ldots = 1$, hence $c=0$ .
 \begin{displaymath}
   \begin{split}
     \log{a(t)} &= \log{(1+t)}^p\\
-    &\downarrow \\
-    a(t) &= (1+t)^p
+    &\downarrow \quad \text{exping both members}\\
+    a(t) = \mathcal{G}\left({{p}\choose{n}}\right) &= (1+t)^p
   \end{split}
 \end{displaymath}
 
@@ -587,7 +600,7 @@ a_n$:
 
 \begin{displaymath}
   \begin{split}
-    b_{n+1} &= 2(2n + 1)a_n \\
+    b_{n+1} &= (n+1)a_{n+1} \\
     &\downarrow \\
     \mathcal{G} (b_{n+1}) &= \mathcal{G} (2(2n+1)a_n)\\
     \frac{\mathcal{G} (b_n) - b_0}{t} &= \mathcal{G} (2(2n+1)a_n)\\
@@ -619,6 +632,12 @@ c$, with $a(0) = a_0 + 0t+0t^2 + 0t^3+\ldots = 1$, hence $c=0$ .
   \end{split}
 \end{displaymath}
 
+Finally we have found:
+\begin{equation}
+  \label{eq:binomial-coefficient-gen-fun}
+  \mathcal{G} \left({{2n}\choose{n}} \right) =
+  \frac{1}{\sqrt{1-4t}}
+\end{equation}
 Simple check:
 
 
@@ -665,9 +684,10 @@ taylor(a(t),t,0,5);
 
 \begin{displaymath}
   \begin{split}
-    \mathcal{G} ( \frac{1}{n+1} {{2n}\choose{n}}) = \frac{1}{t}
-    \int{\mathcal{G} ({{2n}\choose{n}} )dt} = \frac{1}{t} \int{
-      \frac{1}{\sqrt{1-4t}} dt} =
+    \mathcal{G} ( \frac{1}{n+1} {{2n}\choose{n}}) &= \frac{1}{t}
+    \int{\mathcal{G} ({{2n}\choose{n}} )dt} \quad \text{by \autoref{eq:n-plus-one-a-n-gen-fun}}\\
+    &= \frac{1}{t} \int{ \frac{1}{\sqrt{1-4t}} dt} \quad \text{by
+      \autoref{eq:binomial-coefficient-gen-fun}}
   \end{split}
 \end{displaymath}
 Calling $\sqrt{1-4t} = y$ follows $t = \frac{1-y^2}{4} $ and $dt = -

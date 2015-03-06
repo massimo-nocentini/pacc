@@ -1,0 +1,316 @@
+
+\section{ $[t^{n}] $ inverse operator of generating function operator}
+
+In this section we'll study the inverse operator $[t^{n}] $ of
+$\mathcal{G} $, which consume a generating function $g(t)$, where
+$g(t) = \mathcal{G} (\{a_n\}_{n\in\mathbb{N} } )$, and returns the
+$a_n$ coefficient of the sequence $\{a_n\}_{n\in\mathbb{N} }$ (in
+other words, $[t^n]a(t) = f(n)$, so $[t^n]$ returns a function of
+$n$), formally $[t^{n}] g(t) = a_n$. It is interesting to note that
+the function $g(t)$ to which $[t^n]$ is applied to depends only on $t$
+(in the last lectures we will see a special case of application
+$[t^n]g(t,n)$).
+
+\subsection{Linearity of $[t^{n}] $}
+\begin{displaymath}
+  \begin{split}
+    [t^{n}] (\alpha a(t) + \beta b(t)) = [t^{n}]
+    \left(\sum_{n=0}^{\infty}{(\alpha a_n + \beta b_n )t^n}\right) =
+    \alpha a_n + \beta b_n
+  \end{split}
+\end{displaymath}
+
+\subsection{Translation of $[t^{n}] $}
+Let $s\in \mathbb{Z}$:
+\begin{displaymath}
+  \begin{split}
+    [t^{n}] t^s a(t) &= [t^{n}] t^s (a_0 + a_1 t + a_2 t^2 + \ldots +
+    a_n t^n + \ldots )\\
+    &= [t^{n}] (a_0 t^s + a_1 t^{s+1} + a_2 t^{s+2} + \ldots + a_n
+    t^{n+s} + \ldots )\\
+    &= [t^{n-s}] a(t)
+  \end{split}
+\end{displaymath}
+A simple observation:
+\begin{displaymath}
+  [t^{n}]  \frac{  a(t)}{t^s} = [t^{n+s}] a(t)
+\end{displaymath}
+
+\subsection{Derivation of $[t^{n}] $}
+\begin{displaymath}
+  \begin{split}
+    a(t) &= a_0 + a_1 t + a_2 t^2 + \ldots + a_n t^n + \ldots \\
+    \frac{\partial}{\partial t}\left(a(t) \right) &= a_1 + 2a_2 t +
+    3a_3 t^2+\ldots + (n+1)a_{n+1} t^n + \ldots \\
+    [t^{n}] \frac{\partial}{\partial t}\left(a(t) \right) &=
+    (n+1)a_{n+1}
+  \end{split}
+\end{displaymath}
+It is interesting to note the following fact:
+\begin{displaymath}
+  \begin{split}
+    [t^{n}] \frac{\partial}{\partial t}\left(a(t) \right) &=
+    (n+1)a_{n+1}\\
+    &\downarrow \\
+    [t^{n-1}] \frac{\partial}{\partial t}\left(a(t) \right) &= n a_{n} \\
+    n[t^{n}]a(t) &= n a_{n}\quad \text{by def of } [t^{n}]
+  \end{split}
+\end{displaymath}
+So the following holds:
+\begin{equation}
+  \label{eq:implication-der-property-of-inverse-of-G}
+  [t^{n}]a(t) =  \frac{1}{n} [t^{n-1}] a^{\prime}(t)
+\end{equation}
+
+
+\subsection{Convolution of $[t^{n}] $}
+\begin{displaymath}
+  \begin{split}
+    [t^{n}] a(t)b(t) &= [t^{n}] \mathcal{G} (a_n) \mathcal{G} (b_n) =
+    [t^{n}]\mathcal{G} \left(\sum_{k=0}^{n}{a_k b_{n-k}} \right) =
+    \sum_{k=0}^{n}{a_k b_{n-k}}
+  \end{split}
+\end{displaymath}
+
+\subsection{Composition of $[t^{n}] $}
+\begin{displaymath}
+  \begin{split}
+    [t^{n}] a(t)\circ b(t) &=[t^{n}] a(b(t))
+    =[t^{n}]\sum_{k=0}^{\infty}{a_k (\mathcal{G} (b_n))^k}\\
+    &=\sum_{k=0}^{\infty}{a_k [t^{n}] b(t)^k} \quad \text{by linearity
+      of } [t^n]
+  \end{split}
+\end{displaymath}
+
+\subsection{Netwon's rule}
+Let $\alpha, r \in \mathbb{R} $:
+\begin{equation}
+  \label{eq:newton-rule}
+  [t^{n}] (1 + \alpha t)^r = {{r}\choose{n}} \alpha^n
+\end{equation}
+\begin{proof}[Proof]
+  We repeatedly apply
+  \autoref{eq:implication-der-property-of-inverse-of-G} to $[t^{n}] (1
+  + \alpha t)^r$ getting the following:
+  \begin{displaymath}
+    \begin{split}
+      [t^{n}] (1 + \alpha t)^r &= \frac{1}{n} [t^{n-1}] r\alpha(1 +
+      \alpha t)^{r-1} \\
+      &= \frac{r\alpha}{n} \frac{1}{n-1}[t^{n-2}] (r-1)\alpha(1 +
+      \alpha t)^{r-2}\\
+      &= \frac{r\alpha}{n}
+      \frac{(r-1)\alpha}{n-1}\frac{1}{n-2}[t^{n-3}] (r-2)\alpha(1 +
+      \alpha t)^{r-3}\\
+      &\vdots\\
+      &= \frac{r\alpha}{n} \frac{(r-1)\alpha}{n-1}\cdots
+      \frac{(r-n+2))\alpha}{n-n+2} \frac{1}{n-n+1}[t^{n-n}]
+      (r-n+1)\alpha(1 +
+      \alpha t)^{r-n}\\
+      &= \frac{r\alpha}{n} \frac{(r-1)\alpha}{n-1}\cdots
+      \frac{(r-n+2))\alpha}{n-n+2} \frac{(r-n+1)\alpha}{n-n+1}[t^{0}]
+      (1 +      \alpha t)^{r-n}\\
+      &= \alpha^n \frac{r(r-1)\cdots(r-n+1)}{n!}[t^{0}]
+      (1 +      \alpha t)^{r-n}\\
+      &= \alpha^n {{r}\choose{n}} [t^{0}]
+      (1 +      \alpha t)^{r-n}\\
+      &= \alpha^n {{r}\choose{n}} 
+    \end{split}
+  \end{displaymath}
+  where $[t^{0}] (1 + \alpha t)^{r-n} = 1$ because, let $f(t)= (1 +
+  \mu t)^{\nu}$ in:
+  \begin{displaymath}
+    [t^0]f(t) = [t^0] \left(\sum_{k=0}^{\infty}{
+        \frac{f^k(0)}{k!}t^k } \right) = f^0(0) = f(0) = 1 \quad
+    \forall \mu, \nu \in \mathbb{R} 
+\end{displaymath}
+
+\end{proof}
+
+\subsection{Inverting Fibonacci generating function}
+In this section we'll study the extract coefficient operator $[t^{n}]$
+applied to the generating function of Fibonacci's sequence.
+
+In \autoref{eq:fibonacci-generating-function} we found the generating
+function for Fibonacci's sequence, in order to apply the Newton's
+rule, we have to reach something like $(1 + \alpha t)^r$, for some
+$\alpha, r \in \mathbb{R} $. So the idea is to write the term
+$\frac{t}{1-t-t^2}$ as partial fractions and try to apply $[t^{n}]$.
+
+First we solve $1-t-t^2 = 0$ respect $t$, having two solutions
+$\phi=\frac{\sqrt{5}-1}{2}$ and $\hat{\phi}=-\frac{\sqrt{5}+1}{2}$
+(Maxima results \parbox{8ex}{\color{labelcolor}(\%o759) }
+and \parbox{8ex}{\color{labelcolor}(\%o760) }).
+
+Those solutions are very interesting and enjoy the following
+properties (Maxima results \parbox{8ex}{\color{labelcolor}(\%o761) }
+and \parbox{8ex}{\color{labelcolor}(\%o762) }):
+\begin{displaymath}
+  \begin{split}
+    \phi + \hat{\phi} &= \frac{\sqrt{5}}{2} - \frac{1}{2} -
+    \frac{\sqrt{5}}{2} - \frac{1}{2} = -1\\
+    \phi \hat{\phi} &= \frac{(\sqrt{5} -1)(-\sqrt{5} -1)}{4} =
+    \frac{-5+1}{4} = -1\\
+    &\downarrow\\
+    \phi + \hat{\phi} &= \phi \hat{\phi} = -1
+  \end{split}
+\end{displaymath}
+Now we use the previous solutions to factor $1-t-t^2$:
+\begin{displaymath}
+  \begin{split}
+    1-t-t^2 &= -\left( t-\phi \right)\left( t-\hat{\phi} \right)\\
+    &= -(-\phi)(-\hat{\phi})\left(1 - \frac{t}{\phi} \right)
+    \left(1 - \frac{t}{\hat{\phi}} \right)\\
+    &= -\phi\hat{\phi}\left(1 - \frac{t}{\phi} \right)
+    \left(1 - \frac{t}{\hat{\phi}} \right)\\
+    &= \left(1 - \frac{t}{\phi} \right) \left(1 - \frac{t}{\hat{\phi}}
+    \right) \quad \text{ by above properties}
+  \end{split}
+\end{displaymath}
+Now we'll find two constants $A, B \in \mathbb{R} $ to build the
+partial fractions:
+\begin{displaymath}
+  \begin{split}
+    \frac{t}{1-t-t^2} &= \frac{A}{\left(1 - \frac{t}{\phi} \right)} +
+    \frac{B}{ \left(1 - \frac{t}{\hat{\phi}} \right)}= \frac{A \left(1
+        - \frac{t}{\hat{\phi}} \right) + B\left(1 - \frac{t}{\phi}
+      \right)}{\left(1 - \frac{t}{\phi} \right) \left(1 -
+        \frac{t}{\hat{\phi}} \right)} = \frac{(A+B) -t
+      \left(\frac{A}{\hat{\phi}} +\frac{B}{\phi}
+      \right)}{\left(1 - \frac{t}{\phi} \right) \left(1 -
+        \frac{t}{\hat{\phi}} \right)}
+  \end{split}
+\end{displaymath}
+So we've to solve the system with two equations in two unknowns:
+$A+B=0$ and $\left(\frac{A}{\hat{\phi}} +\frac{B}{\phi} \right) = -1$,
+which yields $A= \frac{1}{\sqrt{5}} $ and $B= -\frac{1}{\sqrt{5}}$ (as
+confirmed in \parbox{8ex}{\color{labelcolor}(\%o765) }). So we've
+found the partial fractions decomposition (as confirmed
+in \parbox{8ex}{\color{labelcolor}(\%o767) }):
+\begin{equation}
+  \frac{t}{1-t-t^2} =  \frac{1}{\sqrt{5}}\frac{1}{1-\frac{t}{\phi}}-
+  \frac{1}{\sqrt{5}}\frac{1}{1-\frac{t}{\hat{\phi}}}
+\end{equation}
+We apply the $[t^{n}] $ to both members:
+\begin{displaymath}
+  \begin{split}
+    [t^{n}]\frac{t}{1-t-t^2} &=
+    \frac{1}{\sqrt{5}}[t^{n}]\frac{1}{1-\frac{t}{\phi}}-
+    \frac{1}{\sqrt{5}}[t^{n}]\frac{1}{1-\frac{t}{\hat{\phi}}}\\
+    &= \frac{1}{\sqrt{5}}[t^{n}]\left(1-\frac{t}{\phi}\right)^{-1}-
+    \frac{1}{\sqrt{5}}[t^{n}]\left(1-\frac{t}{\hat{\phi}}\right)^{-1}
+    \\
+    &=
+    \frac{1}{\sqrt{5}}{{-1}\choose{n}}\left(-\frac{1}{\phi}\right)^{n}-
+    \frac{1}{\sqrt{5}}{{-1}\choose{n}}\left(-\frac{1}{\hat{\phi}}\right)^{n}
+    \quad \text{by Newton's rule}\\
+    &= \frac{1}{\sqrt{5}}(-1)^n(-1)^n\left(\frac{1}{\phi}\right)^{n}-
+    \frac{1}{\sqrt{5}}(-1)^n(-1)^n\left(\frac{1}{\hat{\phi}}\right)^{n}\\
+    & \quad \text{by } {{-1}\choose{n}} = (-1)^n{{1+n-1}\choose{n}} =
+    (-1)^n\\
+    &= \frac{1}{\sqrt{5}}\left(\frac{1}{\phi}\right)^{n}-
+    \frac{1}{\sqrt{5}}\left(\frac{1}{\hat{\phi}}\right)^{n}\\
+  \end{split}
+\end{displaymath}
+Checking with Maxima, in \parbox{8ex}{\color{labelcolor}(\%o770) } we
+obtain the right Fibonacci numbers.
+
+
+
+
+\noindent
+%%%%%%%%%%%%%%%
+%%% INPUT:
+\begin{minipage}[t]{8ex}{\color{red}\bf
+\begin{verbatim}
+(%i757) 
+\end{verbatim}}
+\end{minipage}
+\begin{minipage}[t]{\textwidth}{\color{blue}
+\begin{verbatim}
+eqFib:1-k-k^2=0;
+solutions:solve(eqFib,k);
+phi:ev(k,solutions[2]);
+phiHat:ev(k,solutions[1]);
+ratsimp(phi*phiHat);
+ratsimp(phi+phiHat);
+ratsimp(-phi*phiHat*(1-t/phi)*(1-t/phiHat));
+ratsimp((1+phi*t)*(1+phiHat*t));
+ABvalues:solve([A+B=0, (A/phiHat)+(B/phi)=-1],[A,B]);
+parFracAB(A,B):=(A/(1-t/phi))+(B/(1-t/phiHat));
+ratsimp(ev(parFracAB(A,B),ABvalues));
+coef(n,A,B):=A*(1/phi)^n + B*(1/phiHat)^n;
+coefCurry(n):=ratsimp(ev(coef(n,A,B),ABvalues))$
+map(coefCurry, makelist(n,n,0,10));
+\end{verbatim}}
+\end{minipage}
+%%% OUTPUT:
+\definecolor{labelcolor}{RGB}{100,0,0}
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o757) }
+-{k}^{2}-k+1=0
+\end{math}
+
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o758) }
+[k=-\frac{\sqrt{5}+1}{2},k=\frac{\sqrt{5}-1}{2}]
+\end{math}
+
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o759) }
+\frac{\sqrt{5}-1}{2}
+\end{math}
+
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o760) }
+-\frac{\sqrt{5}+1}{2}
+\end{math}
+
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o761) }
+-1
+\end{math}
+
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o762) }
+-1
+\end{math}
+
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o763) }
+-{t}^{2}-t+1
+\end{math}
+
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o764) }
+-{t}^{2}-t+1
+\end{math}
+
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o765) }
+[[A=\frac{1}{\sqrt{5}},B=-\frac{1}{\sqrt{5}}]]
+\end{math}
+
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o766) }
+\mathrm{parFracAB}\left( A,B\right)
+:=\frac{A}{1-\frac{t}{\phi}}+\frac{B}{1-\frac{t}{phiHat}}
+\end{math}
+
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o767) }
+-\frac{t}{{t}^{2}+t-1}
+\end{math}
+
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o768) }
+\mathrm{coef}\left( n,A,B\right) :=A\,{\left( \frac{1}{\phi}\right)
+}^{n}+B\,{\left( \frac{1}{phiHat}\right) }^{n}
+\end{math}
+
+\begin{math}\displaystyle
+\parbox{8ex}{\color{labelcolor}(\%o770) }
+[0,1,1,2,3,5,8,13,21,34,55]
+\end{math}
+%%%%%%%%%%%%%%%
+
+

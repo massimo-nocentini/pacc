@@ -1,20 +1,34 @@
 * Progettazione e Analisi di Algoritmi course notes
-  This document is a container of all the exercises that I did during
-  the course of Design and Analysis of Algorithms at University of
+  This document is a container of lecture notes while attending the
+  course of Design and Analysis of Algorithms at University of
   Florence.  The professors that give the lectures are Donatella
   Merlini e Maria Cecilia Verri.
 
-  All the document content is written using the Italian language.
-
 ** How to compile the document
-   In order to compile the document is sufficient to run `make pdf` if
-   the pdf output is desired, otherwise `make ps` if the postscript
-   output is desired. Of course the previous commands have to be typed
-   at the root of the project after cloned the git repository.  During
-   my develop time I've used the full installation of the tex-live
-   suite on a debian-powered system. It can be installed by running
-   'apt-get install texlive-full'.
+   In order to compile the document is sufficient to run `make` if the
+   pdf output is desired. Of course the previous commands have to be
+   typed at the root of the project after entering into the folder
+   created by 'git clone' command.  During my develop time I've used
+   the full installation of the tex-live suite on a debian-powered
+   system. It can be installed by running 'apt-get install
+   texlive-full'.
    
    However, inside 'compiled-versions' folder, there is an already
    compiled pdf which is the latest version that is at least
    presentable.
+
+   WARNING: it is highly recommended to always fetch the code and
+   compile the document by yourself in order to get the more updated
+   content (I'm not releasing the pdf for each push on github :) ).
+   
+** Maxima interaction
+   All our experiments are saved in a file 'maxima-worksheet.wxm'
+   which can be loaded with wxMaxima. The output have been used to
+   build example in the pdf document.
+
+** OCaml sources
+   For the generation of the several tree's structures, given the
+   number 'n' of nodes of each tree, we've implemented some stuff
+   which can be found in folder 'trees-generation-ocaml'.
+
+
