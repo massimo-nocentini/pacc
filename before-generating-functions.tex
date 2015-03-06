@@ -63,7 +63,7 @@ $i$ nor with $j$.  We analyze the number of performed checks by cases:
 
 \begin{description}
 \item[worst case] when the vector is already ordered, in either one of the
-  two directions, recursion works over one partition only because the
+  two directions, recursion works over one partition only, because the
   other one has to be empty, hence the number of checks satisfies
   the following relation:
   \begin{displaymath}
@@ -90,23 +90,23 @@ We explain the average case in the following dedicated section.
 
 To study this case we have to consider all
 elements of $\Omega$ (recall that $w \in \Omega \rightarrow (w[i]\in
-\{1,\ldots,n\}) \wedge (\forall i\not =j: w[i]\not=w[j])$). First of
-all we can suppose that $j$ is the $pivot$, hence a generic $w$ will
+\{1,\ldots,n\}) \wedge (\forall i\not =j: w[i]\not=w[j]) \wedge length(w) = n$).
+Let $j$ be the $pivot$ element, hence a generic $w$ will
 have this structure:
 \begin{displaymath}
   w = (C_{j-1} \quad C_{n-j} \quad j)
 \end{displaymath}
-where $C_k$ is a vector of length $k$. We can consider the
-probability to have $j$ as $pivot$ considering the uniform
-distribution on $\Omega$:
+where $C_k$ is a vector of length $k$. Assume that the random variable
+$X =$ ``$ j \in \lbrace 1,\ldots,n \rbrace \text{ is the $pivot$ element in } w$''
+is uniformly distributed, formally:
 \begin{displaymath}
   \mathbb{P}\left(w\in\Omega: w[n]=j \right) =
   \frac{(n-1)!}{n!} =  \frac{1}{n}
 \end{displaymath}
 Our goal here is to build a function $C(n)$ which counts the average
 number of checks during an execution of the algorithm given an input
-vector of length $n$. In order to do that observe that every keys $j
-\in \{1,\ldots,n\}$ can be the $pivot$, we can write:
+vector of length $n$. In order to do that observe that every key $j
+\in \{1,\ldots,n\}$ can be the $pivot$, so the following holds:
 \begin{displaymath}
   C(n) = (n+1) +  \frac{1}{n}\sum_{j=1}^{n}{C(j-1) + C(n-j)}
 \end{displaymath}
@@ -120,11 +120,7 @@ Observing the sum when $j$ runs:
     j=n &\rightarrow C(n-1) + C(0) \\
   \end{split}
 \end{displaymath}
-Hence we can rewrite:
-\begin{displaymath}
-  C(n) = (n+1) +  \frac{2}{n}\sum_{j=0}^{n-1}{C(j)}
-\end{displaymath}
-Now we do some manipulation:
+Hence we can rewrite and manipulate:
 \begin{displaymath}
   \begin{split}
     C(n) &= (n+1) + \frac{2}{n}\sum_{j=0}^{n-1}{C(j)}\\
@@ -150,9 +146,8 @@ Getting $nC(n) = 2n + (n+1)C(n-1)$, divide both member by $n(n+1)$:
     \frac{C(n-1)}{n}
   \end{split}
 \end{displaymath}
-We arrived at a recurrence $A(n) = b(n) + A(n-1)$, where $A(n) =
-\frac{C(n)}{n+1} $ and $b(n) = \frac{2}{n+1} $. So we expand, fixing
-$C(0) = 0$:
+Matching $A(n) = b(n) + A(n-1)$, where $A(n) = \frac{C(n)}{n+1} $
+and $b(n) = \frac{2}{n+1} $. Unfolding $A(n-1)$ and fixing $C(0) = 0$:
 \begin{displaymath}
   \begin{split}
     \frac{C(n)}{n+1} &= \frac{2}{n+1} + \frac{C(n-1)}{n} =
@@ -174,61 +169,63 @@ $C(0) = 0$:
     &= 2(H_{n+1}-1)
   \end{split}
 \end{displaymath}
-Having recognized the harmonic numbers $H_{n+1}=\left(\frac{1}{n+1} +
-  \frac{1}{n} + \ldots + \frac{1}{3}+ \frac{1}{2}+ 1\right)$, the
-final result is $$C(n) = 2(n+1)(H_{n+1}-1)$$
 
-In order to bound $C(n)$ we have to recall that $H_n \sim ln(n) +
-\gamma$, hence $C(n) \in O(nlogn)$.
+Where we recognized the $(n+1)$-th harmonic number $H_{n}=\left(\frac{1}{n+1} +
+  \frac{1}{n} + \ldots + \frac{1}{3}+ \frac{1}{2}+ 1\right)$
+to rewrite: $$C(n) = 2(n+1)(H_{n+1}-1)$$
 
-From a practical point of view, to avoid the worst case, when a
-sorting problem is approached with the QUICKSORT algorithm we can
-choose to do one of the following actions before starting the sorting
-process:
+Now recall the asymptotic approximation $H_n \sim ln(n) + \gamma$,
+so $C(n) \in O(nlogn)$.
+\\
+
+From a practical point of view when a
+sorting problem is approached with the QUICKSORT algorithm, to avoid
+the worst case $O(n^2)$ number of checks, it is sufficient to do one
+of the following actions before starting the sorting process:
 \begin{itemize}
 \item shuffling the input vector and proceed with the algorithm
   described above;
 \item choose the $pivot$ element at random, move it in the right-most
   position and proceed with the algorithm described above.
 \end{itemize}
-Each of the two tricks require linear time in the dimension of the
-input vector and allow us to use the result of the average case and
-working with $O(nlogn)$ number of checks.
+Each one of these two tricks requires linear time in the dimension of the
+input vector and allows to work with $O(nlogn)$ number of checks, on average.
 
 \subsection{QUICKSORT: On the average number of swaps}
 Our goal here is to build a function $S(n)$ which counts the average
 number of swaps during an execution of the algorithm given an input
 vector of length $n$.
 
-The recurrence for the average number of swaps is as follow:
+The recurrence for the average number of swaps satisfies the following equation:
 \begin{displaymath}
   S(n) =  \frac{n-2}{6} +  \frac{1}{n} \sum_{j=1}^{n}{S(j-1) + S(n-j)}
 \end{displaymath}
-We proceed the proof in two stages, first studying
+We develop the proof in two stages, first studying:
 \begin{displaymath}
   one: \mathbb{E} \left[K_j \right]  = \frac{(j-1)(n-j)}{n-1}
 \end{displaymath}
-where $K_j$ is a random variable that depends on $j$, after
+where $K_j$ is a random variable that depends on $j$, after:
 \begin{displaymath}
   two: \frac{n-2}{6} = \frac{1}{n}\sum_{j=1}^{n}{
     \mathbb{E} \left[K_j \right] }
 \end{displaymath}
-In what follow, suppose to have a probability space $\Omega$ as
-defined in the previous sections and an uniform distribution above it.
+In what follow, assume to work over a probability space $\Omega$ as
+defined in the previous section, distributed uniformly.
+
 \begin{proof}[Proof of $one$]
-  Again, suppose the $pivot$ is $j \in \left \lbrace
-    1,\ldots,n \right\rbrace $. We define the random variable $K_j:
-  \Omega \rightarrow \mathbb{R}$ such that:
+  Let $j \in \left \lbrace 1,\ldots,n \right\rbrace $ be the $pivot$ element,
+  and let $K_j: \Omega \rightarrow \mathbb{R}$ be a random variable
+  such that $K_j = s \mathbb{1}_{\lbrace w[n]=j \rbrace}$, where $s$ is
+  the number of swaps performed by the partitioning phase given
+  an input vector $w$ of length $n$. To better understand, $K_j$ satisfies
+  the following implications:
   \begin{displaymath}
     \begin{split}
       w[n] = j &\rightarrow K_j(w) = s \\
       w[n] \not= j &\rightarrow K_j(w) = 0 \\
     \end{split}
   \end{displaymath}
-  where $s$ is the number of swaps performed by the partitioning phase
-  of QUICKSORT given an input vector $w$ of length $n$ (hence the
-  variable $K_j$ counts the number of swaps). Now we can compute the
-  probability to have $k$ swaps when $j$ is the $pivot$:
+  The probability to have $k$ swaps when $j$ is the $pivot$ element is:
   \begin{displaymath}
     \mathbb{P}\left(K_j = k \right) =  \frac{{{n-j}\choose{k}}
       {{j-1}\choose{k}} (n-j)! (j-1)! }{(n-1)!}
