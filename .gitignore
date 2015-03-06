@@ -19,3 +19,5 @@ Elaborato.toc
 *.png
 *.svg
 *.ps
+
+sympy-notebook/.ipynb_checkpoints/
