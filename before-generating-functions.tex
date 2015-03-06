@@ -325,36 +325,6 @@ Now we proceed with the second proof:
   \end{displaymath}
 \end{proof}
 
-We use \texttt{Maxima} to justify the above calculations:
-
-\noindent
-%%%%%%%%%%%%%%%
-%%% INPUT:
-\begin{minipage}[t]{8ex}{\color{red}\bf
-\begin{verbatim}
-(%i3)
-\end{verbatim}}
-\end{minipage}
-\begin{minipage}[t]{\textwidth}{\color{blue}
-\begin{verbatim}
-expr:(1/(n*(n-1)))* ((n*(n+1)^2)/2 - n*(n+1)*(2*n+1)/6 -n^2);
-ratsimp(expr);
-\end{verbatim}}
-\end{minipage}
-%%% OUTPUT:
-\definecolor{labelcolor}{RGB}{100,0,0}
-\begin{math}\displaystyle
-\parbox{8ex}{\color{labelcolor}(\%o3) }
-\frac{\frac{n\,{\left( n+1\right) }^{2}}{2}-{n}^{2}-\frac{n\,\left(
-      n+1\right) \,\left( 2\,n+1\right) }{6}}{\left( n-1\right) \,n}
-\end{math}
-
-\begin{math}\displaystyle
-\parbox{8ex}{\color{labelcolor}(\%o4) }
-\frac{n-2}{6}
-\end{math}
-%%%%%%%%%%%%%%%
-
 We are now ready to solve the main recurrence using the same strategy
 for the average number of checks, fixing $S(0) = S(1) = S(2) =
 0$:

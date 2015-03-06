@@ -22,7 +22,7 @@ given permutation $w = \left ( a_1, a_2, \ldots, a_n\right) $:
     &\left ( a_1, a_{n+1}, a_2, \ldots, a_n\right)\\
     &\ldots\\
     &\left ( a_1, a_2, \ldots, a_{n+1}, a_n\right)\\
-    &\left ( a_1, a_2, \ldots, a_n, a_{n+1}\right)\\    
+    &\left ( a_1, a_2, \ldots, a_n, a_{n+1}\right)\\
   \end{split}
 \end{displaymath}
 Those new vectors are $n+1$ because in the original permutation $w =
@@ -105,7 +105,7 @@ $C_{4,2}$. Hence $C_{n,k} = {{n}\choose{k}} = \frac{D_{n,k}}{k!} =
 In this section we study the binomial coefficients, and in the
 particular the writing $(a + b)^n, n\in \mathbb{N}$. It is known that:
 \begin{displaymath}
-  (a+b)^n = \sum_{k=0}^{n}{{{n}\choose{k}}a^k b^{n-k} } 
+  (a+b)^n = \sum_{k=0}^{n}{{{n}\choose{k}}a^k b^{n-k} }
 \end{displaymath}
 Now we study $(a + b)^r = \sum_{k=0}^{r}{{{r}\choose{k}}a^k b^{r-k} },
 r\in \mathbb{R}$, in particular we have to pay attention to the
@@ -122,7 +122,7 @@ with $ \frac{r!}{k!(r-k)!} $. Now do simple manipulation:
 In general we can call $z= \frac{b}{a} $ and reduce to study the
 function $f(z)=(1+z)^r$, which can be expanded with Taylor:
 \begin{displaymath}
-  f(z) = \sum_{k \geq 0}{ \frac{f^{(k)}(0)}{k!} z^k } 
+  f(z) = \sum_{k \geq 0}{ \frac{f^{(k)}(0)}{k!} z^k }
 \end{displaymath}
 Study the derivatives of $f(z)$:
 \begin{displaymath}
@@ -151,7 +151,7 @@ Now we can substitute the previous into $f(z)$:
   It is sufficient to build a function $f(z) = (1+z)^r$ with the right
   value for $r$ and then expand $f(z)$ with Taylor, the coefficient of
   $z^3$ is the desired value ${{ r }\choose{3}} $.
-  
+
   In this case $r= \frac{1}{2} $, so $f(z) = \sqrt{1+z} =
   {{\frac{1}{2}}\choose{0}}z^0 + {{\frac{1}{2}}\choose{1}}z^1 +
   {{\frac{1}{2}}\choose{2}}z^2 + {{\frac{1}{2}}\choose{3}}z^3 + \ldots$
@@ -163,7 +163,7 @@ Now we can substitute the previous into $f(z)$:
 %%% INPUT:
 \begin{minipage}[t]{8ex}{\color{red}\bf
 \begin{verbatim}
-(%i27) 
+(%i27)
 \end{verbatim}}
 \end{minipage}
 \begin{minipage}[t]{\textwidth}{\color{blue}
@@ -201,7 +201,7 @@ function.
 
 Now suppose to have ${{-n}\choose{k}}, n\in \mathbb{N}  $:
 \begin{displaymath}
-  {{-n}\choose{k}} =  \frac{-n(-n-1)\cdots(-n-k+1)}{k!} 
+  {{-n}\choose{k}} =  \frac{-n(-n-1)\cdots(-n-k+1)}{k!}
 \end{displaymath}
 At numerator there are $k$ terms, so factor -1:
 \begin{displaymath}
@@ -227,7 +227,7 @@ element, let say $a_j$, and partition $S$ in two set:
     S_{a_j}^+ &= \left \lbrace (a_{\pi(1)}, \ldots, a_{\pi(k)}) |
       \exists i: a_j = a_{\pi(i)} \right\rbrace \\
     S_{a_j}^- &= \left \lbrace (a_{\pi(1)}, \ldots, a_{\pi(k)}) |
-      \forall i: a_j \not = a_{\pi(i)} \right\rbrace \\    
+      \forall i: a_j \not = a_{\pi(i)} \right\rbrace \\
   \end{split}
 \end{displaymath}
 where $\pi: \left \lbrace 1, \ldots, k \right\rbrace \rightarrow \left
@@ -293,8 +293,9 @@ We finish this section on combinatorics with some exercises.
 \begin{proof}[Sol]
   Using the approach followed in Exercise
   \autoref{exercise:first-on-comb-with-real}, we can build the
-  function $f(z) = \frac{1}{\sqrt{1+z}} $ and expand it with Taylor
-  (see result \parbox{8ex}{\color{labelcolor}(\%o118) }). Here we use
+  function $f(z) = \frac{1}{\sqrt{1+z}} $ and expand it with Taylor,
+  see results \%0118.
+  Here we use
   another approach that follow the definition:
   \begin{displaymath}
     \begin{split}
@@ -310,16 +311,17 @@ We finish this section on combinatorics with some exercises.
       {{2k}\choose{k}}
     \end{split}
   \end{displaymath}
- 
+
   Doing a little check with Maxima, for the proposed method we get
-  result \parbox{8ex}{\color{labelcolor}(\%o122) }, equals to Taylor
+  result \%o122 %\parbox{8ex}{\color{labelcolor}(\%o122) },
+  equals to Taylor
   expansion method's result:\\
 \noindent
 %%%%%%%%%%%%%%%
 %%% INPUT:
 \begin{minipage}[t]{8ex}{\color{red}\bf
 \begin{verbatim}
-(%i117) 
+(%i117)
 \end{verbatim}}
 \end{minipage}
 \begin{minipage}[t]{\textwidth}{\color{blue}
