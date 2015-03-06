@@ -178,7 +178,7 @@ derivation to build the expansion.
 
 \end{proof}
 
-Now suppose to have ${{-n}\choose{k}}, n\in \mathbb{N}  $:
+Now suppose to have ${{-n}\choose{k}}$ where $ n\in \mathbb{N}  $:
 \begin{displaymath}
   {{-n}\choose{k}} =  \frac{-n(-n-1)\cdots(-n-k+1)}{k!}
 \end{displaymath}
@@ -193,13 +193,13 @@ At numerator there are $k$ terms, so factor -1:
 
 \subsection{Central Binomial Coefficients and Catalan Numbers}
 
-We introduce in the following paragraph a very important class of
-numbers, the Catalan numbers. We proceed step by step, making an
-observation on a rewriting for ${{n}\choose{k}}$ where $n,k\in
+We introduce in this section a very important class of
+numbers called \emph{Catalan numbers}. We proceed step by step,
+introducing a recurrence relation for ${{n}\choose{k}}$ where $n,k\in
 \mathbb{N} $.
 
 Given a set of $n$ elements $a_1, \ldots,a_n$ it is possible to
-generate the set $S$ of the combinations of length $k$. Now choose an
+generate the set $S = C_{n,k}$ of combinations of length $k$. Now choose an
 element, let say $a_j$, and partition $S$ in two set:
 \begin{displaymath}
   \begin{split}
@@ -220,14 +220,14 @@ holds:
   We've chosen $a_j$ to partition $S$, hence:
   \begin{itemize}
   \item $\left| S_{a_j}^+ \right| = {{n-1}\choose{k-1}}$ because
-    $S_{a_j}^+$ contains sets which everyone contains $a_j$. But we
-    can build $ S_{a_j}^+$ from scratch choosing $k-1$ elements ($a_j$
+    $S_{a_j}^+$ contains sets such that everyone of them contains $a_j$
+    in turn. But we can build $ S_{a_j}^+$ from scratch choosing $k-1$ elements ($a_j$
     is contained in every set of $S_{a_j}^+$, hence we have to build
     combinations of length $k-1$) from $\left \lbrace a_1, \ldots, a_n
     \right\rbrace \setminus \left \lbrace a_j \right\rbrace $ ($a_j$
     is an implicit choice, so we choose from $n-1$ elements)
   \item $\left| S_{a_j}^- \right| = {{n-1}\choose{k}}$ because $
-    S_{a_j}^-$ contains sets which everyone doesn't contains
+    S_{a_j}^-$ contains sets such that everyone of them doesn't contain
     $a_j$. But we can build $ S_{a_j}^- $ from scratch choosing $k$
     elements ($a_j$ isn't contained in any set of $S_{a_j}^-$, hence
     we have to build combinations of length $k$) from $\left \lbrace
@@ -272,10 +272,10 @@ We finish this section on combinatorics with some exercises.
 \begin{proof}[Sol]
   Using the approach followed in Exercise
   \autoref{exercise:first-on-comb-with-real}, we can build the
-  function $f(z) = \frac{1}{\sqrt{1+z}} $ and expand it with Taylor,
-  see results \%0118.
-  Here we use
-  another approach that follow the definition:
+  function $f(z) = \frac{1}{\sqrt{1+z}} $ and expand it with Taylor, getting:
+  $$ f(z) = \frac{1}{\sqrt{1+z}}  = 1 - \frac{z}{2} + \frac{3 z^{2}}{8} - \frac{5 z^{3}}{16} + \frac{35 z^{4}}{128} - \frac{63 z^{5}}{256} + \mathcal{O}\left(z^{6}\right) $$
+
+  Here we use another approach that follow the definition:
   \begin{displaymath}
     \begin{split}
       {{- \frac{1}{2} }\choose{k}} &= \frac{- \frac{1}{2}(- \frac{1}{2}
@@ -291,54 +291,8 @@ We finish this section on combinatorics with some exercises.
     \end{split}
   \end{displaymath}
 
-  Doing a little check with Maxima, for the proposed method we get
-  result \%o122 %\parbox{8ex}{\color{labelcolor}(\%o122) },
-  equals to Taylor
-  expansion method's result:\\
-\noindent
-%%%%%%%%%%%%%%%
-%%% INPUT:
-\begin{minipage}[t]{8ex}{\color{red}\bf
-\begin{verbatim}
-(%i117)
-\end{verbatim}}
-\end{minipage}
-\begin{minipage}[t]{\textwidth}{\color{blue}
-\begin{verbatim}
-f(z):=1/sqrt(1+z);
-taylor(f(z), z, 0, 6);
-mapBinomial(x):=binomial (-1/2, x);
-map (mapBinomial, [0, 1, 2, 3, 4, 5, 6]);
-byDef(k):=(((-1)^k)/(4^k))*binomial(2*k,k);
-map (byDef, [0, 1, 2, 3, 4, 5, 6]);
-\end{verbatim}}
-\end{minipage}
-%%% OUTPUT:
-\definecolor{labelcolor}{RGB}{100,0,0}
-\begin{math}\displaystyle
-\parbox{8ex}{\color{labelcolor}(\%o117) }
-\mathrm{f}\left( z\right) :=\frac{1}{\sqrt{1+z}}
-\end{math}\\
-\begin{math}\displaystyle
-\parbox{8ex}{\color{labelcolor}(\%o118) }
-1-\frac{z}{2}+\frac{3\,{z}^{2}}{8}-\frac{5\,{z}^{3}}{16}+\frac{35\,{z}^{4}}{128}-\frac{63\,{z}^{5}}{256}+\frac{231\,{z}^{6}}{1024}+...
-\end{math}\\
-\begin{math}\displaystyle
-\parbox{8ex}{\color{labelcolor}(\%o119) }
-\mathrm{mapBinomial}\left( x\right) :=\begin{pmatrix}-\frac{1}{2}\cr x\end{pmatrix}
-\end{math}\\
-\begin{math}\displaystyle
-\parbox{8ex}{\color{labelcolor}(\%o120) }
-[1,-\frac{1}{2},\frac{3}{8},-\frac{5}{16},\frac{35}{128},-\frac{63}{256},\frac{231}{1024}]
-\end{math}\\
-\begin{math}\displaystyle
-\parbox{8ex}{\color{labelcolor}(\%o121) }
-\mathrm{byDef}\left( k\right) :=\frac{{\left( -1\right) }^{k}}{{4}^{k}}\,\begin{pmatrix}2\,k\cr k\end{pmatrix}
-\end{math}\\
-\begin{math}\displaystyle
-\parbox{8ex}{\color{labelcolor}(\%o122) }
-[1,-\frac{1}{2},\frac{3}{8},-\frac{5}{16},\frac{35}{128},-\frac{63}{256},\frac{231}{1024}]
-\end{math}
-%%%%%%%%%%%%%%%
+  Evaluating for $k \in \{0, \ldots, 5\}$ we get the following coefficient list:
+  $$\left [ 1, \quad - \frac{1}{2}, \quad \frac{3}{8}, \quad - \frac{5}{16}, \quad \frac{35}{128}, \quad - \frac{63}{256}\right ]$$
+
 
 \end{proof}
