@@ -174,7 +174,9 @@ derivation to build the expansion.
           &= 1 + \frac{z}{2} - \frac{z^{2}}{8} + \frac{z^{3}}{16} - \frac{5 z^{4}}{128} + \frac{7 z^{5}}{256} + \mathcal{O}\left(z^{6}\right)
       \end{split}
   \end{displaymath}
-  Hence $ { \frac{1}{2} \choose {3} } = \frac{1}{16}$.
+  Hence $ { \frac{1}{2} \choose {3} } = \frac{1}{16}$ as required \footnote{
+      see \url{http://nbviewer.ipython.org/github/massimo-nocentini/pacc/blob/master/sympy-notebook/Analysis\%20of\%20Algorithms.ipynb?flush_cache=true\#First-exercise}
+      for more details}.
 
 \end{proof}
 
@@ -263,7 +265,10 @@ written inside a ticket as $\ticket{j}$.
 \end{table}
 The numbers ${{2h}\choose{h}}$ are called \emph{Central Binomial
   Coefficients}, while $ \frac{1}{h+1}{{2h}\choose{h}}$ are called
-\emph{Catalan Numbers}.
+\emph{Catalan Numbers}, in the following pair we report the start of
+these sequences of number, respectively:
+$$ \left [ 1, \quad 2, \quad 6, \quad 20, \quad 70, \quad 252, \quad 924, \quad 3432, \quad 12870, \quad 48620\right ] $$
+$$\quad \left [ 1, \quad 1, \quad 2, \quad 5, \quad 14, \quad 42, \quad 132, \quad 429, \quad 1430, \quad 4862\right ] $$
 
 We finish this section on combinatorics with some exercises.
 \begin{exercise}
@@ -291,8 +296,8 @@ We finish this section on combinatorics with some exercises.
     \end{split}
   \end{displaymath}
 
-  Evaluating for $k \in \{0, \ldots, 5\}$ we get the following coefficient list:
+  Evaluating for $k \in \{0, \ldots, 5\}$ we get the following coefficient list
+  \footnote{see \url{http://nbviewer.ipython.org/github/massimo-nocentini/pacc/blob/master/sympy-notebook/Analysis\%20of\%20Algorithms.ipynb?flush_cache=true\#Second-exercise} for details}:
   $$\left [ 1, \quad - \frac{1}{2}, \quad \frac{3}{8}, \quad - \frac{5}{16}, \quad \frac{35}{128}, \quad - \frac{63}{256}\right ]$$
-
 
 \end{proof}
