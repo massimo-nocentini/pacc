@@ -1,22 +1,22 @@
 \section{Generating functions basics}
 
-In this section we approach the basics for the generating functions
-topic.
+In this section we approach the basis about generating functions topic.
 
 \subsection{Approaching}
 
 The main goal of this section is to manipulate a sequence $\{a_n\}_{n\in
-  \mathbb{N} }$ with a function $a(t)$ such that:
+  \mathbb{N} }$ through a function $a(t)$ such that:
 \begin{displaymath}
-  a(t) = \sum_{n \geq 0}{a_n t^n} 
+  a(t) = \sum_{n \geq 0}{a_n t^n}
 \end{displaymath}
+
 Using $a(t)$ allow us to let $t$ be unbounded and we wont assign any
-value to it (it is just a ``placeholder'').
+value to it (it is just a ``placeholder''), it is just a \emph{dummy} variable.
 
 We introduce an operator $\mathcal{G}$ which consume a sequence
 $\{a_n\}_{n\in \mathbb{N} }$ and produce a function $a(t)$ as defined
 above. In the following examples we experiment a little with Maxima,
-which implement $\mathcal{G}$ with the function 
+which implement $\mathcal{G}$ with the function
 \texttt{\color{blue} ggf(s)}, for some sequence $s$.\\
 
 Let $\{a_n = n\}$:\\
@@ -25,7 +25,7 @@ Let $\{a_n = n\}$:\\
 %%% INPUT:
 \begin{minipage}[t]{8ex}{\color{red}\bf
 \begin{verbatim}
-(%i109) 
+(%i109)
 \end{verbatim}}
 \end{minipage}
 \begin{minipage}[t]{\textwidth}{\color{blue}
@@ -54,7 +54,7 @@ Let $\{a_n = 1 \text{ if } n \text{ is even }, 0 \text{ otherwise}\}$:\\
 %%% INPUT:
 \begin{minipage}[t]{8ex}{\color{red}\bf
 \begin{verbatim}
-(%i105) 
+(%i105)
 \end{verbatim}}
 \end{minipage}
 \begin{minipage}[t]{\textwidth}{\color{blue}
@@ -89,7 +89,7 @@ Let $\{a_n = 1 \text{ if } n \leq 2,  0 \text{ otherwise}\}$:\\
 %%% INPUT:
 \begin{minipage}[t]{8ex}{\color{red}\bf
 \begin{verbatim}
-(%i97) 
+(%i97)
 \end{verbatim}}
 \end{minipage}
 \begin{minipage}[t]{\textwidth}{\color{blue}
@@ -131,7 +131,7 @@ respectively. Lets sum both of them:
     &+ b_0 + b_1 t + b_2 t^2 + \ldots + b_n t^n + \ldots =\\
     &= (a_0 + b_0) + (a_1+b_1) t + (a_2 + b_2) t^2 + \ldots +
     (a_n+b_n) t^n + \ldots =\\
-    &= \mathcal{G}(a_n + b_n) 
+    &= \mathcal{G}(a_n + b_n)
   \end{split}
 \end{displaymath}
 It is possible to generalize, obtaining:
@@ -139,7 +139,7 @@ It is possible to generalize, obtaining:
   \begin{split}
     \alpha\mathcal{G}(a_n) &= \mathcal{G}(\alpha a_n)\\
     \alpha\mathcal{G}(a_n) +  \beta\mathcal{G}(b_n) &=
-    \mathcal{G}(\alpha a_n + \beta b_n) 
+    \mathcal{G}(\alpha a_n + \beta b_n)
   \end{split}
 \end{displaymath}
 So $\mathcal{G}$ is a \emph{linear operator}.
@@ -154,7 +154,7 @@ respectively. We study the product $a(t)b(t)$ with Maxima:\\
 %%% INPUT:
 \begin{minipage}[t]{8ex}{\color{red}\bf
 \begin{verbatim}
-(%i190) 
+(%i190)
 \end{verbatim}}
 \end{minipage}
 \begin{minipage}[t]{\textwidth}{\color{blue}
@@ -223,7 +223,7 @@ $\mathcal{G} (a_n)$ with Maxima:\\
 %%% INPUT:
 \begin{minipage}[t]{8ex}{\color{red}\bf
 \begin{verbatim}
-(%i78) 
+(%i78)
 \end{verbatim}}
 \end{minipage}
 \begin{minipage}[t]{\textwidth}{\color{blue}
@@ -266,7 +266,7 @@ We can generalize, allowing arbitraty translation $s \geq 0$:
 %%% INPUT:
 \begin{minipage}[t]{8ex}{\color{red}\bf
 \begin{verbatim}
-(%i249) 
+(%i249)
 \end{verbatim}}
 \end{minipage}
 \begin{minipage}[t]{\textwidth}{\color{blue}
@@ -326,7 +326,7 @@ With Maxima:
 %%% INPUT:
 \begin{minipage}[t]{8ex}{\color{red}\bf
 \begin{verbatim}
-(%i129) 
+(%i129)
 \end{verbatim}}
 \end{minipage}
 \begin{minipage}[t]{\textwidth}{\color{blue}
@@ -397,7 +397,7 @@ in \parbox{8ex}{\color{labelcolor}(\%o113) }:
 %%% INPUT:
 \begin{minipage}[t]{8ex}{\color{red}\bf
 \begin{verbatim}
-(%i109) 
+(%i109)
 \end{verbatim}}
 \end{minipage}
 \begin{minipage}[t]{\textwidth}{\color{blue}
@@ -467,13 +467,13 @@ $a_0 \not = 0$.
   while in \parbox{8ex}{\color{labelcolor}(\%o93) } we expand the
   function $b(t) = \frac{1}{1-t} $ using Taylor, both methods returns
   the sequence $\{b_n\}_{n\in\mathbb{N} } = (1,1,1,1,1,\ldots)$.
-  
+
 \noindent
 %%%%%%%%%%%%%%%
 %%% INPUT:
 \begin{minipage}[t]{8ex}{\color{red}\bf
 \begin{verbatim}
-(%i90) 
+(%i90)
 \end{verbatim}}
 \end{minipage}
 \begin{minipage}[t]{\textwidth}{\color{blue}
@@ -526,7 +526,7 @@ in \parbox{8ex}{\color{labelcolor}(\%o211) }, with Maxima:
 %%% INPUT:
 \begin{minipage}[t]{8ex}{\color{red}\bf
 \begin{verbatim}
-(%i207) 
+(%i207)
 \end{verbatim}}
 \end{minipage}
 \begin{minipage}[t]{\textwidth}{\color{blue}
@@ -609,7 +609,7 @@ known a priory as in this case (and in the exercise above), it is
 useful to study the ratio between consecutive terms:
 \begin{displaymath}
    \frac{a_{n+1}}{a_n} =  \frac{c}{c} \quad \rightarrow \quad a_{n+1}
-   = a_n \quad \forall n \in \mathbb{N} 
+   = a_n \quad \forall n \in \mathbb{N}
 \end{displaymath}
 By \emph{Identity Principle} follows:
 \begin{displaymath}
