@@ -4,7 +4,7 @@
 %--------------------------------------------------------------
 \input{custom-commands-for-title-page.tex}
 %--------------------------------------------------------------
-\usepackage[latin1]{inputenc} 
+\usepackage[utf8]{inputenc} 
 \usepackage[T1]{fontenc} 
 \usepackage[square,numbers]{natbib} 
 \usepackage[fleqn]{amsmath}  
@@ -12,7 +12,7 @@
 \usepackage{ae,aecompl}
 \usepackage[pdftex]{graphicx}
 \usepackage{latexsym}
-\usepackage{amsmath, amsthm, amssymb}
+\usepackage{amsthm, amssymb}
 \usepackage{rotating}
 \usepackage{boxedminipage}
 \usepackage{multicol}
@@ -100,9 +100,6 @@
 
 \tableofcontents
 
-\newpage
-
-\input{licences.tex}
 
 % \part{Analysis part}
 
@@ -122,11 +119,6 @@
 \chapter{Generating binary trees at random}
 
 \input{random-binary-trees.tex}
-
-% \part{Algorithms part}
-
-% \chapter{Divide et impera}
-% Put here some exercises on some topics of interest.
 
 \chapter{Appendix}
 \label{chapter:appendix}
@@ -208,4 +200,9 @@ this document more complete).
 % trees and its dot representation:
 % \lstset{language=ML}
 % \lstinputlisting{trees-generation-ocaml/main.ml}
+
+\newpage
+
+\input{licences.tex}
+
 \end{document} 

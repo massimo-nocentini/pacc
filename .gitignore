@@ -21,3 +21,5 @@ Elaborato.toc
 *.ps
 
 sympy-notebook/.ipynb_checkpoints/
+
+*.swp
